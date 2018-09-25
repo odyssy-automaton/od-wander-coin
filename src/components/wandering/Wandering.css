@@ -1,0 +1,102 @@
+.Wandering {
+  width: 100%;
+  height: 320px;
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(244,230,89,1);
+}
+
+.Wandering__contract {
+  padding: 40px;
+}
+
+.Wandering__form {
+  padding: 40px;
+}
+
+
+.Wandering__suggestion-icon {
+  margin-right: 8px;
+}
+
+.Wandering__search-bar-container {
+  width: 90%;
+  max-width: 500px;
+  margin: 40px auto 0;
+}
+
+.Wandering__search-input-container {
+  position: relative;
+}
+
+.Wandering__search-input,
+.Wandering__search-input:focus,
+.Wandering__search-input:active {
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+  border: honeydew;
+  display: block;
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  border-radius: 2px;
+  outline: none;
+}
+
+.Wandering__clear-button,
+.Wandering__clear-button:active,
+.Wandering__clear-button:focus {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  color: #999;
+}
+
+.Wandering__autocomplete-container {
+  border-bottom: honeydew;
+  border-left: honeydew;
+  border-right: honeydew;
+  border-top: 1px solid #e6e6e6;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border-radius: 0 0 2px 2px;
+}
+
+.Wandering__suggestion-item {
+  padding: 8px;
+  text-align: left;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.Wandering__suggestion-item--active {
+  background-color: #fafafa;
+}
+
+.Wandering__dropdown-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px;
+}
+
+.Wandering__dropdown-footer-image {
+  display: inline-block;
+  width: 150px;
+}
+
+.Wandering__spinner {
+  color: #18bc9c;
+  font-size: 30px;
+}
+
+.Wandering__error-message {
+  color: red;
+}
+
+.Wandering__geocode-result-header {
+  font-size: 20px;
+  color: #222222;
+}
