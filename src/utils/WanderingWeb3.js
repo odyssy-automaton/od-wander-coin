@@ -27,8 +27,7 @@ export default class WanderingService {
   }
 
   async owner() {
-    console.log(this.wanderingContract.methods);
-    return await this.wanderingContract.methods.owner().call();
+    // return await this.wanderingContract.methods.owner().call();
   }
 
   coordinateToInt(coordinate) {

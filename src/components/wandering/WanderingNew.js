@@ -37,6 +37,14 @@ class WanderingNew extends Component {
     onSubmit(address);
   };
 
+  handleCloseClick = () => {
+    this.setState({
+      streetAddress: '',
+      latitude: '',
+      longitude: '',
+    });
+  };
+
   render() {
     return (
       <div>
