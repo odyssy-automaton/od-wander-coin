@@ -8,9 +8,11 @@
     "ethereumjs-util": "^5.2.0",
     "google-maps-react": "^2.0.2",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2",
+    "react-dom": "^16.5.2",
+    "react-motion": "^0.5.2",
     "react-places-autocomplete": "^7.2.0",
     "react-scripts": "1.1.4",
+    "react-simple-maps": "^0.12.1",
     "truffle-contract": "^4.0.0-next.0",
     "web3": "^1.0.0-beta.35",
     "zeppelin-solidity": "^1.12.0"

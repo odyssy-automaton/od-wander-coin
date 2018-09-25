@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
+import WanderingMap from './WanderingMap';
 
 import './Wandering.css';
 
@@ -51,6 +52,9 @@ class Wandering extends Component {
           </div>
           <div className="Wandering__form">
             <WanderingNew onSubmit={this.handleSubmitAddressForm} />
+          </div>
+          <div>
+            <WanderingMap />
           </div>
         </div>
       </div>
