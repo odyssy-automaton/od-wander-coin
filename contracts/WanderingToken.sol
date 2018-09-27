@@ -42,7 +42,7 @@ contract WanderingToken is ERC721Token, Ownable {
         ownersHistory[msg.sender].isOwner = true;
         ownersHistory[msg.sender].lat = _latitude;
         ownersHistory[msg.sender].lon = _longitude;
-        ownersLUT.push(msg.sender) - 1;
+        ownersLUT.push(_to) - 1;
         // solium-disable-next-line arg-overflow
         super.safeTransferFrom(_from, _to, onlyTokenId, "");
     }
