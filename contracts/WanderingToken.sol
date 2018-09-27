@@ -41,7 +41,9 @@ contract WanderingToken is ERC721Token, Ownable {
       public
     {
         require(
-            ownersHistory[_to].isOwner == true, "already owned");
+            _from == ownerOf(onlyTokenId), "Not the token holder");
+        require(
+            ownersHistory[_to].isOwner == false, "already owned");
         require(
             address(this).balance >= faucetAmount,
             "Not enough ether in contract."
