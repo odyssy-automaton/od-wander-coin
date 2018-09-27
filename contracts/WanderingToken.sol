@@ -6,12 +6,12 @@ import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 contract WanderingToken is ERC721Token, Ownable {
 
     struct OwnerHistory {
-        address addr;
+        bool isOwner;
         int lat;
         int lon;
     }
 
-    mapping(address => OwnerHistory[]) ownersHistory;
+    mapping(address => OwnerHistory) ownersHistory;
     uint256 onlyTokenId = 1;
 
     constructor(
@@ -21,12 +21,10 @@ contract WanderingToken is ERC721Token, Ownable {
         int _longitude 
     ) 
     ERC721Token(_name, _symbol) public {
-        OwnerHistory memory _newHistory = OwnerHistory({ 
-            addr: owner,
-            lat: _latitude,
-            lon: _longitude 
-        });
-        ownersHistory[owner].push(_newHistory);
+
+        ownersHistory[owner].isOwner = true;
+        ownersHistory[owner].lat = _latitude;
+        ownersHistory[owner].lon = _longitude;
         _mint(owner, onlyTokenId);
     }
 
@@ -39,14 +37,10 @@ contract WanderingToken is ERC721Token, Ownable {
     )
       public
     {
-        require(ownersHistory[msg.sender].addr != "", "already owned");
-
-        OwnerHistory memory _newHistory = OwnerHistory({ 
-            addr: owner,
-            lat: _latitude,
-            lon: _longitude 
-        });
-        ownersHistory[owner].push(_newHistory);
+        require(ownersHistory[msg.sender].isOwner == true, "already owned");
+        ownersHistory[msg.sender].isOwner = true;
+        ownersHistory[msg.sender].lat = _latitude;
+        ownersHistory[msg.sender].lon = _longitude;
         // solium-disable-next-line arg-overflow
         super.safeTransferFrom(_from, _to, onlyTokenId, "");
     }
