@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
-import WanderingMap from './WanderingMap';
+import WanderingMapContainer from './WanderingMapContainer';
 
 import './Wandering.css';
 
@@ -38,23 +38,18 @@ class Wandering extends Component {
   };
 
   render() {
-    const { contract, owner } = this.state;
+    const { contract } = this.state;
 
     return !contract ? (
       <h3>Loading contract</h3>
     ) : (
       <div>
         <div className="Wandering">
-          <div className="Wandering__contract">
-            <h3>Wandering Contract</h3>
-            <p>Address: {contract._address}</p>
-            <p>Contract Owner: {owner}</p>
-          </div>
           <div className="Wandering__form">
             <WanderingNew onSubmit={this.handleSubmitAddressForm} />
           </div>
           <div>
-            <WanderingMap />
+            <WanderingMapContainer />
           </div>
         </div>
       </div>
