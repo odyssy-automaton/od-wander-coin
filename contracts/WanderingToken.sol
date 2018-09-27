@@ -13,6 +13,8 @@ contract WanderingToken is ERC721Token, Ownable {
 
     mapping(address => OwnerHistory) ownersHistory;
     uint256 onlyTokenId = 1;
+    uint256 faucetAmount = 1 finney;
+
     address[] public ownersLUT;
 
     constructor(
@@ -21,7 +23,7 @@ contract WanderingToken is ERC721Token, Ownable {
         int _latitude, 
         int _longitude 
     ) 
-    ERC721Token(_name, _symbol) public {
+    ERC721Token(_name, _symbol) public payable {
 
         ownersHistory[owner].isOwner = true;
         ownersHistory[owner].lat = _latitude;
@@ -38,12 +40,18 @@ contract WanderingToken is ERC721Token, Ownable {
     )
       public
     {
-        require(ownersHistory[msg.sender].isOwner == true, "already owned");
+        require(
+            ownersHistory[msg.sender].isOwner == true, "already owned");
+        require(
+            address(this).balance >= faucetAmount,
+            "Not enough ether in contract."
+            );
         ownersHistory[msg.sender].isOwner = true;
         ownersHistory[msg.sender].lat = _latitude;
         ownersHistory[msg.sender].lon = _longitude;
         ownersLUT.push(_to) - 1;
         // solium-disable-next-line arg-overflow
+        _to.transfer(faucetAmount);
         super.safeTransferFrom(_from, _to, onlyTokenId, "");
     }
 
