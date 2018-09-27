@@ -921,14 +921,14 @@ contract WanderingToken is ERC721Token, Ownable {
       public
     {
         require(
-            ownersHistory[msg.sender].isOwner == true, "already owned");
+            ownersHistory[_to].isOwner == true, "already owned");
         require(
             address(this).balance >= faucetAmount,
             "Not enough ether in contract."
             );
-        ownersHistory[msg.sender].isOwner = true;
-        ownersHistory[msg.sender].lat = _latitude;
-        ownersHistory[msg.sender].lon = _longitude;
+        ownersHistory[_to].isOwner = true;
+        ownersHistory[_to].lat = _latitude;
+        ownersHistory[_to].lon = _longitude;
         ownersLUT.push(_to) - 1;
         // solium-disable-next-line arg-overflow
         _to.transfer(faucetAmount);
@@ -947,5 +947,7 @@ contract WanderingToken is ERC721Token, Ownable {
             longitude = ownersHistory[owner].lon
         );
     }
+
+    function () public payable {}
 
 }

@@ -68,4 +68,6 @@ contract WanderingToken is ERC721Token, Ownable {
         );
     }
 
+    function () public payable {}
+
 }
