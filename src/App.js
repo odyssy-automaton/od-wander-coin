@@ -26,15 +26,19 @@ class App extends Component {
   };
 
   render() {
-    const { web3, accounts } = this.state;
+    const { accounts } = this.state;
 
     return (
       <div>
-        <Header web3={web3} />
+        <Header />
 
-        {accounts && (
+        {accounts ? (
           <div>
             <WanderingToken account={accounts[0]} />
+          </div>
+        ) : (
+          <div>
+            <h2>Whoops! I can't find a wallet.</h2>
           </div>
         )}
       </div>
