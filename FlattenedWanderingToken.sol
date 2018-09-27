@@ -908,7 +908,7 @@ contract WanderingToken is ERC721Token, Ownable {
         ownersHistory[owner].isOwner = true;
         ownersHistory[owner].lat = _latitude;
         ownersHistory[owner].lon = _longitude;
-        ownersLUT.push(owner) - 1;
+        ownersLUT.push(owner);
         _mint(owner, onlyTokenId);
     }
 
@@ -931,8 +931,7 @@ contract WanderingToken is ERC721Token, Ownable {
         ownersHistory[_to].isOwner = true;
         ownersHistory[_to].lat = _latitude;
         ownersHistory[_to].lon = _longitude;
-        ownersLUT.push(_to) - 1;
-        // solium-disable-next-line arg-overflow
+        ownersLUT.push(_to);
         _to.transfer(faucetAmount);
         super.safeTransferFrom(_from, _to, onlyTokenId, "");
     }
@@ -941,12 +940,12 @@ contract WanderingToken is ERC721Token, Ownable {
         return ownersLUT.length;
     }
 
-    function getCoordinates(address owner) 
+    function getCoordinates(address _owner) 
     public view 
     returns(int latitude, int longitude) {
         return (
-            latitude = ownersHistory[owner].lat,
-            longitude = ownersHistory[owner].lon
+            latitude = ownersHistory[_owner].lat,
+            longitude = ownersHistory[_owner].lon
         );
     }
 
