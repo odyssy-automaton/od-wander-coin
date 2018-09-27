@@ -45,4 +45,13 @@ contract WanderingToken is ERC721Token, Ownable {
         super.safeTransferFrom(_from, _to, onlyTokenId, "");
     }
 
+    function getCoordinates(address owner) 
+    public view 
+    returns(int latitude, int longitude) {
+        return (
+            latitude = ownersHistory[owner].lat,
+            longitude = ownersHistory[owner].lon
+        );
+    }
+
 }
