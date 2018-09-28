@@ -37,6 +37,10 @@ export default class Web3Service {
   async initContractRemote(abi, address) {
     return await new this.web3Remote.eth.Contract(abi, address);
   }
+
+  async toWei(amount) {
+    return await this.web3.toWei(amount);
+  }
 }
 
 const web3Service = new Web3Service();
@@ -54,4 +58,8 @@ export const getAddress = async () => {
 
 export const getBalance = async (address) => {
   return await web3Service.getAccountBalance(address);
+};
+
+export const toWei = async (amount) => {
+  return await this.web3.toWei(amount);
 };

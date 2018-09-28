@@ -11,29 +11,40 @@ export default class WanderingService {
   }
 
   async initContracts() {
-    console.log(WanderingAbi.abi);
     return (this.wanderingContract = await this.web3Service.initContract(
       WanderingAbi.abi,
       this.tokenAddress,
     ));
   }
 
-  async mintTo(address, streetAddress, latitude, longitude) {
+  async sendTo(from, to, latitude, longitude) {
     const latInt = this.coordinateToInt(latitude);
     const lngInt = this.coordinateToInt(longitude);
 
-    return await this.landlordContract.methods
-      .mintUniqueTokenTo(address, streetAddress, latInt, lngInt)
-      .send({ from: address });
+    return await this.wanderingContract.methods
+      .safeTransferFrom(from, to, latInt, lngInt)
+      .send({ from: from });
   }
 
-  // async getTokenBalance(address) {
-  //   return await this.wanderingContract.methods.balanceOf(address).call();
-  // }
+  async getCoordinates(address) {
+    return await this.wanderingContract.methods.getCoordinates(address).call();
+  }
 
-  // async myTokens() {
-  //   return await this.wanderingContract.methods.myTokens().call();
-  // }
+  async getOwner() {
+    return await this.wanderingContract.methods.ownerOf(1).call();
+  }
+
+  async sendTransaction(from, value) {
+    // const value = this.web3Service.toWei(amount);
+
+    console.log(this.web3Service);
+
+    this.web3Service.web3.eth.sendTransaction({
+      from: from,
+      to: process.env.REACT_APP_CONTRACT_ADDRESS,
+      value: value,
+    });
+  }
 
   coordinateToInt(coordinate) {
     return Math.round(coordinate * 10000000, 7);

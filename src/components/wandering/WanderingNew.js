@@ -17,8 +17,7 @@ class WanderingNew extends Component {
   };
 
   handleAddressChange = (e) => {
-    console.log(e);
-    // this.setState({ toAddress: e.value });
+    this.setState({ toAddress: e.target.value });
   };
 
   handleSelect = (address) => {
@@ -36,6 +35,7 @@ class WanderingNew extends Component {
   };
 
   handleSubmit = () => {
+    console.log('poopin');
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
 
@@ -53,10 +53,7 @@ class WanderingNew extends Component {
   };
 
   render() {
-    console.log(this.state.toAddress);
-    // console.log(this.state.toAddress.length);
-
-    // const validToAddress = this.state.toAddress.length > 11;
+    const invalidToAddress = this.state.toAddress.length < 11;
 
     return (
       <div>
@@ -120,12 +117,10 @@ class WanderingNew extends Component {
                 className="Wandering__address-input"
                 type="text"
                 placeholder="to address"
+                value={this.toAddress}
                 onChange={this.handleAddressChange}
               />
-              <button
-                onClick={(e) => this.handleSubmit}
-                // disabled={!validToAddress}
-              >
+              <button onClick={this.handleSubmit} disabled={invalidToAddress}>
                 Send the Coin
               </button>
             </div>
