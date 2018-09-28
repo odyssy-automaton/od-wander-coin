@@ -11,10 +11,12 @@ export default class WanderingMapContainer extends Component {
   };
 
   render() {
+    const coordinates = [...this.state.tokens, ...this.props.coordinates];
+    console.log(coordinates);
     return (
       <WanderingMap
         // tokens={this.props.tokens}
-        tokens={this.state.tokens}
+        tokens={coordinates}
         loadingElement={<div style={{ height: `100%` }} />}
         containerElement={<div style={{ height: `600px`, width: `100%` }} />}
         mapElement={<div style={{ height: `100%` }} />}

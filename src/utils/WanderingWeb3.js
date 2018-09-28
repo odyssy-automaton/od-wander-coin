@@ -27,7 +27,13 @@ export default class WanderingService {
   }
 
   async getCoordinates(address) {
-    return await this.wanderingContract.methods.getCoordinates(address).call();
+    const res = await this.wanderingContract.methods
+      .getCoordinates(address)
+      .call();
+    return {
+      lat: this.intToCoordinate(res.latitude),
+      lng: this.intToCoordinate(res.longitude),
+    };
   }
 
   async getOwner() {

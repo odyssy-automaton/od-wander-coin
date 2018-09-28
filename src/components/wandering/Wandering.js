@@ -13,6 +13,7 @@ class Wandering extends Component {
     longitude: null,
     latitude: null,
     owner: null,
+    coordinates: [],
   };
 
   componentDidMount() {
@@ -28,7 +29,10 @@ class Wandering extends Component {
 
   getOwner = async () => {
     const owner = await this.wanderingService.getOwner();
-    this.setState({ owner });
+    const coords = await this.wanderingService.getCoordinates(owner);
+    const coordinates = [...this.state.coordinates, coords];
+    console.log(coordinates);
+    this.setState({ owner, coordinates });
   };
 
   handleSubmitAddressForm = async (transfer) => {
@@ -38,6 +42,13 @@ class Wandering extends Component {
       transfer.latitude,
       transfer.longitude,
     );
+
+    const coordinates = [
+      ...this.state.coordinates,
+      { lat: transfer.latitude, lng: transfer.longitude },
+    ];
+
+    this.setState({ coordinates });
   };
 
   handleSubmitGasForm = async (amount) => {
@@ -48,7 +59,7 @@ class Wandering extends Component {
   };
 
   render() {
-    const { contract, owner } = this.state;
+    const { contract, owner, coordinates } = this.state;
     const isOwner = owner === this.props.account;
 
     return !contract ? (
@@ -69,7 +80,7 @@ class Wandering extends Component {
           )}
 
           <div>
-            <WanderingMapContainer />
+            <WanderingMapContainer coordinates={coordinates} />
           </div>
         </div>
       </div>
