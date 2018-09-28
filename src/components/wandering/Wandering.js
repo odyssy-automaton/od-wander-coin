@@ -11,7 +11,6 @@ class Wandering extends Component {
     contract: null,
     longitude: null,
     latitude: null,
-    owner: null,
   };
 
   componentDidMount() {
@@ -24,17 +23,11 @@ class Wandering extends Component {
 
     console.log(contract);
     this.setState({ contract });
-
-    this.loadAccountData();
   };
 
-  loadAccountData = async () => {
-    const owner = await this.wanderingService.owner();
-    this.setState({ owner });
-  };
-
-  handleSubmitAddressForm = (address) => {
-    console.log('submitting ' + address);
+  handleSubmitAddressForm = (transfer) => {
+    console.log('submitting ');
+    console.log(transfer);
   };
 
   render() {

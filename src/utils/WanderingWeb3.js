@@ -7,7 +7,7 @@ export default class WanderingService {
 
   constructor() {
     this.web3Service = getWeb3ServiceInstance();
-    this.tokenAddress = '0x345ca3e014aaf5dca488057592ee47305d9b3e10';
+    this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
   }
 
   async initContracts() {
@@ -18,17 +18,22 @@ export default class WanderingService {
     ));
   }
 
-  async getTokenBalance(address) {
-    return await this.wanderingContract.methods.balanceOf(address).call();
+  async mintTo(address, streetAddress, latitude, longitude) {
+    const latInt = this.coordinateToInt(latitude);
+    const lngInt = this.coordinateToInt(longitude);
+
+    return await this.landlordContract.methods
+      .mintUniqueTokenTo(address, streetAddress, latInt, lngInt)
+      .send({ from: address });
   }
 
-  async myTokens() {
-    return await this.wanderingContract.methods.myTokens().call();
-  }
+  // async getTokenBalance(address) {
+  //   return await this.wanderingContract.methods.balanceOf(address).call();
+  // }
 
-  async owner() {
-    // return await this.wanderingContract.methods.owner().call();
-  }
+  // async myTokens() {
+  //   return await this.wanderingContract.methods.myTokens().call();
+  // }
 
   coordinateToInt(coordinate) {
     return Math.round(coordinate * 10000000, 7);

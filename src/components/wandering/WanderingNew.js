@@ -9,10 +9,16 @@ class WanderingNew extends Component {
     streetAddress: '',
     latitude: '',
     longitude: '',
+    toAddress: '',
   };
 
   handleChange = (streetAddress) => {
     this.setState({ streetAddress });
+  };
+
+  handleAddressChange = (e) => {
+    console.log(e);
+    // this.setState({ toAddress: e.value });
   };
 
   handleSelect = (address) => {
@@ -21,6 +27,7 @@ class WanderingNew extends Component {
       .then((latLng) => {
         console.log('Success', latLng);
         this.setState({
+          streetAddress: address,
           latitude: latLng.lat,
           longitude: latLng.lng,
         });
@@ -30,11 +37,10 @@ class WanderingNew extends Component {
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const address = { ...this.state };
+    const transfer = { ...this.state };
 
-    //might need to reset the form
-
-    onSubmit(address);
+    //TODO: might need to reset the form
+    onSubmit(transfer);
   };
 
   handleCloseClick = () => {
@@ -42,10 +48,16 @@ class WanderingNew extends Component {
       streetAddress: '',
       latitude: '',
       longitude: '',
+      toAddress: '',
     });
   };
 
   render() {
+    console.log(this.state.toAddress);
+    // console.log(this.state.toAddress.length);
+
+    // const validToAddress = this.state.toAddress.length > 11;
+
     return (
       <div>
         <PlacesAutocomplete
@@ -103,7 +115,20 @@ class WanderingNew extends Component {
           <div>
             <p>Lat: {this.state.latitude}</p>
             <p>Lng: {this.state.longitude}</p>
-            <button onClick={this.handleSubmit}>Claim this land</button>
+            <div>
+              <input
+                className="Wandering__address-input"
+                type="text"
+                placeholder="to address"
+                onChange={this.handleAddressChange}
+              />
+              <button
+                onClick={(e) => this.handleSubmit}
+                // disabled={!validToAddress}
+              >
+                Send the Coin
+              </button>
+            </div>
           </div>
         )}
       </div>
