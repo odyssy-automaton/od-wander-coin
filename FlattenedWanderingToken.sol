@@ -887,12 +887,13 @@ contract WanderingToken is ERC721Token, Ownable {
 
     struct OwnerHistory {
         bool isOwner;
+        uint tokenId;
         int lat;
         int lon;
     }
 
     mapping(address => OwnerHistory) ownersHistory;
-    uint256 onlyTokenId = 1;
+    uint256 firstTokenId = 1;
     uint256 faucetAmount = 1 finney;
 
     address[] public ownersLUT;
@@ -905,11 +906,12 @@ contract WanderingToken is ERC721Token, Ownable {
     ) 
     ERC721Token(_name, _symbol) public payable {
 
-        ownersHistory[owner].isOwner = true;
-        ownersHistory[owner].lat = _latitude;
-        ownersHistory[owner].lon = _longitude;
-        ownersLUT.push(owner);
-        _mint(owner, onlyTokenId);
+        ownersHistory[msg.sender].isOwner = true;
+        ownersHistory[msg.sender].lat = _latitude;
+        ownersHistory[msg.sender].lon = _longitude;
+        ownersHistory[msg.sender].tokenId = firstTokenId;
+        ownersLUT.push(msg.sender);
+        _mint(msg.sender, firstTokenId);
     }
 
     function safeTransferFrom(
@@ -921,7 +923,7 @@ contract WanderingToken is ERC721Token, Ownable {
       public
     {
         require(
-            _from == ownerOf(onlyTokenId), "Not the token holder");
+            _from == ownerOf(firstTokenId), "Not the token holder");
         require(
             ownersHistory[_to].isOwner == false, "already owned");
         require(
@@ -931,9 +933,10 @@ contract WanderingToken is ERC721Token, Ownable {
         ownersHistory[_to].isOwner = true;
         ownersHistory[_to].lat = _latitude;
         ownersHistory[_to].lon = _longitude;
+        ownersHistory[_to].tokenId = firstTokenId;
         ownersLUT.push(_to);
         _to.transfer(faucetAmount);
-        super.safeTransferFrom(_from, _to, onlyTokenId, "");
+        super.safeTransferFrom(_from, _to, firstTokenId, "");
     }
 
     function numOwners() public view returns (uint) {
