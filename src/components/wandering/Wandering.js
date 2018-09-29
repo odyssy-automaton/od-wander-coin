@@ -58,6 +58,12 @@ class Wandering extends Component {
     );
   };
 
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    console.log('balance', balance);
+    return balance;
+  };
+
   render() {
     const { contract, owner, coordinates } = this.state;
     const isOwner = owner === this.props.account;
@@ -68,7 +74,10 @@ class Wandering extends Component {
       <div>
         <div className="Wandering">
           <div>
-            <GasTank onSubmit={this.handleSubmitGasForm} />
+            <GasTank
+              onSubmit={this.handleSubmitGasForm}
+              onStart={this.getBalance}
+            />
           </div>
 
           {!isOwner ? (

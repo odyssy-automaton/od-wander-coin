@@ -3,6 +3,20 @@ import React, { Component } from 'react';
 class GasTank extends Component {
   state = {
     amount: '',
+    balance: '',
+  };
+
+  componentDidMount() {
+    this.getBalance();
+  }
+
+  getBalance = async () => {
+    console.log('gas', this.state);
+    console.log('props', this.props);
+    const { onStart } = this.props;
+    const gasBalance = await onStart();
+    this.setState({ amount: gasBalance });
+    console.log('gas', this.state);
   };
 
   handleChange = (e) => {
