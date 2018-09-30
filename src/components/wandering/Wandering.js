@@ -62,7 +62,12 @@ class Wandering extends Component {
   getBalance = async () => {
     const balance = await this.wanderingService.balanceOfTank();
     console.log('balance', balance);
+    this.getAllOwnerCoords();
     return this.wanderingService.toEth(balance);
+  };
+
+  getAllOwnerCoords = async () => {
+    console.log('cords', await this.wanderingService.getAllOwnerCords());
   };
 
   render() {

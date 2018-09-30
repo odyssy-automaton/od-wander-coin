@@ -43,7 +43,6 @@ export default class Web3Service {
   }
 
   async toEth(amount) {
-    console.log('**', this.web3);
     return await this.web3.utils.fromWei(amount, 'ether');
   }
 }

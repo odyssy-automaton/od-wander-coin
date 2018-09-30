@@ -40,6 +40,20 @@ export default class WanderingService {
     return await this.wanderingContract.methods.ownerOf(1).call();
   }
 
+  async getAllOwnerCords() {
+    const coords = [];
+    const contract = this.wanderingContract.methods;
+    const numOwners = await contract.numOwners().call();
+    console.log('no', numOwners);
+    for (let i = 0; i < numOwners; i++) {
+      let addr = await contract.ownersLUT(i).call();
+      let coord = await contract.getCoordinates(addr).call();
+      console.log('lut', addr, coord);
+      coords.push(coord);
+    }
+    return coords;
+  }
+
   async balanceOfTank() {
     return await this.wanderingContract.methods.balanceOfTank().call();
   }
