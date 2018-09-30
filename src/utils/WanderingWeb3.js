@@ -57,11 +57,11 @@ export default class WanderingService {
   }
 
   toEth(value) {
-    return this.web3Service.eth.toEth(value);
+    return this.web3Service.toEth(value);
   }
 
   toWei(value) {
-    return this.web3Service.eth.toWei(value);
+    return this.web3Service.toWei(value);
   }
 
   coordinateToInt(coordinate) {

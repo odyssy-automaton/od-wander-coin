@@ -39,7 +39,12 @@ export default class Web3Service {
   }
 
   async toWei(amount) {
-    return await this.web3.toWei(amount);
+    return await this.web3.utils.toWei(amount);
+  }
+
+  async toEth(amount) {
+    console.log('**', this.web3);
+    return await this.web3.utils.fromWei(amount, 'ether');
   }
 }
 
@@ -61,5 +66,9 @@ export const getBalance = async (address) => {
 };
 
 export const toWei = async (amount) => {
-  return await this.web3.toWei(amount);
+  return await this.web3.utils.toWei(amount);
+};
+
+export const toEth = async (amount) => {
+  return await this.web3.utils.fromWei(amount, 'ether');
 };

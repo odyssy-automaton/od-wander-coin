@@ -52,16 +52,17 @@ class Wandering extends Component {
   };
 
   handleSubmitGasForm = async (amount) => {
+    const amountInWei = await this.wanderingService.toWei(amount.amount);
     await this.wanderingService.sendTransaction(
       this.props.account,
-      amount.amount,
+      amountInWei,
     );
   };
 
   getBalance = async () => {
     const balance = await this.wanderingService.balanceOfTank();
     console.log('balance', balance);
-    return balance;
+    return this.wanderingService.toEth(balance);
   };
 
   render() {
@@ -76,7 +77,7 @@ class Wandering extends Component {
           <div>
             <GasTank
               onSubmit={this.handleSubmitGasForm}
-              onStart={this.getBalance}
+              onLoad={this.getBalance}
             />
           </div>
 
