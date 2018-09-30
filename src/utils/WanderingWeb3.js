@@ -40,6 +40,10 @@ export default class WanderingService {
     return await this.wanderingContract.methods.ownerOf(1).call();
   }
 
+  async balanceOfTank() {
+    return await this.wanderingContract.methods.balanceOfTank().call();
+  }
+
   async sendTransaction(from, value) {
     // const value = this.web3Service.toWei(amount);
 
@@ -50,6 +54,14 @@ export default class WanderingService {
       to: process.env.REACT_APP_CONTRACT_ADDRESS,
       value: value,
     });
+  }
+
+  toEth(value) {
+    return this.web3Service.eth.toEth(value);
+  }
+
+  toWei(value) {
+    return this.web3Service.eth.toWei(value);
   }
 
   coordinateToInt(coordinate) {

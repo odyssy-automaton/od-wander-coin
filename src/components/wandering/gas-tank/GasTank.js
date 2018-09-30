@@ -13,9 +13,9 @@ class GasTank extends Component {
   getBalance = async () => {
     console.log('gas', this.state);
     console.log('props', this.props);
-    const { onStart } = this.props;
-    const gasBalance = await onStart();
-    this.setState({ amount: gasBalance });
+    const { onLoad } = this.props;
+    const gasBalance = await onLoad();
+    this.setState({ balance: gasBalance });
     console.log('gas', this.state);
   };
 
@@ -35,6 +35,7 @@ class GasTank extends Component {
     return (
       <div>
         <h3>GAS TANK</h3>
+        <p>({this.balance})</p>
         <div>
           <div>
             <input
