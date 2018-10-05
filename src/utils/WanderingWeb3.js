@@ -26,9 +26,9 @@ export default class WanderingService {
       .send({ from: from });
   }
 
-  async getCoordinates(address) {
+  async getCoordinates(address, tokenId = 1) {
     const res = await this.wanderingContract.methods
-      .getCoordinates(address)
+      .getCoordinates(address, tokenId)
       .call();
     return {
       lat: this.intToCoordinate(res.latitude),
@@ -36,20 +36,23 @@ export default class WanderingService {
     };
   }
 
-  async getOwner() {
-    return await this.wanderingContract.methods.ownerOf(1).call();
+  async getOwner(tokenId = 1) {
+    return await this.wanderingContract.methods.ownerOf(tokenId).call();
   }
 
-  async getAllOwnerCords() {
+  async getAllOwnerCords(tokenId = 1) {
     const coords = [];
     const contract = this.wanderingContract.methods;
     const numOwners = await contract.numOwners().call();
     console.log('no', numOwners);
     for (let i = 0; i < numOwners; i++) {
       let addr = await contract.ownersLUT(i).call();
-      let coord = await contract.getCoordinates(addr).call();
-      console.log('lut', addr, coord);
-      coords.push(coord);
+      let addrHasOwned = await contract.addrHasOwned(addr, tokenId).call();
+      if (addrHasOwned) {
+        let coord = await contract.getCoordinates(addr, tokenId).call();
+        console.log('lut', addr, coord);
+        coords.push(coord);
+      }
     }
     return coords;
   }

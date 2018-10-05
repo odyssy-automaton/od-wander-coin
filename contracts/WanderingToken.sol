@@ -12,9 +12,9 @@ contract WanderingToken is ERC721Token, Ownable {
         int lon;
     }
 
-    mapping(address => OwnerHistory) ownersHistory;
-    uint256 firstTokenId = 1;
-    uint256 faucetAmount = 1 finney;
+    mapping(uint => mapping(address => OwnerHistory)) ownersHistoryByToken;
+    uint256 tokenCount = 1;
+    uint256 faucetAmount = 2 finney;
 
     address[] public ownersLUT;
 
@@ -25,55 +25,76 @@ contract WanderingToken is ERC721Token, Ownable {
         int _longitude 
     ) 
     ERC721Token(_name, _symbol) public payable {
-
-        ownersHistory[msg.sender].isOwner = true;
-        ownersHistory[msg.sender].lat = _latitude;
-        ownersHistory[msg.sender].lon = _longitude;
-        ownersHistory[msg.sender].tokenId = firstTokenId;
+        ownersHistoryByToken[tokenCount][msg.sender].isOwner = true;
+        ownersHistoryByToken[tokenCount][msg.sender].lat = _latitude;
+        ownersHistoryByToken[tokenCount][msg.sender].lon = _longitude;
+        ownersHistoryByToken[tokenCount][msg.sender].tokenId = tokenCount;
         ownersLUT.push(msg.sender);
-        _mint(msg.sender, firstTokenId);
+        _mint(msg.sender, tokenCount);
+    }
+
+    function launchToken(
+        int _latitude, 
+        int _longitude 
+    ) public {
+        tokenCount++;
+        ownersHistoryByToken[tokenCount][msg.sender].isOwner = true;
+        ownersHistoryByToken[tokenCount][msg.sender].lat = _latitude;
+        ownersHistoryByToken[tokenCount][msg.sender].lon = _longitude;
+        ownersHistoryByToken[tokenCount][msg.sender].tokenId = tokenCount;
+        ownersLUT.push(msg.sender);
+        _mint(msg.sender, tokenCount);
     }
 
     function safeTransferFrom(
         address _from,
         address _to,
         int _latitude, 
-        int _longitude 
+        int _longitude,
+        uint tokenId
     )
       public
     {
         require(
-            _from == ownerOf(firstTokenId), "Not the token holder");
+            _from == ownerOf(tokenId), "Not the token holder");
         require(
-            ownersHistory[_to].isOwner == false, "already owned");
+            addrhasOwned(_to, tokenId), "already owned");
         require(
             address(this).balance >= faucetAmount,
             "Not enough ether in contract."
             );
-        ownersHistory[_to].isOwner = true;
-        ownersHistory[_to].lat = _latitude;
-        ownersHistory[_to].lon = _longitude;
-        ownersHistory[_to].tokenId = firstTokenId;
+        ownersHistoryByToken[tokenId][_to].isOwner = true;
+        ownersHistoryByToken[tokenId][_to].lat = _latitude;
+        ownersHistoryByToken[tokenId][_to].lon = _longitude;
+        ownersHistoryByToken[tokenId][_to].tokenId = tokenId;
         ownersLUT.push(_to);
         _to.transfer(faucetAmount);
-        super.safeTransferFrom(_from, _to, firstTokenId, "");
+        super.safeTransferFrom(_from, _to, tokenId, "");
     }
 
     function numOwners() public view returns (uint) {
         return ownersLUT.length;
     }
 
-    function getCoordinates(address _owner) 
-    public view 
-    returns(int latitude, int longitude) {
-        return (
-            latitude = ownersHistory[_owner].lat,
-            longitude = ownersHistory[_owner].lon
-        );
+    function addrhasOwned(address addr, uint tokenId) public view returns (bool) {
+        return ownersHistoryByToken[tokenId][addr].isOwner;
     }
 
     function balanceOfTank() public view returns (uint) {
         return address(this).balance;
+    }
+
+    function getCoordinates(address _owner, uint tokenId) 
+    public view 
+    returns(int latitude, int longitude) {
+        return (
+            latitude = ownersHistoryByToken[tokenId][_owner].lat,
+            longitude = ownersHistoryByToken[tokenId][_owner].lon
+        );
+    }
+
+    function drain() public onlyOwner {
+        msg.sender.transfer(address(this).balance);
     }
 
     function () public payable {}
