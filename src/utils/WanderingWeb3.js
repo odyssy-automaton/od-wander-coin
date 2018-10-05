@@ -1,4 +1,4 @@
-import WanderingAbi from '../contracts/WanderingToken.json';
+import WanderingAbi from '../../src/dist/WanderingToken.json';
 import { getWeb3ServiceInstance } from './Web3Service';
 
 export default class WanderingService {

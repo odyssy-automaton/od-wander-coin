@@ -1,8 +1,8 @@
 require('babel-register');
 require('babel-polyfill');
-require('dotenv').config()
-var HDWalletProvider = require("truffle-hdwallet-provider");
-var mnemonic = process.env.MENOMIC
+require('dotenv').config();
+var HDWalletProvider = require('truffle-hdwallet-provider');
+var mnemonic = process.env.MENOMIC;
 
 module.exports = {
   networks: {
@@ -13,12 +13,12 @@ module.exports = {
     },
     rinkeby: {
       provider: function() {
-        return new HDWalletProvider(mnemonic, "https://rinkeby.infura.io/v3/459626663bcf4ae4bcc5cd9b3c8f9ed6")
+        return new HDWalletProvider(
+          mnemonic,
+          'https://rinkeby.infura.io/v3/459626663bcf4ae4bcc5cd9b3c8f9ed6',
+        );
       },
-      network_id: 3
-    }   
-  }
+      network_id: 3,
+    },
   },
-
-  
 };
