@@ -14,7 +14,7 @@ class App extends Component {
   };
 
   componentDidMount = async () => {
-    const tokenId = parseInt(window.location.pathname.split('/')[1]) || 1;
+    const tokenId = parseInt(window.location.pathname.split('/')[1], 10) || 1;
 
     try {
       const web3 = await getWeb3();

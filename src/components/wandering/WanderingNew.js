@@ -24,7 +24,6 @@ class WanderingNew extends Component {
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {
-        console.log('Success', latLng);
         this.setState({
           streetAddress: address,
           latitude: latLng.lat,
@@ -35,11 +34,9 @@ class WanderingNew extends Component {
   };
 
   handleSubmit = () => {
-    console.log('poopin');
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
 
-    //TODO: might need to reset the form
     onSubmit(transfer);
   };
 
@@ -54,6 +51,7 @@ class WanderingNew extends Component {
 
   render() {
     const invalidToAddress = this.state.toAddress.length < 11;
+    const showWarning = invalidToAddress && this.state.toAddress.length < 5;
 
     return (
       <div>
@@ -120,6 +118,11 @@ class WanderingNew extends Component {
                 value={this.toAddress}
                 onChange={this.handleAddressChange}
               />
+            </div>
+            {showWarning ? (
+              <p>Becarefu here and double check the address...</p>
+            ) : null}
+            <div>
               <button onClick={this.handleSubmit} disabled={invalidToAddress}>
                 Send the Coin
               </button>

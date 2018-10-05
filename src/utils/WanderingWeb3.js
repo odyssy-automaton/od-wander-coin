@@ -17,12 +17,12 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude) {
+  async sendTo(from, to, latitude, longitude, tokenId) {
     const latInt = this.coordinateToInt(latitude);
     const lngInt = this.coordinateToInt(longitude);
 
     return await this.wanderingContract.methods
-      .safeTransferFrom(from, to, latInt, lngInt)
+      .safeTransferFrom(from, to, latInt, lngInt, tokenId)
       .send({ from: from });
   }
 
@@ -44,14 +44,15 @@ export default class WanderingService {
     const coords = [];
     const contract = this.wanderingContract.methods;
     const numOwners = await contract.numOwners().call();
-    console.log('no', numOwners);
     for (let i = 0; i < numOwners; i++) {
       let addr = await contract.ownersLUT(i).call();
       let addrHasOwned = await contract.addrHasOwned(addr, tokenId).call();
       if (addrHasOwned) {
         let coord = await contract.getCoordinates(addr, tokenId).call();
-        console.log('lut', addr, coord);
-        coords.push(coord);
+        coords.push({
+          lat: this.intToCoordinate(coord.latitude),
+          lng: this.intToCoordinate(coord.longitude),
+        });
       }
     }
     return coords;
@@ -62,10 +63,6 @@ export default class WanderingService {
   }
 
   async sendTransaction(from, value) {
-    // const value = this.web3Service.toWei(amount);
-
-    console.log(this.web3Service);
-
     this.web3Service.web3.eth.sendTransaction({
       from: from,
       to: process.env.REACT_APP_CONTRACT_ADDRESS,

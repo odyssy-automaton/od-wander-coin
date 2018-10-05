@@ -14,12 +14,17 @@ const WanderingMap = withGoogleMap((props) => {
     />
   ));
 
+  const centerCoord =
+    props.tokens.length > 0
+      ? props.tokens[props.tokens.length - 1]
+      : { lat: 39.7599499, lng: -104.9838489 };
+
   return (
     <div>
       <GoogleMap
         defaultOptions={{ styles: mapStyles }}
-        defaultZoom={14}
-        center={{ lat: 39.7599499, lng: -104.9838489 }}
+        defaultZoom={12}
+        center={centerCoord}
       >
         {markers}
         <Polyline path={props.tokens} />
