@@ -80,6 +80,9 @@ class Wandering extends Component {
       <div>
         <div className="Wandering">
           <div>
+            <h3>Token # {this.props.tokenId}</h3>
+          </div>
+          <div>
             <GasTank
               onSubmit={this.handleSubmitGasForm}
               onLoad={this.getBalance}

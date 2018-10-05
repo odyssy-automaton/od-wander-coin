@@ -58,7 +58,7 @@ contract WanderingToken is ERC721Token, Ownable {
         require(
             _from == ownerOf(tokenId), "Not the token holder");
         require(
-            addrhasOwned(_to, tokenId), "already owned");
+            addrHasOwned(_to, tokenId), "already owned");
         require(
             address(this).balance >= faucetAmount,
             "Not enough ether in contract."
@@ -76,7 +76,7 @@ contract WanderingToken is ERC721Token, Ownable {
         return ownersLUT.length;
     }
 
-    function addrhasOwned(address addr, uint tokenId) public view returns (bool) {
+    function addrHasOwned(address addr, uint tokenId) public view returns (bool) {
         return ownersHistoryByToken[tokenId][addr].isOwner;
     }
 

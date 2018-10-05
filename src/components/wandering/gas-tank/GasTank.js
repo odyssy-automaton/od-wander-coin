@@ -29,20 +29,21 @@ class GasTank extends Component {
     onSubmit(transfer);
 
     this.setState({ amount: '' });
+    this.getBalance();
   };
 
   render() {
     return (
       <div>
         <h3>GAS TANK</h3>
-        <p>({this.balance})</p>
+        <p>({this.state.balance})</p>
         <div>
           <div>
             <input
               className="Wandering__address-input"
               type="text"
               placeholder="amount"
-              value={this.amount}
+              value={this.state.amount}
               onChange={this.handleChange}
             />
             <button onClick={this.handleSubmit}>GIVE ME SOME GAS</button>
