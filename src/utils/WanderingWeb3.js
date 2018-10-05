@@ -1,4 +1,4 @@
-import WanderingAbi from '../contracts/WanderingToken.json';
+import WanderingAbi from '../../src/dist/WanderingToken.json';
 import { getWeb3ServiceInstance } from './Web3Service';
 
 export default class WanderingService {
@@ -17,18 +17,18 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude) {
+  async sendTo(from, to, latitude, longitude, tokenId) {
     const latInt = this.coordinateToInt(latitude);
     const lngInt = this.coordinateToInt(longitude);
 
     return await this.wanderingContract.methods
-      .safeTransferFrom(from, to, latInt, lngInt)
+      .safeTransferFrom(from, to, latInt, lngInt, tokenId)
       .send({ from: from });
   }
 
-  async getCoordinates(address) {
+  async getCoordinates(address, tokenId = 1) {
     const res = await this.wanderingContract.methods
-      .getCoordinates(address)
+      .getCoordinates(address, tokenId)
       .call();
     return {
       lat: this.intToCoordinate(res.latitude),
@@ -36,20 +36,46 @@ export default class WanderingService {
     };
   }
 
-  async getOwner() {
-    return await this.wanderingContract.methods.ownerOf(1).call();
+  async getOwner(tokenId = 1) {
+    return await this.wanderingContract.methods.ownerOf(tokenId).call();
+  }
+
+  async getAllOwnerCords(tokenId = 1) {
+    const coords = [];
+    const contract = this.wanderingContract.methods;
+    const numOwners = await contract.numOwners().call();
+    for (let i = 0; i < numOwners; i++) {
+      let addr = await contract.ownersLUT(i).call();
+      let addrHasOwned = await contract.addrHasOwned(addr, tokenId).call();
+      if (addrHasOwned) {
+        let coord = await contract.getCoordinates(addr, tokenId).call();
+        coords.push({
+          lat: this.intToCoordinate(coord.latitude),
+          lng: this.intToCoordinate(coord.longitude),
+        });
+      }
+    }
+    return coords;
+  }
+
+  async balanceOfTank() {
+    return await this.wanderingContract.methods.balanceOfTank().call();
   }
 
   async sendTransaction(from, value) {
-    // const value = this.web3Service.toWei(amount);
-
-    console.log(this.web3Service);
-
     this.web3Service.web3.eth.sendTransaction({
       from: from,
       to: process.env.REACT_APP_CONTRACT_ADDRESS,
       value: value,
     });
+  }
+
+  toEth(value) {
+    return this.web3Service.toEth(value);
+  }
+
+  toWei(value) {
+    return this.web3Service.toWei(value);
   }
 
   coordinateToInt(coordinate) {

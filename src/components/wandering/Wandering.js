@@ -29,9 +29,10 @@ class Wandering extends Component {
 
   getOwner = async () => {
     const owner = await this.wanderingService.getOwner();
-    const coords = await this.wanderingService.getCoordinates(owner);
-    const coordinates = [...this.state.coordinates, coords];
-    console.log(coordinates);
+    const coords = await this.wanderingService.getAllOwnerCords(
+      this.props.tokenId,
+    );
+    const coordinates = [...this.state.coordinates, ...coords];
     this.setState({ owner, coordinates });
   };
 
@@ -41,6 +42,7 @@ class Wandering extends Component {
       transfer.toAddress,
       transfer.latitude,
       transfer.longitude,
+      this.props.tokenId,
     );
 
     const coordinates = [
@@ -52,10 +54,16 @@ class Wandering extends Component {
   };
 
   handleSubmitGasForm = async (amount) => {
+    const amountInWei = await this.wanderingService.toWei(amount.amount);
     await this.wanderingService.sendTransaction(
       this.props.account,
-      amount.amount,
+      amountInWei,
     );
+  };
+
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    return this.wanderingService.toEth(balance);
   };
 
   render() {
@@ -65,20 +73,28 @@ class Wandering extends Component {
     return !contract ? (
       <h3>Loading contract</h3>
     ) : (
-      <div>
-        <div className="Wandering">
+      <div className="Wandering">
+        <div className="Wandering__info">
           <div>
-            <GasTank onSubmit={this.handleSubmitGasForm} />
+            <h3 className="Wandering__token-id">
+              Token # {this.props.tokenId}
+            </h3>
           </div>
-
-          {!isOwner ? (
-            <h3>YOU DON'T OWN ME</h3>
-          ) : (
-            <div className="Wandering__form">
+          <div>
+            <GasTank
+              onSubmit={this.handleSubmitGasForm}
+              onLoad={this.getBalance}
+            />
+          </div>
+        </div>
+        <div className="Wandering__transfer">
+          <div className="Wandering__form">
+            {!isOwner ? (
+              <h3>YOU DON'T OWN ME</h3>
+            ) : (
               <WanderingNew onSubmit={this.handleSubmitAddressForm} />
-            </div>
-          )}
-
+            )}
+          </div>
           <div>
             <WanderingMapContainer coordinates={coordinates} />
           </div>
