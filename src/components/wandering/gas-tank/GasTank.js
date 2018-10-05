@@ -35,7 +35,7 @@ class GasTank extends Component {
     return (
       <div>
         <h3>GAS TANK</h3>
-        <p>({this.balance})</p>
+        <p>({this.state.balance})</p>
         <div>
           <div>
             <input
