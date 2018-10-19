@@ -4,6 +4,17 @@
   background-color: rgba(244,230,89,1);
 }
 
+.Wandering__info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.Wandering__token-id {
+  font-size: 3em;
+}
 .Wandering__contract {
   padding: 40px;
 }
