@@ -37,6 +37,10 @@ export default class WanderingService {
     return await this.wanderingContract.methods.totalSupply().call();
   }
 
+  async getTotalSupply() {
+    return await this.wanderingContract.methods.totalSupply().call();
+  }
+
   async getCoordinates(address, tokenId = 1) {
     const res = await this.wanderingContract.methods
       .getCoordinates(address, tokenId)

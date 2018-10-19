@@ -15,6 +15,7 @@ class Wandering extends Component {
     latitude: null,
     owner: null,
     coordinates: [],
+    totalTokens: null,
   };
 
   componentDidMount() {
@@ -26,6 +27,12 @@ class Wandering extends Component {
     const contract = await this.wanderingService.initContracts();
     this.setState({ contract });
     this.getOwner();
+    this.getTotalTokens();
+  };
+
+  getTotalTokens = async () => {
+    const totalTokens = await this.wanderingService.getTotalSupply();
+    this.setState({ totalTokens });
   };
 
   getOwner = async () => {
@@ -88,8 +95,12 @@ class Wandering extends Component {
         <div className="Wandering__info">
           <div>
             <h3 className="Wandering__token-id">
-              Token # {this.props.tokenId}
+              Token # {this.props.tokenId} of {this.state.totalTokens} total
             </h3>
+            <p>
+              Navigate to token by changing the number in the path example:
+              <a href="/2"> #2</a>
+            </p>
           </div>
           <div>
             <GasTank
