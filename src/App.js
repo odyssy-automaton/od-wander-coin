@@ -10,13 +10,16 @@ class App extends Component {
   state = {
     web3: null,
     accounts: null,
+    tokenId: null,
   };
 
   componentDidMount = async () => {
+    const tokenId = parseInt(window.location.pathname.split('/')[1], 10) || 1;
+
     try {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
-      this.setState({ web3, accounts });
+      this.setState({ web3, accounts, tokenId });
     } catch (error) {
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`,
@@ -26,15 +29,19 @@ class App extends Component {
   };
 
   render() {
-    const { web3, accounts } = this.state;
+    const { accounts, tokenId } = this.state;
 
     return (
       <div>
-        <Header web3={web3} />
+        <Header />
 
-        {accounts && (
+        {accounts ? (
           <div>
-            <WanderingToken account={accounts[0]} />
+            <WanderingToken account={accounts[0]} tokenId={tokenId} />
+          </div>
+        ) : (
+          <div>
+            <h2>Whoops! I can't find a wallet.</h2>
           </div>
         )}
       </div>

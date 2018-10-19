@@ -9,18 +9,23 @@ class WanderingNew extends Component {
     streetAddress: '',
     latitude: '',
     longitude: '',
+    toAddress: '',
   };
 
   handleChange = (streetAddress) => {
     this.setState({ streetAddress });
   };
 
+  handleAddressChange = (e) => {
+    this.setState({ toAddress: e.target.value });
+  };
+
   handleSelect = (address) => {
     geocodeByAddress(address)
       .then((results) => getLatLng(results[0]))
       .then((latLng) => {
-        console.log('Success', latLng);
         this.setState({
+          streetAddress: address,
           latitude: latLng.lat,
           longitude: latLng.lng,
         });
@@ -30,11 +35,9 @@ class WanderingNew extends Component {
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const address = { ...this.state };
+    const transfer = { ...this.state };
 
-    //might need to reset the form
-
-    onSubmit(address);
+    onSubmit(transfer);
   };
 
   handleCloseClick = () => {
@@ -42,10 +45,14 @@ class WanderingNew extends Component {
       streetAddress: '',
       latitude: '',
       longitude: '',
+      toAddress: '',
     });
   };
 
   render() {
+    const invalidToAddress = this.state.toAddress.length < 11;
+    const showWarning = invalidToAddress && this.state.toAddress.length < 5;
+
     return (
       <div>
         <PlacesAutocomplete
@@ -103,7 +110,23 @@ class WanderingNew extends Component {
           <div>
             <p>Lat: {this.state.latitude}</p>
             <p>Lng: {this.state.longitude}</p>
-            <button onClick={this.handleSubmit}>Claim this land</button>
+            <div>
+              <input
+                className="Wandering__address-input"
+                type="text"
+                placeholder="to address"
+                value={this.toAddress}
+                onChange={this.handleAddressChange}
+              />
+            </div>
+            {showWarning ? (
+              <p>Becarefu here and double check the address...</p>
+            ) : null}
+            <div>
+              <button onClick={this.handleSubmit} disabled={invalidToAddress}>
+                Send the Coin
+              </button>
+            </div>
           </div>
         )}
       </div>
