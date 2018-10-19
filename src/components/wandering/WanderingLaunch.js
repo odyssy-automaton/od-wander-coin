@@ -50,11 +50,11 @@ class WanderingNew extends Component {
   };
 
   render() {
-    const invalidToAddress = this.state.toAddress.length < 11;
-    const showWarning = invalidToAddress && this.state.toAddress.length < 5;
+    const showWarning = this.state.toAddress.length < 5;
 
     return (
       <div>
+        <h3>You are not the owner. Launch a New Coin.</h3>
         <PlacesAutocomplete
           onChange={this.handleChange}
           value={this.state.streetAddress}
@@ -67,7 +67,7 @@ class WanderingNew extends Component {
                 <div className="Wandering__search-input-container">
                   <input
                     {...getInputProps({
-                      placeholder: 'Send the coin to...',
+                      placeholder: 'Launch the coin from...',
                       className: 'Wandering__search-input',
                     })}
                   />
@@ -108,24 +108,11 @@ class WanderingNew extends Component {
 
         {this.state.latitude && (
           <div>
+            {showWarning ? <p>New coins origin will be...</p> : null}
             <p>Lat: {this.state.latitude}</p>
             <p>Lng: {this.state.longitude}</p>
             <div>
-              <input
-                className="Wandering__address-input"
-                type="text"
-                placeholder="to address"
-                value={this.toAddress}
-                onChange={this.handleAddressChange}
-              />
-            </div>
-            {showWarning ? (
-              <p>Becarefu here and double check the address...</p>
-            ) : null}
-            <div>
-              <button onClick={this.handleSubmit} disabled={invalidToAddress}>
-                Send the Coin
-              </button>
+              <button onClick={this.handleSubmit}>Luanch the Coin</button>
             </div>
           </div>
         )}
