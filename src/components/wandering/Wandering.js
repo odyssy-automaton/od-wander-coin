@@ -35,8 +35,9 @@ class Wandering extends Component {
     return await this.wanderingService.getTotalSupply();
   };
 
-  handleTokenSelect = async (tokenNumber) => {
+  handleTokenSelect = (tokenNumber) => {
     console.log('handleTokenSelect', tokenNumber);
+    window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   getOwner = async () => {
