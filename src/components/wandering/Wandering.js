@@ -35,6 +35,10 @@ class Wandering extends Component {
     return await this.wanderingService.getTotalSupply();
   };
 
+  handleTokenSelect = async (tokenNumber) => {
+    console.log('handleTokenSelect', tokenNumber);
+  };
+
   getOwner = async () => {
     const owner = await this.wanderingService.getOwner(this.props.tokenId);
     const coords = await this.wanderingService.getAllOwnerCords(
@@ -102,7 +106,7 @@ class Wandering extends Component {
               <a href="/2"> #2</a>
             </p>
             <TokenList
-              onSelect={this.handleSubmitGasForm}
+              onSelect={this.handleTokenSelect}
               onLoad={this.getTotalTokens}
             />
           </div>

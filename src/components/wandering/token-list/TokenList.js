@@ -15,29 +15,25 @@ class TokenList extends Component {
     this.setState({ totalTokens });
   };
 
-  handleChange = (e) => {
-    this.setState({ amount: e.target.value });
-  };
+  handleSelect = (tokenNum) => {
+    console.log('event?', tokenNum);
 
-  handleSubmit = () => {
-    const { onSubmit } = this.props;
-    const transfer = { ...this.state };
-    onSubmit(transfer);
-
-    this.setState({ amount: '' });
-    this.getBalance();
+    const { onSelect } = this.props;
+    onSelect(tokenNum);
   };
 
   render() {
     return (
       <div>
         <h3>Token List {this.state.totalTokens}</h3>
-        <select>
-          {[...Array(this.state.totalTokens).keys()].map((i) => (
-            <option key={i} value={i}>
-              {i}
-            </option>
-          ))}
+        <select onChange={this.handleSelect} value={1}>
+          {[...Array(+this.state.totalTokens).keys()].map((i) => {
+            return (
+              <option key={i + 1} value={i + 1}>
+                {i + 1}
+              </option>
+            );
+          })}
           ;
         </select>
       </div>
