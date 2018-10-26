@@ -5,6 +5,7 @@ import WanderingNew from './WanderingNew';
 import WanderingLaunch from './WanderingLaunch';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
+import TokenList from './token-list/TokenList';
 
 import './Wandering.css';
 
@@ -25,14 +26,18 @@ class Wandering extends Component {
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    this.setState({ contract });
+    const totalTokens = await this.getTotalTokens();
+    this.setState({ contract, totalTokens });
     this.getOwner();
-    this.getTotalTokens();
   };
 
   getTotalTokens = async () => {
-    const totalTokens = await this.wanderingService.getTotalSupply();
-    this.setState({ totalTokens });
+    return await this.wanderingService.getTotalSupply();
+  };
+
+  handleTokenSelect = (tokenNumber) => {
+    console.log('handleTokenSelect', tokenNumber);
+    window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   getOwner = async () => {
@@ -101,6 +106,10 @@ class Wandering extends Component {
               Navigate to token by changing the number in the path example:
               <a href="/2"> #2</a>
             </p>
+            <TokenList
+              onSelect={this.handleTokenSelect}
+              onLoad={this.getTotalTokens}
+            />
           </div>
           <div>
             <GasTank
