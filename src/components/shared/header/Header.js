@@ -7,7 +7,7 @@ class Header extends Component {
     return (
       <div className="Header">
         <div>
-          <h1 className="Header__title">OD-WANDERING</h1>
+          <h1 className="Header__title">Wander Coin</h1>
         </div>
       </div>
     );

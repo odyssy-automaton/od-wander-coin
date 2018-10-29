@@ -97,6 +97,44 @@ class Wandering extends Component {
       <h3>Loading contract</h3>
     ) : (
       <div className="Wandering">
+        <div className="Wandering__bar">
+          <div className="contents">
+            <p>What is this?</p>
+            <p>Wander Coin is an experimental DApp and token model where there is a supply of one non-fungible token to test various game theories.</p>
+            <a className="button od-primary">Read More</a>
+          </div>
+        </div>
+        <div className="Wandering__container">
+          <div className="sidenav">
+            <div className="Wandering__transfer">
+              <div className="Wandering__form">
+                {!isOwner ? (
+                  <div>
+                    <h2>Wander Coin be wandering ... </h2>
+                    <p className="tiny">If you think you have it, make sure you’re on the Main Ethereum Network and connected to the wallet that the coin was sent to.</p>
+                    <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
+                  </div>
+
+                ) : (
+                  <div>
+                    <h2>You're holding the Wander Coin!</h2>
+                    <WanderingNew onSubmit={this.handleSubmitAddressForm} />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="Wandering__gas">
+              <GasTank
+                onSubmit={this.handleSubmitGasForm}
+                onLoad={this.getBalance}
+              />
+            </div>
+          </div>
+          <div className="Wandering__map">
+            <WanderingMapContainer coordinates={coordinates} />
+          </div>
+        </div>
+
         <div className="Wandering__info">
           <div>
             <h3 className="Wandering__token-id">
@@ -110,24 +148,6 @@ class Wandering extends Component {
               onSelect={this.handleTokenSelect}
               onLoad={this.getTotalTokens}
             />
-          </div>
-          <div>
-            <GasTank
-              onSubmit={this.handleSubmitGasForm}
-              onLoad={this.getBalance}
-            />
-          </div>
-        </div>
-        <div className="Wandering__transfer">
-          <div className="Wandering__form">
-            {!isOwner ? (
-              <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
-            ) : (
-              <WanderingNew onSubmit={this.handleSubmitAddressForm} />
-            )}
-          </div>
-          <div>
-            <WanderingMapContainer coordinates={coordinates} />
           </div>
         </div>
       </div>

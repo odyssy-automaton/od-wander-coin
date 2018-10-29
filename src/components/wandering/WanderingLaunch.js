@@ -54,7 +54,6 @@ class WanderingNew extends Component {
 
     return (
       <div>
-        <h3>You are not the owner. Launch a New Coin.</h3>
         <PlacesAutocomplete
           onChange={this.handleChange}
           value={this.state.streetAddress}
