@@ -101,7 +101,7 @@ class Wandering extends Component {
           <div className="contents">
             <p>What is this?</p>
             <p>Wander Coin is an experimental DApp and token model where there is a supply of one non-fungible token to test various game theories.</p>
-            <a className="button od-primary">Read More</a>
+            <a className="button od-primary" href="/">Read More</a>
           </div>
         </div>
         <div className="Wandering__container">
