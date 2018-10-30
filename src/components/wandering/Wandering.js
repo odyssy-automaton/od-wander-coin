@@ -24,7 +24,7 @@ class Wandering extends Component {
     this.wanderingService = new WanderingService();
     this.odJsonService = new OdJsonService();
     this.loadContract();
-    this.createJsonUri();
+    //this.createJsonUri();
   }
 
   createJsonUri() {
