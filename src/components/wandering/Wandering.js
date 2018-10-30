@@ -7,7 +7,7 @@ import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
 import TokenList from './token-list/TokenList';
 
-import './Wandering.css';
+import './Wandering.scss';
 
 class Wandering extends Component {
   state = {

@@ -1,57 +1,54 @@
+@import '../../_variables.scss';
+
 .Wandering {
   width: 100%;
 }
 
 .Wandering__bar {
-  background-color: #5F5FFF;
-}
-
-.Wandering__bar .contents {
-  max-width: 1400px;
-  margin: 0 auto;
-  height: 80px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.Wandering__bar .contents p:nth-of-type(1) {
-  color: rgba(38,28,70,1);
-  font-weight: 700;
-}
-
-.Wandering__bar .contents p:nth-of-type(2) {
-  flex-basis: 50%;
-  margin: 0px 15px;
-  font-weight: 300;
+  background-color: $base-color;
+  .contents {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 80px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p:nth-of-type(1) {
+      color: rgba(38,28,70,1);
+      font-weight: 700;
+    }
+    p:nth-of-type(2) {
+      flex-basis: 50%;
+      margin: 0px 15px;
+      font-weight: 300;
+    }
+  }
 }
 
 .Wandering__container {
   display: flex;
   min-height: calc(100vh - 160px);
-}
-
-.sidenav {
-  flex-basis: 20%;
+  .sidenav {
+    flex-basis: 25%;
+  }
+  .Wandering__map {
+    flex-basis: 75%;
+  }
 }
 
 .Wandering__transfer {
-  padding: 25px;
+  padding: $base-padding;
 }
 
+// Gas Tank
 .Wandering__gas {
   margin-top: 50px;
   border-top: 1px solid #efefef;
-  padding: 25px;
-}
-
-.Wandering__gas .button {
-  margin-top: 10px;
-}
-
-.Wandering__map {
-  flex-basis: 80%;
+  padding: $base-padding;
+  .button {
+    margin-top: 10px;
+  }
 }
 
 /* Old Styles. Replacing */

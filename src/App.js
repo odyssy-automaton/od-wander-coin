@@ -4,7 +4,7 @@ import getWeb3 from './utils/getWeb3';
 import WanderingToken from './components/wandering';
 import Header from './components/shared/header';
 
-import './App.css';
+import './App.scss';
 
 class App extends Component {
   state = {
