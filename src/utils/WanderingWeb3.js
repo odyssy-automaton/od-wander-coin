@@ -108,6 +108,7 @@ export default class WanderingService {
         }).then(function(response) {
           return response.json();
         });
+        console.log(txJSON.latitude, txJSON.longitude);
 
         coords.push({
           lat: txJSON.latitude,
