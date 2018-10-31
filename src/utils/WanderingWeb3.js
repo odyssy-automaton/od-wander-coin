@@ -1,5 +1,6 @@
 import WanderingAbi from '../../src/dist/WanderingToken.json';
 import { getWeb3ServiceInstance } from './Web3Service';
+import OdJsonService from '../../utils/OdJsonService';
 
 export default class WanderingService {
   web3Service;
@@ -18,20 +19,33 @@ export default class WanderingService {
   }
 
   async sendTo(from, to, latitude, longitude, tokenId) {
-    const latInt = this.coordinateToInt(latitude);
-    const lngInt = this.coordinateToInt(longitude);
+    // build txJSON, save and get txURI
+    const txJSON = {
+      latitude: latitude,
+      longitude: longitude,
+      journal: 'A new Entry.',
+    };
+
+    const txURI = await this.OdJsonService.getUri(txJSON);
 
     return await this.wanderingContract.methods
-      .safeTransferFrom(from, to, latInt, lngInt, tokenId)
+      .safeTransferFrom(from, to, tokenId, txURI)
       .send({ from: from });
   }
 
   async launchToken(from, latitude, longitude) {
-    const latInt = this.coordinateToInt(latitude);
-    const lngInt = this.coordinateToInt(longitude);
+    //const latInt = this.coordinateToInt(latitude);
+    //const lngInt = this.coordinateToInt(longitude);
+    // build txJSON, save and get txURI
+    const txJSON = {
+      latitude: latitude,
+      longitude: longitude,
+      journal: 'A new start.',
+    };
+    const txURI = await this.OdJsonService.getUri(txJSON);
 
     await this.wanderingContract.methods
-      .launchToken(latInt, lngInt)
+      .launchToken(txURI)
       .send({ from: from });
 
     return await this.wanderingContract.methods.totalSupply().call();
@@ -45,10 +59,7 @@ export default class WanderingService {
     const res = await this.wanderingContract.methods
       .getCoordinates(address, tokenId)
       .call();
-    return {
-      lat: this.intToCoordinate(res.latitude),
-      lng: this.intToCoordinate(res.longitude),
-    };
+    return res;
   }
 
   async getOwner(tokenId = 1) {
@@ -69,11 +80,15 @@ export default class WanderingService {
         }
         owners.push(addr);
 
-        let coord = await contract.getCoordinates(addr, tokenId).call();
-        coords.push({
-          lat: this.intToCoordinate(coord.latitude),
-          lng: this.intToCoordinate(coord.longitude),
-        });
+        let txURI = await contract.getTxURI(addr, tokenId).call();
+        console.log(txURI);
+
+        //get txURI json
+
+        //coords.push({
+        //  lat: this.intToCoordinate(coord.latitude),
+        //  lng: this.intToCoordinate(coord.longitude),
+        //});
       }
     }
     return coords;
