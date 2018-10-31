@@ -24,12 +24,12 @@ contract WanderingToken is ERC721Token, Ownable {
         string _tokenURI
     ) 
     ERC721Token(_name, _symbol) public payable {
-        launchToken(_txURI);
-        _setTokenURI(tokenCount, _tokenURI);
+        launchToken(_txURI, _tokenURI);
     }
 
     function launchToken(
-        string _txURI
+        string _txURI,
+        string _tokenURI
     ) public {
         tokenCount++;
         ownersHistoryByToken[tokenCount][msg.sender].isOwner = true;
@@ -37,6 +37,7 @@ contract WanderingToken is ERC721Token, Ownable {
         ownersHistoryByToken[tokenCount][msg.sender].txURI = _txURI;
         ownersLUT.push(msg.sender);
         _mint(msg.sender, tokenCount);
+        _setTokenURI(tokenCount, _tokenURI);
     }
 
     function safeTransferFrom(

@@ -34,18 +34,22 @@ export default class WanderingService {
   }
 
   async launchToken(from, latitude, longitude) {
-    //const latInt = this.coordinateToInt(latitude);
-    //const lngInt = this.coordinateToInt(longitude);
     // build txJSON, save and get txURI
     const txJSON = {
       latitude: latitude,
       longitude: longitude,
       journal: 'A new start.',
     };
+    const tokenJSON = {
+      name: 'WanderCoin',
+      description: 'A token that wanders around the world.',
+      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.jpg',
+    };
     const txURI = await this.OdJsonService.getUri(txJSON);
+    const tokenURI = await this.OdJsonService.getUri(tokenJSON);
 
     await this.wanderingContract.methods
-      .launchToken(txURI)
+      .launchToken(txURI, tokenURI)
       .send({ from: from });
 
     return await this.wanderingContract.methods.totalSupply().call();
