@@ -83,12 +83,19 @@ export default class WanderingService {
         let txURI = await contract.getTxURI(addr, tokenId).call();
         console.log(txURI);
 
-        //get txURI json
+        const txJSON = await fetch(txURI, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then(function(response) {
+          return response.json();
+        });
 
-        //coords.push({
-        //  lat: this.intToCoordinate(coord.latitude),
-        //  lng: this.intToCoordinate(coord.longitude),
-        //});
+        coords.push({
+          lat: txJSON.latitude,
+          lng: txJSON.longitude,
+        });
       }
     }
     return coords;

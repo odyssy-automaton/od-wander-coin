@@ -24,12 +24,6 @@ class Wandering extends Component {
     this.wanderingService = new WanderingService();
     this.odJsonService = new OdJsonService();
     this.loadContract();
-    //this.createJsonUri();
-  }
-
-  createJsonUri() {
-    const metaJson = { test: 'test' };
-    this.odJsonService.getUri(metaJson);
   }
 
   loadContract = async () => {
