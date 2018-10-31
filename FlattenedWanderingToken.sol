@@ -905,7 +905,6 @@ contract WanderingToken is ERC721Token, Ownable {
     ) 
     ERC721Token(_name, _symbol) public payable {
         launchToken(_txURI);
-        _mint(msg.sender, tokenCount);
         _setTokenURI(tokenCount, _tokenURI);
     }
 
@@ -956,7 +955,7 @@ contract WanderingToken is ERC721Token, Ownable {
         return address(this).balance;
     }
 
-    function getCoordinates(address _owner, uint tokenId) 
+    function getTxURI(address _owner, uint tokenId) 
     public view 
     returns(string) {
         return ownersHistoryByToken[tokenId][_owner].txURI;

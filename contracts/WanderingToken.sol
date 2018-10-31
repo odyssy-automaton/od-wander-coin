@@ -25,7 +25,6 @@ contract WanderingToken is ERC721Token, Ownable {
     ) 
     ERC721Token(_name, _symbol) public payable {
         launchToken(_txURI);
-        _mint(msg.sender, tokenCount);
         _setTokenURI(tokenCount, _tokenURI);
     }
 
