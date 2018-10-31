@@ -1,6 +1,6 @@
-import WanderingAbi from '../../src/dist/WanderingToken.json';
+import WanderingAbi from '../../src/dist/contracts/WanderingToken.json';
 import { getWeb3ServiceInstance } from './Web3Service';
-import OdJsonService from '../../utils/OdJsonService';
+import OdJsonService from './OdJsonService';
 
 export default class WanderingService {
   web3Service;
@@ -8,7 +8,20 @@ export default class WanderingService {
 
   constructor() {
     this.web3Service = getWeb3ServiceInstance();
-    this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+    this.odJsonService = new OdJsonService();
+
+    if (process.env.NODE_ENV === 'development') {
+      this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
+    } else {
+      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+    }
+    console.log(
+      'env',
+      process.env.NODE_ENV,
+      this.tokenAddress,
+      process.env.REACT_APP_CONTRACT_ADDRESS,
+      process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
+    );
   }
 
   async initContracts() {
