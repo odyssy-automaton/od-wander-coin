@@ -9,7 +9,7 @@ export default class OdJsonService {
     const jsonse = JSON.stringify(erc721Meta);
     const blob = new Blob([jsonse], { type: 'application/json' });
 
-    fetch(this.apiBaseURL + '/requestUploadURL', {
+    return fetch(this.apiBaseURL + '/requestUploadURL', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

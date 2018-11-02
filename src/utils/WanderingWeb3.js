@@ -39,7 +39,12 @@ export default class WanderingService {
       journal: 'A new Entry.',
     };
 
-    const txURI = await this.OdJsonService.getUri(txJSON);
+    const txURI = await this.odJsonService.getUri(txJSON);
+    const txURIBytpe32 = this.web3Service.fromAscii(txURI);
+
+    console.log('tx uri', txURI);
+    console.log('tx uri bytes32');
+    console.log(from, to, tokenId, txURI, txURIBytpe32);
 
     return await this.wanderingContract.methods
       .safeTransferFrom(from, to, tokenId, txURI)
@@ -58,8 +63,8 @@ export default class WanderingService {
       description: 'A token that wanders around the world.',
       image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.jpg',
     };
-    const txURI = await this.OdJsonService.getUri(txJSON);
-    const tokenURI = await this.OdJsonService.getUri(tokenJSON);
+    const txURI = await this.odJsonService.getUri(txJSON);
+    const tokenURI = await this.odJsonService.getUri(tokenJSON);
 
     await this.wanderingContract.methods
       .launchToken(txURI, tokenURI)
@@ -98,7 +103,8 @@ export default class WanderingService {
         owners.push(addr);
 
         let txURI = await contract.getTxURI(addr, tokenId).call();
-        console.log(txURI);
+        console.log('huh', txURI);
+        //console.log('huh', this.web3Service.toAscii(txURI));
 
         const txJSON = await fetch(txURI, {
           method: 'GET',
@@ -126,7 +132,7 @@ export default class WanderingService {
   async sendTransaction(from, value) {
     this.web3Service.web3.eth.sendTransaction({
       from: from,
-      to: process.env.REACT_APP_CONTRACT_ADDRESS,
+      to: this.tokenAddress,
       value: value,
     });
   }

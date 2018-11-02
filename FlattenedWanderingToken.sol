@@ -920,7 +920,7 @@ contract WanderingToken is ERC721Token, Ownable {
         _setTokenURI(tokenCount, _tokenURI);
     }
 
-    function safeTransferFrom(
+    function safeTransferFromWithTx(
         address _from,
         address _to,
         uint tokenId,
