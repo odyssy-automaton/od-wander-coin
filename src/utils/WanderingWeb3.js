@@ -47,7 +47,7 @@ export default class WanderingService {
     console.log(from, to, tokenId, txURI, txURIBytpe32);
 
     return await this.wanderingContract.methods
-      .safeTransferFrom(from, to, tokenId, txURI)
+      .safeTransferFrom(from, to, tokenId, '0x0', txURI)
       .send({ from: from });
   }
 

@@ -1,9 +1,9 @@
 pragma solidity ^0.4.24;
 
-import "../node_modules/zeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
-import "../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
+import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
-contract WanderingToken is ERC721Token, Ownable {
+contract WanderingToken is ERC721Full, Ownable {
 
     struct OwnerHistory {
         bool isOwner;
@@ -23,7 +23,7 @@ contract WanderingToken is ERC721Token, Ownable {
         string _txURI,
         string _tokenURI
     ) 
-    ERC721Token(_name, _symbol) public payable {
+    ERC721Full(_name, _symbol) public payable {
         launchToken(_txURI, _tokenURI);
     }
 
@@ -44,6 +44,7 @@ contract WanderingToken is ERC721Token, Ownable {
         address _from,
         address _to,
         uint tokenId,
+        bytes data,
         string txURI
     )
       public
@@ -60,7 +61,7 @@ contract WanderingToken is ERC721Token, Ownable {
         ownersHistoryByToken[tokenId][_to].tokenId = tokenId;
         ownersHistoryByToken[tokenId][_to].txURI = txURI;
         ownersLUT.push(_to);
-        super.safeTransferFrom(_from, _to, tokenId, "");
+        super.safeTransferFrom(_from, _to, tokenId, data);
         _to.transfer(faucetAmount);
     }
 
