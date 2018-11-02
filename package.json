@@ -11,6 +11,7 @@
     "openzeppelin-solidity": "^2.0.0-rc.2",
     "react": "^16.4.2",
     "react-dom": "^16.5.2",
+    "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
     "react-motion": "^0.5.2",
     "react-places-autocomplete": "^7.2.0",

@@ -4,12 +4,21 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
+import { getCurrentLocation } from '../../utils/locationHelpers';
+
 class WanderingNew extends Component {
   state = {
     streetAddress: '',
     latitude: '',
     longitude: '',
     toAddress: '',
+    autolocated: true,
+  };
+
+  componentWillMount = () => {
+    this.setState({
+      ...getCurrentLocation(),
+    });
   };
 
   handleChange = (streetAddress) => {
@@ -28,6 +37,7 @@ class WanderingNew extends Component {
           streetAddress: address,
           latitude: latLng.lat,
           longitude: latLng.lng,
+          autolocated: false,
         });
       })
       .catch((error) => console.error('Error', error));
@@ -46,6 +56,7 @@ class WanderingNew extends Component {
       latitude: '',
       longitude: '',
       toAddress: '',
+      autolocated: false,
     });
   };
 
@@ -67,7 +78,7 @@ class WanderingNew extends Component {
                 <div className="Wandering__search-input-container">
                   <input
                     {...getInputProps({
-                      placeholder: 'Send the coin to...',
+                      placeholder: 'Enter a street address...',
                       className: 'Wandering__search-input',
                     })}
                   />
@@ -80,6 +91,23 @@ class WanderingNew extends Component {
                     </button>
                   )}
                 </div>
+                {this.state.autolocated && (
+                  <div>
+                    <p>Is this where you are?</p>
+                    <p>
+                      <a
+                        onClick={() =>
+                          this.handleSelect(this.state.streetAddress)
+                        }
+                      >
+                        Yep
+                      </a>
+                    </p>
+                    <p>
+                      <a onClick={this.handleCloseClick}>Nope</a>
+                    </p>
+                  </div>
+                )}
                 {suggestions.length > 0 && (
                   <div className="Wandering__autocomplete-container">
                     {suggestions.map((suggestion) => {
@@ -120,7 +148,7 @@ class WanderingNew extends Component {
               />
             </div>
             {showWarning ? (
-              <p>Becarefu here and double check the address...</p>
+              <p>Becareful here and double check the address...</p>
             ) : null}
             <div>
               <button onClick={this.handleSubmit} disabled={invalidToAddress}>

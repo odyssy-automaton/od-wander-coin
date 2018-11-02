@@ -1,33 +1,29 @@
 import React from 'react';
-import { withGoogleMap, GoogleMap, Marker, Polyline } from 'react-google-maps';
+import { withGoogleMap, GoogleMap, Polyline } from 'react-google-maps';
 
+import CoinMarker from './CoinMarker';
+import { defaultLocation } from '../../utils/locationHelpers';
 import { mapStyles } from './mapStyles';
 
 const WanderingMap = withGoogleMap((props) => {
   const markers = props.tokens.map((token, i) => (
-    <Marker
-      key={i}
-      position={{
-        lat: token.lat,
-        lng: token.lng,
-      }}
-    />
+    <CoinMarker key={i} token={token} />
   ));
 
   const centerCoord =
     props.tokens.length > 0
       ? props.tokens[props.tokens.length - 1]
-      : { lat: 39.7599499, lng: -104.9838489 };
+      : defaultLocation();
 
   return (
     <div>
       <GoogleMap
         defaultOptions={{ styles: mapStyles }}
-        defaultZoom={12}
+        defaultZoom={9}
         center={centerCoord}
       >
         {markers}
-        <Polyline path={props.tokens} />
+        <Polyline path={props.tokens} options={{}} />
       </GoogleMap>
     </div>
   );
