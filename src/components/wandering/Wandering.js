@@ -6,6 +6,7 @@ import WanderingLaunch from './WanderingLaunch';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
 import TokenList from './token-list/TokenList';
+import OdJsonService from '../../utils/OdJsonService';
 
 import './Wandering.scss';
 
@@ -21,6 +22,7 @@ class Wandering extends Component {
 
   componentDidMount() {
     this.wanderingService = new WanderingService();
+    this.odJsonService = new OdJsonService();
     this.loadContract();
   }
 
@@ -100,8 +102,13 @@ class Wandering extends Component {
         <div className="Wandering__bar">
           <div className="contents">
             <p>What is this?</p>
-            <p>Wander Coin is an experimental DApp and token model where there is a supply of one non-fungible token to test various game theories.</p>
-            <a className="button od-primary" href="/">Read More</a>
+            <p>
+              Wander Coin is an experimental DApp and token model where there is
+              a supply of one non-fungible token to test various game theories.
+            </p>
+            <a className="button od-primary" href="/">
+              Read More
+            </a>
           </div>
         </div>
         <div className="Wandering__container">
@@ -111,10 +118,13 @@ class Wandering extends Component {
                 {!isOwner ? (
                   <div>
                     <h2>Wander Coin be wandering ... </h2>
-                    <p className="tiny">If you think you have it, make sure you’re on the Main Ethereum Network and connected to the wallet that the coin was sent to.</p>
+                    <p className="tiny">
+                      If you think you have it, make sure you’re on the Main
+                      Ethereum Network and connected to the wallet that the coin
+                      was sent to.
+                    </p>
                     <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
                   </div>
-
                 ) : (
                   <div>
                     <h2>You're holding the Wander Coin!</h2>
