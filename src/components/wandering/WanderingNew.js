@@ -12,7 +12,7 @@ class WanderingNew extends Component {
     latitude: '',
     longitude: '',
     toAddress: '',
-    autolocated: true,
+    autolocated: false,
   };
 
   componentWillMount = () => {

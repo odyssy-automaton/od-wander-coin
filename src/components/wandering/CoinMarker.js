@@ -25,7 +25,7 @@ class CoinMarker extends Component {
         {showInfo && (
           <InfoWindow>
             <div>
-              <h1>poopin</h1>
+              <h1>The Wanderer</h1>
               <p>Lat: {token.lat}</p>
               <p>Lng: {token.lng}</p>
             </div>
