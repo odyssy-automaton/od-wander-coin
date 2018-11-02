@@ -325,9 +325,9 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.24;\n\nimport \"./IERC721.sol\";\n\n/**\n * @title ERC-721 Non-Fungible Token Standard, optional metadata extension\n * @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md\n */\ncontract IERC721Metadata is IERC721 {\n  function name() external view returns (string);\n  function symbol() external view returns (string);\n  function tokenURI(uint256 tokenId) external view returns (string);\n}\n",
-  "sourcePath": "/home/dekan/github/odyssy/od-wander-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721Metadata.sol",
+  "sourcePath": "/Users/samkuhlmann/Documents/odyssy/projects/od-wandering-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721Metadata.sol",
   "ast": {
-    "absolutePath": "/home/dekan/github/odyssy/od-wander-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721Metadata.sol",
+    "absolutePath": "/Users/samkuhlmann/Documents/odyssy/projects/od-wandering-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721Metadata.sol",
     "exportedSymbols": {
       "IERC721Metadata": [
         1762
@@ -348,7 +348,7 @@
         "src": "0:24:12"
       },
       {
-        "absolutePath": "/home/dekan/github/odyssy/od-wander-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721.sol",
+        "absolutePath": "/Users/samkuhlmann/Documents/odyssy/projects/od-wandering-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721.sol",
         "file": "./IERC721.sol",
         "id": 1742,
         "nodeType": "ImportDirective",
@@ -598,7 +598,7 @@
     "src": "0:418:12"
   },
   "legacyAST": {
-    "absolutePath": "/home/dekan/github/odyssy/od-wander-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721Metadata.sol",
+    "absolutePath": "/Users/samkuhlmann/Documents/odyssy/projects/od-wandering-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721Metadata.sol",
     "exportedSymbols": {
       "IERC721Metadata": [
         1762
@@ -619,7 +619,7 @@
         "src": "0:24:12"
       },
       {
-        "absolutePath": "/home/dekan/github/odyssy/od-wander-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721.sol",
+        "absolutePath": "/Users/samkuhlmann/Documents/odyssy/projects/od-wandering-coin/node_modules/openzeppelin-solidity/contracts/token/ERC721/IERC721.sol",
         "file": "./IERC721.sol",
         "id": 1742,
         "nodeType": "ImportDirective",
@@ -870,9 +870,9 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.4.25+commit.59dbf8f1.Emscripten.clang"
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.0.0-beta.1",
-  "updatedAt": "2018-11-02T19:49:41.568Z"
+  "schemaVersion": "2.0.1",
+  "updatedAt": "2018-11-02T20:22:18.660Z"
 }

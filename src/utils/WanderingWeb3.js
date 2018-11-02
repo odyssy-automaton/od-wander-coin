@@ -119,6 +119,7 @@ export default class WanderingService {
         coords.push({
           lat: txJSON.latitude,
           lng: txJSON.longitude,
+          journal: txJSON.journal,
         });
       }
     }
