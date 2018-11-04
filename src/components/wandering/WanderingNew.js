@@ -95,16 +95,16 @@ class WanderingNew extends Component {
                   <div>
                     <p>Is this where you are?</p>
                     <p>
-                      <a
+                      <button
                         onClick={() =>
                           this.handleSelect(this.state.streetAddress)
                         }
                       >
                         Yep
-                      </a>
+                      </button>
                     </p>
                     <p>
-                      <a onClick={this.handleCloseClick}>Nope</a>
+                      <button onClick={this.handleCloseClick}>Nope</button>
                     </p>
                   </div>
                 )}
