@@ -11,12 +11,9 @@ import './App.scss';
 class App extends Component {
   state = {
     accounts: null,
-    // tokenId: null,
   };
 
   componentDidMount = async () => {
-    // const tokenId = parseInt(window.location.pathname.split('/')[1], 10) || 1;
-
     try {
       const web3 = await getWeb3();
       const accounts = await web3.eth.getAccounts();
