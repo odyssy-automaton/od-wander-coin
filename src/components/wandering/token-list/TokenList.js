@@ -9,7 +9,7 @@ class TokenList extends Component {
   componentDidMount() {
     this.getTotalTokens();
     if (window.location.pathname !== '/') {
-      const tokenNumber = +window.location.pathname.split('/')[1];
+      const tokenNumber = +window.location.pathname.split('/')[2];
       this.setState({ tokenNumber: tokenNumber });
     }
   }

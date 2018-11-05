@@ -150,10 +150,6 @@ class Wandering extends Component {
             <h3 className="Wandering__token-id">
               Token # {this.props.tokenId} of {this.state.totalTokens} total
             </h3>
-            <p>
-              Navigate to token by changing the number in the path example:
-              <a href="/2"> #2</a>
-            </p>
             <TokenList
               onSelect={this.handleTokenSelect}
               onLoad={this.getTotalTokens}
