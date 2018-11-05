@@ -1,0 +1,19 @@
+$primary-color: rgba(38,28,70,1);
+
+.Header {
+  height: auto;
+  background-color: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.Header__title {
+  color: #5f5fff;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 2em;
+  font-weight: 300;
+}

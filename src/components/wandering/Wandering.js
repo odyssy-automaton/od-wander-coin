@@ -6,8 +6,9 @@ import WanderingLaunch from './WanderingLaunch';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
 import TokenList from './token-list/TokenList';
+import OdJsonService from '../../utils/OdJsonService';
 
-import './Wandering.css';
+import './Wandering.scss';
 
 class Wandering extends Component {
   state = {
@@ -21,6 +22,7 @@ class Wandering extends Component {
 
   componentDidMount() {
     this.wanderingService = new WanderingService();
+    this.odJsonService = new OdJsonService();
     this.loadContract();
   }
 
@@ -97,37 +99,61 @@ class Wandering extends Component {
       <h3>Loading contract</h3>
     ) : (
       <div className="Wandering">
+        <div className="Wandering__bar">
+          <div className="contents">
+            <p>What is this?</p>
+            <p>
+              Wander Coin is an experimental DApp and token model where there is
+              a supply of one non-fungible token to test various game theories.
+            </p>
+            <a className="button od-primary" href="/">
+              Read More
+            </a>
+          </div>
+        </div>
+        <div className="Wandering__container">
+          <div className="sidenav">
+            <div className="Wandering__transfer">
+              <div className="Wandering__form">
+                {!isOwner ? (
+                  <div>
+                    <h2>Wander Coin be wandering ... </h2>
+                    <p className="tiny">
+                      If you think you have it, make sure you’re on the Main
+                      Ethereum Network and connected to the wallet that the coin
+                      was sent to.
+                    </p>
+                    <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
+                  </div>
+                ) : (
+                  <div>
+                    <h2>You're holding the Wander Coin!</h2>
+                    <WanderingNew onSubmit={this.handleSubmitAddressForm} />
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="Wandering__gas">
+              <GasTank
+                onSubmit={this.handleSubmitGasForm}
+                onLoad={this.getBalance}
+              />
+            </div>
+          </div>
+          <div className="Wandering__map">
+            <WanderingMapContainer coordinates={coordinates} />
+          </div>
+        </div>
+
         <div className="Wandering__info">
           <div>
             <h3 className="Wandering__token-id">
               Token # {this.props.tokenId} of {this.state.totalTokens} total
             </h3>
-            <p>
-              Navigate to token by changing the number in the path example:
-              <a href="/2"> #2</a>
-            </p>
             <TokenList
               onSelect={this.handleTokenSelect}
               onLoad={this.getTotalTokens}
             />
-          </div>
-          <div>
-            <GasTank
-              onSubmit={this.handleSubmitGasForm}
-              onLoad={this.getBalance}
-            />
-          </div>
-        </div>
-        <div className="Wandering__transfer">
-          <div className="Wandering__form">
-            {!isOwner ? (
-              <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
-            ) : (
-              <WanderingNew onSubmit={this.handleSubmitAddressForm} />
-            )}
-          </div>
-          <div>
-            <WanderingMapContainer coordinates={coordinates} />
           </div>
         </div>
       </div>

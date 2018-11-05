@@ -1,6 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,700');
+
+/* Base Styles */
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-  background-color: rgba(93,63,152,1);
+  font-family: 'Rubik', sans-serif;
+  background-color: white;
+  color: #333;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  color: rgba(38,28,70,1);
+}
+
+h5, h6 {
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+  color: #5F5FFF;
+}
+
+.button {
+  appearance: none;
+  background-color: #5f5fff;
+  color: white;
+  padding: 10px 15px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  cursor: pointer;
+  border: none;
+  letter-spacing: .05em;
+  font-weight: 500;
+  transition: all .15s linear;
+}
+
+.button.invert {
+  background-color: white;
+  color: #5f5fff;
+}
+
+.button.od-primary {
+  background-color: transparent;
+  color: rgba(38,28,70,1);
+  border: 2px solid rgba(38,28,70,1);
+}
+
+button:hover {
+  background-color: rgba(38,28,70,1);
+  color: white;
+}
+
+input {
+  padding: 10px 5px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba(95,95,255,0.5);
+  transition: all .15s linear;
+  margin-bottom: 1px;
+  width: 100%;
+  font-size: 1em;
+}
+
+input:focus {
+  border-bottom: 2px solid rgba(95,95,255,1);
+  margin-bottom: 0px;
 }
