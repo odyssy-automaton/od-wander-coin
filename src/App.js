@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import getWeb3 from './utils/getWeb3';
+import { getWeb3, browserObject, BrowserInfo, Web3Info } from './utils/getWeb3';
 import Routes from './Routes';
 import { AccountProvider } from './contexts/AccountContext';
 import Header from './components/shared/header';
@@ -16,6 +16,9 @@ class App extends Component {
   componentDidMount = async () => {
     try {
       const web3 = await getWeb3();
+      browserObject.browser = new BrowserInfo();
+      browserObject.web3Provider = new Web3Info(web3);
+      console.log(browserObject);
       const accounts = await web3.eth.getAccounts();
       this.setState({ accounts });
     } catch (error) {
