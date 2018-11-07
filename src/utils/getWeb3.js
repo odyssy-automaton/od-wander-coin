@@ -112,7 +112,7 @@ export class Web3Info {
 
   async init() {
     //TODO: update web3Service and update checks if logged in or no metamask use infura or local
-    this.web3 = await this.getWeb3();
+    this.web3 = this.web3 || (await this.getWeb3());
     this.getcurrentProvider(this.web3);
     this.getProviderInfo(this.web3);
     await this.getAccountInfo(this.web3);
@@ -126,6 +126,7 @@ export class Web3Info {
         change.selectedAddress.toUpperCase()
       ) {
         console.log('address changed');
+        window.location.reload();
       }
       // does not work will need case staement to guess id
       // if (this.network !== change.networkVersion) {
