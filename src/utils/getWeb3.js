@@ -52,8 +52,9 @@ export class Web3Info {
   }
 
   async getNetworkInfo(web3) {
-    this.network = await web3.eth.net.getNetworkType();
+    this.network = '';
     this.networkId = await web3.eth.net.getId();
+    this.networkType = await web3.eth.net.getNetworkType();
     console.log('network', this.network);
   }
 
@@ -116,6 +117,23 @@ export class Web3Info {
     this.getProviderInfo(this.web3);
     await this.getAccountInfo(this.web3);
     await this.getNetworkInfo(this.web3);
+    console.log('publics', this.accounts, this.networkId);
+
+    //add event listeners
+    const updateCallback = (change) => {
+      if (
+        this.accounts[0].toString().toUpperCase() !==
+        change.selectedAddress.toUpperCase()
+      ) {
+        console.log('address changed');
+      }
+      // does not work will need case staement to guess id
+      // if (this.network !== change.networkVersion) {
+      //   console.log('network changed');
+      // }
+    };
+
+    this.web3.currentProvider.publicConfigStore.on('update', updateCallback);
   }
 }
 
