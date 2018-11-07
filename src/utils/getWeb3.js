@@ -117,7 +117,6 @@ export class Web3Info {
     this.getProviderInfo(this.web3);
     await this.getAccountInfo(this.web3);
     await this.getNetworkInfo(this.web3);
-    console.log('publics', this.accounts, this.networkId);
 
     //add event listeners
     const updateCallback = (change) => {

@@ -1,27 +1,31 @@
-import Web3 from 'web3';
+// import Web3 from 'web3';
 
 export default class Web3Service {
   web3;
   web3Remote;
   mainAccount;
 
+  constructor(web3) {
+    this.web3 = web3;
+  }
+
   async init() {
-    let provider;
-    if (typeof window.web3 !== 'undefined') {
-      this.web3 = new Web3(window.web3.currentProvider);
-    }
+    // let provider;
+    // if (typeof window.web3 !== 'undefined') {
+    //   this.web3 = new Web3(window.web3.currentProvider);
+    // }
+    //
+    // if (process.env.NODE_ENV === 'development') {
+    //   provider = new Web3.providers['HttpProvider'](
+    //     process.env.REACT_APP_LOC_REMOTE_WEB3_PROVIDER,
+    //   );
+    // } else {
+    //   provider = new Web3.providers['HttpProvider'](
+    //     process.env.REACT_APP_REMOTE_WEB3_PROVIDER,
+    //   );
+    // }
 
-    if (process.env.NODE_ENV === 'development') {
-      provider = new Web3.providers['HttpProvider'](
-        process.env.REACT_APP_LOC_REMOTE_WEB3_PROVIDER,
-      );
-    } else {
-      provider = new Web3.providers['HttpProvider'](
-        process.env.REACT_APP_REMOTE_WEB3_PROVIDER,
-      );
-    }
-
-    this.web3Remote = new Web3(provider);
+    this.web3Remote = this.web3;
     this.mainAccount = await this.getMainAccount();
   }
 
@@ -62,22 +66,22 @@ export default class Web3Service {
   }
 }
 
-const web3Service = new Web3Service();
-(async () => {
-  await web3Service.init();
-})();
+//const web3Service = new Web3Service();
+//(async () => {
+//  await web3Service.init();
+//})();
 
-export const getWeb3ServiceInstance = () => {
-  return web3Service;
-};
-
-export const getAddress = async () => {
-  return await web3Service.getMainAccount();
-};
-
-export const getBalance = async (address) => {
-  return await web3Service.getAccountBalance(address);
-};
+//export const getWeb3ServiceInstance = () => {
+//  return web3Service;
+//};
+//
+//export const getAddress = async () => {
+//  return await web3Service.getMainAccount();
+//};
+//
+//export const getBalance = async (address) => {
+//  return await web3Service.getAccountBalance(address);
+//};
 
 export const toWei = async (amount) => {
   return await this.web3.utils.toWei(amount);

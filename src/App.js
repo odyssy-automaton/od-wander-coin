@@ -19,14 +19,16 @@ class App extends Component {
     try {
       const clientInfo = new ClientInfo();
       await clientInfo.web3Info.init();
-      console.log('browserinfo', clientInfo.browserInfo);
-      console.log('web3info', clientInfo.web3Info);
-      console.log('accounts', clientInfo.web3Info.accounts);
+      const browserInfo = clientInfo.browserInfo;
+      const web3Info = clientInfo.web3Info;
+      const web3 = clientInfo.web3Info.web3;
       const accounts = clientInfo.web3Info.accounts;
+
       this.setState({
         accounts,
-        browserInfo: clientInfo.browserInfo,
-        web3Info: clientInfo.web3Info,
+        web3,
+        browserInfo,
+        web3Info,
       });
     } catch (error) {
       alert(

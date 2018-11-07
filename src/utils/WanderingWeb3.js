@@ -1,13 +1,13 @@
 import WanderingAbi from '../../src/dist/contracts/WanderingToken.json';
-import { getWeb3ServiceInstance } from './Web3Service';
+import Web3Service from './Web3Service';
 import OdJsonService from './OdJsonService';
 
 export default class WanderingService {
   web3Service;
   wanderingContract;
 
-  constructor() {
-    this.web3Service = getWeb3ServiceInstance();
+  constructor(web3) {
+    this.web3Service = new Web3Service(web3);
     this.odJsonService = new OdJsonService();
 
     if (process.env.NODE_ENV === 'development') {

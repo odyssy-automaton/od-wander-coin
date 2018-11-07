@@ -10,7 +10,11 @@ class Home extends Component {
     return (
       <AccountConsumer>
         {(context) => (
-          <WanderingToken account={context.accounts[0]} tokenId={tokenId} />
+          <WanderingToken
+            web3={context.web3}
+            account={context.accounts[0]}
+            tokenId={tokenId}
+          />
         )}
       </AccountConsumer>
     );

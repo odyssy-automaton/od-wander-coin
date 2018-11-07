@@ -21,7 +21,7 @@ class Wandering extends Component {
   };
 
   componentDidMount() {
-    this.wanderingService = new WanderingService();
+    this.wanderingService = new WanderingService(this.props.web3);
     this.odJsonService = new OdJsonService();
     this.loadContract();
   }
