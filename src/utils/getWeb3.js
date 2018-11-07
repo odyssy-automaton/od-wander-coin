@@ -69,7 +69,10 @@ export class Web3Info {
         if (window.ethereum) {
           // does this check for new metamask
           // what to do when rejected
-          window.ethereum.enable();
+          window.ethereum
+            .enable()
+            .then((arg1) => console.log('user approves', arg1))
+            .catch((arg1) => console.log('user disaproves', arg1));
         }
         let web3 = window.web3;
 
