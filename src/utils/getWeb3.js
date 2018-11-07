@@ -1,18 +1,14 @@
 import Web3 from 'web3';
 
-export const browserObject = {
-  browser: {}, // obj
-  web3Provider: {}, // obj
-  LoggedIn: false, // bool
-  networkName: '', // string
-  networkId: '', // string
-  provider: '', // string
-  account: '', // string
-  balance: '', // number
-};
+export class ClientInfo {
+  constructor() {
+    this.browserInfo = new BrowserInfo();
+    this.web3Info = new Web3Info();
+  }
+}
 
 export class Web3Info {
-  constructor(web3) {
+  getProviderInfo(web3) {
     this.isMetammask = web3.currentProvider.isMetaMask;
     this.isTrust = web3.currentProvider.isTrust;
     this.isToshi = typeof window.SOFA !== 'undefined';
@@ -36,6 +32,69 @@ export class Web3Info {
       !this.isParity &&
       !this.isInfura &&
       !this.isLocalhost;
+  }
+
+  async getAccountInfo(web3) {
+    this.accounts = await web3.eth.getAccounts();
+    if (this.accounts && this.accounts.length) {
+      this.loggedIn = true;
+      this.balance = await web3.eth.getBalance(this.accounts[0]);
+    } else if (this.accounts && !this.accounts.length) {
+      this.loggedIn = false;
+    } else {
+      console.log('what does this mean?');
+      this.loggedIn = false;
+    }
+
+    console.log('account info', this.loggedIn, this.accounts);
+  }
+
+  async getNetworkInfo(web3) {
+    this.network = await web3.eth.net.getNetworkType();
+    this.networkId = await web3.eth.net.getId();
+    console.log('network', this.network);
+  }
+
+  getcurrentProvider(web3) {
+    this.provider = web3.currentProvider;
+    console.log('provider', this.provider);
+  }
+
+  getWeb3() {
+    return new Promise((resolve, reject) => {
+      // Wait for loading completion to avoid race conditions with web3 injection timing.
+      window.addEventListener('load', () => {
+        let web3 = window.web3;
+
+        // Checking if Web3 has been injected by the browser (Mist/MetaMask).
+        const alreadyInjected = typeof web3 !== 'undefined';
+
+        if (alreadyInjected) {
+          // Use Mist/MetaMask's provider.
+          web3 = new Web3(web3.currentProvider);
+          console.log('Injected web3 detected.');
+          resolve(web3);
+        } else {
+          // Fallback to localhost if no web3 injection. We've configured this to
+          // use the development console's port by default.
+          const provider = new Web3.providers.HttpProvider(
+            'http://127.0.0.1:9545',
+          );
+          web3 = new Web3(provider);
+          console.log('No web3 instance injected, using Local web3.');
+          resolve(web3);
+        }
+      });
+    });
+  }
+
+  async init() {
+    //TODO: update web3Service and update checks if logged in or no metamask use infura or local
+    this.web3 = await this.getWeb3();
+    this.getcurrentProvider(this.web3);
+    this.getProviderInfo(this.web3);
+    await this.getAccountInfo(this.web3);
+    await this.getNetworkInfo(this.web3);
   }
 }
 
@@ -68,31 +127,5 @@ export class BrowserInfo {
         this.metaMaskSupport = this.isChrome || this.isFirefox || this.isOpera;
     }
     /* eslint-enable */
+
 }
-
-export const getWeb3 = () =>
-  new Promise((resolve, reject) => {
-    // Wait for loading completion to avoid race conditions with web3 injection timing.
-    window.addEventListener('load', () => {
-      let web3 = window.web3;
-
-      // Checking if Web3 has been injected by the browser (Mist/MetaMask).
-      const alreadyInjected = typeof web3 !== 'undefined';
-
-      if (alreadyInjected) {
-        // Use Mist/MetaMask's provider.
-        web3 = new Web3(web3.currentProvider);
-        console.log('Injected web3 detected.');
-        resolve(web3);
-      } else {
-        // Fallback to localhost if no web3 injection. We've configured this to
-        // use the development console's port by default.
-        const provider = new Web3.providers.HttpProvider(
-          'http://127.0.0.1:9545',
-        );
-        web3 = new Web3(provider);
-        console.log('No web3 instance injected, using Local web3.');
-        resolve(web3);
-      }
-    });
-  });
