@@ -39,14 +39,16 @@ export class Web3Info {
     if (this.accounts && this.accounts.length) {
       this.loggedIn = true;
       this.balance = await web3.eth.getBalance(this.accounts[0]);
+      console.log('logged in!');
     } else if (this.accounts && !this.accounts.length) {
+      console.log('logged out or privacy mode');
+
       this.loggedIn = false;
     } else {
-      console.log('what does this mean?');
+      console.log('logged out or privacy mode');
+      console.log('no accounts from web3. what does this mean? ');
       this.loggedIn = false;
     }
-
-    console.log('account info', this.loggedIn, this.accounts);
   }
 
   async getNetworkInfo(web3) {
@@ -64,6 +66,11 @@ export class Web3Info {
     return new Promise((resolve, reject) => {
       // Wait for loading completion to avoid race conditions with web3 injection timing.
       window.addEventListener('load', () => {
+        if (window.ethereum) {
+          // does this check for new metamask
+          // what to do when rejected
+          window.ethereum.enable();
+        }
         let web3 = window.web3;
 
         // Checking if Web3 has been injected by the browser (Mist/MetaMask).
@@ -77,6 +84,7 @@ export class Web3Info {
         } else {
           // Fallback to localhost if no web3 injection. We've configured this to
           // use the development console's port by default.
+          // should use infura instead?
           const provider = new Web3.providers.HttpProvider(
             'http://127.0.0.1:9545',
           );
