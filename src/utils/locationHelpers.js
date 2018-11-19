@@ -29,7 +29,7 @@ export const defaultLocation = () => {
 };
 
 export const addressFromGeo = (lat, lng) => {
-  Geocode.setApiKey('AIzaSyC5UNPRmxLtv-42ZBHnArD6msTp5aiEAGc');
+  Geocode.setApiKey('AIzaSyA18mLbsIVeZYuMs9SgOJ2iQOCZA1N4TOw');
 
   Geocode.fromLatLng(lat, lng).then(
     (response) => {

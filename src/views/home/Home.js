@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { AccountConsumer } from '../../contexts/AccountContext';
+import { ClientInfoConsumer } from '../../contexts/ClientInfoContext';
 import WanderingToken from '../../components/wandering';
 
 class Home extends Component {
@@ -8,11 +8,15 @@ class Home extends Component {
     const { tokenId } = this.props.match.params;
 
     return (
-      <AccountConsumer>
+      <ClientInfoConsumer>
         {(context) => (
-          <WanderingToken account={context.accounts[0]} tokenId={tokenId} />
+          <WanderingToken
+            web3={context.web3}
+            account={context.accounts[0]}
+            tokenId={tokenId}
+          />
         )}
-      </AccountConsumer>
+      </ClientInfoConsumer>
     );
   }
 }

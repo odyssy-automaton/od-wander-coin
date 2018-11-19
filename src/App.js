@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
-import getWeb3 from './utils/getWeb3';
+import { ClientInfo } from './utils/getWeb3';
 import Routes from './Routes';
-import { AccountProvider } from './contexts/AccountContext';
+import { ClientInfoProvider } from './contexts/ClientInfoContext';
 import Header from './components/shared/header';
 
 import './App.scss';
@@ -11,14 +11,35 @@ import './App.scss';
 class App extends Component {
   state = {
     accounts: null,
+    browserInfo: null,
+    web3Info: null,
+    network: null,
   };
 
   componentDidMount = async () => {
     try {
-      const web3 = await getWeb3();
-      const accounts = await web3.eth.getAccounts();
-      this.setState({ accounts });
+      const clientInfo = new ClientInfo();
+      await clientInfo.web3Info.init();
+      const browserInfo = clientInfo.browserInfo;
+      const web3Info = clientInfo.web3Info;
+      const web3 = clientInfo.web3Info.web3;
+      const accounts = clientInfo.web3Info.accounts;
+      const network = clientInfo.web3Info.networkType;
+      const env = clientInfo.web3Info.env;
+
+      this.setState({
+        accounts,
+        web3,
+        browserInfo,
+        web3Info,
+        network,
+        env,
+      });
     } catch (error) {
+      const web3 = 'not installed';
+      this.setState({
+        web3,
+      });
       alert(
         `Failed to load web3, accounts, or contract. Check console for details.`,
       );
@@ -27,26 +48,44 @@ class App extends Component {
   };
 
   render() {
-    const { accounts } = this.state;
+    const { accounts, network, web3, env } = this.state;
 
     return (
       <div>
-        <AccountProvider value={this.state}>
+        <ClientInfoProvider value={this.state}>
           <BrowserRouter>
             <Fragment>
               <Header />
-              {accounts ? (
+              {web3 &&
+              accounts &&
+              ((env === 'development' && network === 'private') ||
+                env === 'production') ? (
                 <div>
                   <Routes />
                 </div>
-              ) : (
+              ) : !web3 && !accounts && !network ? (
+                <div>
+                  <h2>Loading</h2>
+                </div>
+              ) : web3 === 'not installed' ? (
+                <div>
+                  <h2>Whoops! no web3.</h2>
+                </div>
+              ) : !accounts ? (
                 <div>
                   <h2>Whoops! Hook up a wallet.</h2>
+                </div>
+              ) : (
+                <div>
+                  <h2>
+                    Whoops! looks like you are devloping locally. Are you on a
+                    private test rpc?
+                  </h2>
                 </div>
               )}
             </Fragment>
           </BrowserRouter>
-        </AccountProvider>
+        </ClientInfoProvider>
       </div>
     );
   }
