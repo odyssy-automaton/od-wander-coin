@@ -57,12 +57,17 @@ class Wandering extends Component {
       transfer.toAddress,
       transfer.latitude,
       transfer.longitude,
+      transfer.journal,
       this.props.tokenId,
     );
 
     const coordinates = [
       ...this.state.coordinates,
-      { lat: transfer.latitude, lng: transfer.longitude },
+      {
+        lat: transfer.latitude,
+        lng: transfer.longitude,
+        journal: transfer.journal,
+      },
     ];
 
     this.setState({ coordinates });

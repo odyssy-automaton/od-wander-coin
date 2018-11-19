@@ -31,20 +31,15 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude, tokenId) {
+  async sendTo(from, to, latitude, longitude, journal, tokenId) {
     // build txJSON, save and get txURI
     const txJSON = {
       latitude: latitude,
       longitude: longitude,
-      journal: 'A new Entry.',
+      journal: journal,
     };
 
     const txURI = await this.odJsonService.getUri(txJSON);
-    const txURIBytpe32 = this.web3Service.fromAscii(txURI);
-
-    console.log('tx uri', txURI);
-    console.log('tx uri bytes32');
-    console.log(from, to, tokenId, txURI, txURIBytpe32);
 
     return await this.wanderingContract.methods
       .safeTransferFrom(from, to, tokenId, '0x0', txURI)
