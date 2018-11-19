@@ -18,11 +18,11 @@ contract WanderingToken is ERC721Full, Ownable {
     address[] public ownersLUT;
 
     constructor(
-        string _name, 
+        string _name,
         string _symbol,
         string _txURI,
         string _tokenURI
-    ) 
+    )
     ERC721Full(_name, _symbol) public payable {
         launchToken(_txURI, _tokenURI);
     }
@@ -77,8 +77,8 @@ contract WanderingToken is ERC721Full, Ownable {
         return address(this).balance;
     }
 
-    function getTxURI(address _owner, uint tokenId) 
-    public view 
+    function getTxURI(address _owner, uint tokenId)
+    public view
     returns(string) {
         return ownersHistoryByToken[tokenId][_owner].txURI;
     }

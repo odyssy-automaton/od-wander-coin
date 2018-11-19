@@ -12,6 +12,7 @@ class WanderingNew extends Component {
     latitude: '',
     longitude: '',
     toAddress: '',
+    journal: '',
     autolocated: false,
   };
 
@@ -27,6 +28,10 @@ class WanderingNew extends Component {
 
   handleAddressChange = (e) => {
     this.setState({ toAddress: e.target.value });
+  };
+
+  handleJournalChange = (e) => {
+    this.setState({ journal: e.target.value });
   };
 
   handleSelect = (address) => {
@@ -56,6 +61,7 @@ class WanderingNew extends Component {
       latitude: '',
       longitude: '',
       toAddress: '',
+      journal: '',
       autolocated: false,
     });
   };
@@ -84,7 +90,7 @@ class WanderingNew extends Component {
                   />
                   {this.state.streetAddress.length > 0 && (
                     <button
-                      className="Wandering__clear-button"
+                      className="button Wandering__clear-button"
                       onClick={this.handleCloseClick}
                     >
                       x
@@ -148,8 +154,17 @@ class WanderingNew extends Component {
               />
             </div>
             {showWarning ? (
-              <p>Becareful here and double check the address...</p>
+              <p>Be sure to double check the address...</p>
             ) : null}
+            <div>
+              <input
+                className="Wandering__journal-input"
+                type="text"
+                placeholder="Enter your wisdom 🎩"
+                value={this.journal}
+                onChange={this.handleJournalChange}
+              />
+            </div>
             <div>
               <button onClick={this.handleSubmit} disabled={invalidToAddress}>
                 Send the Coin
