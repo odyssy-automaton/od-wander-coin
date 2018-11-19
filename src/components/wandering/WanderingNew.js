@@ -81,21 +81,25 @@ class WanderingNew extends Component {
           {({ getInputProps, suggestions, getSuggestionItemProps }) => {
             return (
               <div className="Wandering__search-bar-container">
-                <div className="Wandering__search-input-container">
-                  <input
-                    {...getInputProps({
-                      placeholder: 'Enter a street address...',
-                      className: 'Wandering__search-input',
-                    })}
-                  />
-                  {this.state.streetAddress.length > 0 && (
-                    <button
-                      className="button Wandering__clear-button"
-                      onClick={this.handleCloseClick}
-                    >
-                      x
-                    </button>
-                  )}
+                <p className="large">You can send the Wander Coin to anyone you like as long as they have never held the coin before. When you send the coin, you can also add a message to your transaction which will also appear on the map along with your transaction. The goal is to pass the coin all the way around the world.</p>
+                <div className="step--1">
+                  <p><strong>1.</strong> First, check in with your location.</p>
+                  <div className="Wandering__search-input-container">
+                    <input
+                      {...getInputProps({
+                        placeholder: 'Enter your street address',
+                        className: 'Wandering__search-input',
+                      })}
+                    />
+                    {this.state.streetAddress.length > 0 && (
+                      <button
+                        className="Wandering__clear-button"
+                        onClick={this.handleCloseClick}
+                      >
+                        x
+                      </button>
+                    )}
+                  </div>
                 </div>
                 {this.state.autolocated && (
                   <div>
@@ -142,21 +146,21 @@ class WanderingNew extends Component {
 
         {this.state.latitude && (
           <div>
-            <p>Lat: {this.state.latitude}</p>
-            <p>Lng: {this.state.longitude}</p>
-            <div>
+            <div className="step--2">
+              <p><strong>2.</strong> Enter the etheruem wallet address for whom you'd like to send the coin.</p>
+              {showWarning ? (
+                <p className="tiny">Be sure to double check the address.</p>
+              ) : null}
               <input
                 className="Wandering__address-input"
                 type="text"
-                placeholder="to address"
+                placeholder="Enter the wallet address"
                 value={this.toAddress}
                 onChange={this.handleAddressChange}
               />
             </div>
-            {showWarning ? (
-              <p>Be sure to double check the address...</p>
-            ) : null}
-            <div>
+            <div className="step--3">
+              <p><strong>3.</strong> Share some wisdom along with the coin. (Optional)</p>
               <input
                 className="Wandering__journal-input"
                 type="text"
@@ -166,7 +170,7 @@ class WanderingNew extends Component {
               />
             </div>
             <div>
-              <button onClick={this.handleSubmit} disabled={invalidToAddress}>
+              <button className="button" onClick={this.handleSubmit} disabled={invalidToAddress}>
                 Send the Coin
               </button>
             </div>

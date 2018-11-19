@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
-import WanderingLaunch from './WanderingLaunch';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
-import TokenList from './token-list/TokenList';
 import OdJsonService from '../../utils/OdJsonService';
 
 import './Wandering.scss';
@@ -109,7 +107,7 @@ class Wandering extends Component {
             <p>What is this?</p>
             <p>
               Wander Coin is an experimental DApp and token model where there is
-              a supply of one non-fungible token to test various game theories.
+              a supply of one non-fungible token to test various game theories. The goal is to get the coin all the way around the world without touching the same wallet.
             </p>
             <a className="button od-primary" href="/">
               Read More
@@ -131,7 +129,8 @@ class Wandering extends Component {
                   </div>
                 ) : (
                   <div>
-                    <h2>You're holding the Wander Coin!</h2>
+                    <img alt="wander-coin icon" src="./src/assets/wander-coin.png" />
+                    <h2>The Wander Coin is in your wallet!</h2>
                     <WanderingNew onSubmit={this.handleSubmitAddressForm} />
                   </div>
                 )}
@@ -143,25 +142,9 @@ class Wandering extends Component {
                 onLoad={this.getBalance}
               />
             </div>
-            <div className="Wandering__token-launcher">
-              <p>You can also launch another token.</p>
-              <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
-            </div>
           </div>
           <div className="Wandering__map">
             <WanderingMapContainer coordinates={coordinates} />
-          </div>
-        </div>
-
-        <div className="Wandering__info">
-          <div>
-            <h3 className="Wandering__token-id">
-              Token # {this.props.tokenId} of {this.state.totalTokens} total
-            </h3>
-            <TokenList
-              onSelect={this.handleTokenSelect}
-              onLoad={this.getTotalTokens}
-            />
           </div>
         </div>
       </div>

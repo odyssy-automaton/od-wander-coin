@@ -31,25 +31,30 @@ class GasTank extends Component {
 
   render() {
     return (
-      <div>
-        <h5>GAS TANK</h5>
-        {this.state.balance > 0.1 && (
-          <p>Gas is healthy! ({this.state.balance} ETH)</p>
-        )}
-        {this.state.balance <= 0.1 && (
-          <p>Gas is dangerously low! ({this.state.balance} ETH)</p>
-        )}
-        <div>
-          <input
-            className="Wandering__address-input"
-            type="text"
-            placeholder="Amount of ETH"
-            value={this.state.amount}
-            onChange={this.handleChange}
-          />
-          <button className="button" onClick={this.handleSubmit}>
-            GIVE ME SOME GAS
-          </button>
+      <div className="GasTank">
+        <div className="GasTank__gas">
+          <div className="GasTank__bar" />
+        </div>
+        <div className="GasTank__info">
+          <h5>GAS TANK</h5>
+          {this.state.balance > 0.1 && (
+            <p className="color--success">Gas is healthy! ({this.state.balance} ETH)</p>
+          )}
+          {this.state.balance <= 0.1 && (
+            <p className="color--danger">Gas is dangerously low! ({this.state.balance} ETH)</p>
+          )}
+          <div>
+            <input
+              className="Wandering__address-input"
+              type="text"
+              placeholder="Amount of ETH"
+              value={this.state.amount}
+              onChange={this.handleChange}
+            />
+            <button className="button" onClick={this.handleSubmit}>
+              GIVE ME SOME GAS
+            </button>
+          </div>
         </div>
       </div>
     );

@@ -8,6 +8,7 @@ $primary-color: rgba(38,28,70,1);
   align-items: center;
   padding-left: 25px;
   padding-right: 25px;
+  width: calc(100% - 50px);
 }
 
 .Header__title {
@@ -16,4 +17,19 @@ $primary-color: rgba(38,28,70,1);
   margin-bottom: 0px;
   font-size: 2em;
   font-weight: 300;
+}
+
+.Logo {
+  flex-basis: 33%;
+}
+
+.Navigation--Desktop {
+  flex-basis: 66;
+  margin-left: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > *:not(first-child) {
+    margin-left: 50px;
+  }
 }
