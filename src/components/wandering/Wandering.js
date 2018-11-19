@@ -123,7 +123,6 @@ class Wandering extends Component {
                       Ethereum Network and connected to the wallet that the coin
                       was sent to.
                     </p>
-                    <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
                   </div>
                 ) : (
                   <div>
@@ -138,6 +137,10 @@ class Wandering extends Component {
                 onSubmit={this.handleSubmitGasForm}
                 onLoad={this.getBalance}
               />
+            </div>
+            <div className="Wandering__token-launcher">
+              <p>You can also launch another token.</p>
+              <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
             </div>
           </div>
           <div className="Wandering__map">

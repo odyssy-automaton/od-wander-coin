@@ -84,7 +84,7 @@ class WanderingNew extends Component {
                   />
                   {this.state.streetAddress.length > 0 && (
                     <button
-                      className="Wandering__clear-button"
+                      className="button Wandering__clear-button"
                       onClick={this.handleCloseClick}
                     >
                       x
@@ -148,7 +148,7 @@ class WanderingNew extends Component {
               />
             </div>
             {showWarning ? (
-              <p>Becareful here and double check the address...</p>
+              <p>Be sure to double check the address...</p>
             ) : null}
             <div>
               <button onClick={this.handleSubmit} disabled={invalidToAddress}>

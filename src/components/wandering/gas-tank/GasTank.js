@@ -36,7 +36,7 @@ class GasTank extends Component {
         {this.state.balance > 0.1 && (
           <p>Gas is healthy! ({this.state.balance} ETH)</p>
         )}
-        {this.state.balance < 0.1 && (
+        {this.state.balance <= 0.1 && (
           <p>Gas is dangerously low! ({this.state.balance} ETH)</p>
         )}
         <div>
