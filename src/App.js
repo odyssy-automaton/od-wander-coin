@@ -25,6 +25,7 @@ class App extends Component {
       const web3 = clientInfo.web3Info.web3;
       const accounts = clientInfo.web3Info.accounts;
       const network = clientInfo.web3Info.networkType;
+      const env = clientInfo.web3Info.env;
 
       this.setState({
         accounts,
@@ -32,6 +33,7 @@ class App extends Component {
         browserInfo,
         web3Info,
         network,
+        env,
       });
     } catch (error) {
       const web3 = 'not installed';
@@ -46,7 +48,7 @@ class App extends Component {
   };
 
   render() {
-    const { accounts, network, web3 } = this.state;
+    const { accounts, network, web3, env } = this.state;
 
     return (
       <div>
@@ -54,7 +56,10 @@ class App extends Component {
           <BrowserRouter>
             <Fragment>
               <Header />
-              {web3 && accounts && network ? (
+              {web3 &&
+              accounts &&
+              ((env === 'development' && network === 'private') ||
+                env === 'production') ? (
                 <div>
                   <Routes />
                 </div>
@@ -72,7 +77,10 @@ class App extends Component {
                 </div>
               ) : (
                 <div>
-                  <h2>Whoops! Somthing went wrong with the network.</h2>
+                  <h2>
+                    Whoops! looks like you are devloping locally. Are you on a
+                    private test rpc?
+                  </h2>
                 </div>
               )}
             </Fragment>
