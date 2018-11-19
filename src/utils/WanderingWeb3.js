@@ -1,5 +1,6 @@
-import WanderingAbi from '../../src/dist/WanderingToken.json';
+import WanderingAbi from '../../src/dist/contracts/WanderingToken.json';
 import { getWeb3ServiceInstance } from './Web3Service';
+import OdJsonService from './OdJsonService';
 
 export default class WanderingService {
   web3Service;
@@ -7,7 +8,20 @@ export default class WanderingService {
 
   constructor() {
     this.web3Service = getWeb3ServiceInstance();
-    this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+    this.odJsonService = new OdJsonService();
+
+    if (process.env.NODE_ENV === 'development') {
+      this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
+    } else {
+      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+    }
+    console.log(
+      'env',
+      process.env.NODE_ENV,
+      this.tokenAddress,
+      process.env.REACT_APP_CONTRACT_ADDRESS,
+      process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
+    );
   }
 
   async initContracts() {
@@ -18,20 +32,42 @@ export default class WanderingService {
   }
 
   async sendTo(from, to, latitude, longitude, tokenId) {
-    const latInt = this.coordinateToInt(latitude);
-    const lngInt = this.coordinateToInt(longitude);
+    // build txJSON, save and get txURI
+    const txJSON = {
+      latitude: latitude,
+      longitude: longitude,
+      journal: 'A new Entry.',
+    };
+
+    const txURI = await this.odJsonService.getUri(txJSON);
+    const txURIBytpe32 = this.web3Service.fromAscii(txURI);
+
+    console.log('tx uri', txURI);
+    console.log('tx uri bytes32');
+    console.log(from, to, tokenId, txURI, txURIBytpe32);
 
     return await this.wanderingContract.methods
-      .safeTransferFrom(from, to, latInt, lngInt, tokenId)
+      .safeTransferFrom(from, to, tokenId, '0x0', txURI)
       .send({ from: from });
   }
 
   async launchToken(from, latitude, longitude) {
-    const latInt = this.coordinateToInt(latitude);
-    const lngInt = this.coordinateToInt(longitude);
+    // build txJSON, save and get txURI
+    const txJSON = {
+      latitude: latitude,
+      longitude: longitude,
+      journal: 'A new start.',
+    };
+    const tokenJSON = {
+      name: 'WanderCoin',
+      description: 'A token that wanders around the world.',
+      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.jpg',
+    };
+    const txURI = await this.odJsonService.getUri(txJSON);
+    const tokenURI = await this.odJsonService.getUri(tokenJSON);
 
     await this.wanderingContract.methods
-      .launchToken(latInt, lngInt)
+      .launchToken(txURI, tokenURI)
       .send({ from: from });
 
     return await this.wanderingContract.methods.totalSupply().call();
@@ -45,10 +81,7 @@ export default class WanderingService {
     const res = await this.wanderingContract.methods
       .getCoordinates(address, tokenId)
       .call();
-    return {
-      lat: this.intToCoordinate(res.latitude),
-      lng: this.intToCoordinate(res.longitude),
-    };
+    return res;
   }
 
   async getOwner(tokenId = 1) {
@@ -69,10 +102,24 @@ export default class WanderingService {
         }
         owners.push(addr);
 
-        let coord = await contract.getCoordinates(addr, tokenId).call();
+        let txURI = await contract.getTxURI(addr, tokenId).call();
+        console.log('huh', txURI);
+        //console.log('huh', this.web3Service.toAscii(txURI));
+
+        const txJSON = await fetch(txURI, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }).then(function(response) {
+          return response.json();
+        });
+        console.log(txJSON.latitude, txJSON.longitude);
+
         coords.push({
-          lat: this.intToCoordinate(coord.latitude),
-          lng: this.intToCoordinate(coord.longitude),
+          lat: txJSON.latitude,
+          lng: txJSON.longitude,
+          journal: txJSON.journal,
         });
       }
     }
@@ -86,7 +133,7 @@ export default class WanderingService {
   async sendTransaction(from, value) {
     this.web3Service.web3.eth.sendTransaction({
       from: from,
-      to: process.env.REACT_APP_CONTRACT_ADDRESS,
+      to: this.tokenAddress,
       value: value,
     });
   }

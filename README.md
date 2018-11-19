@@ -6,7 +6,7 @@ coming soon
 truffle-flattener contracts/WanderingToken.sol > FlattenedWanderingToken.sol
 
 ### compile
-truffle compile --contracts_build_directory=./src/dist
+truffle compile --contracts_build_directory=./src/dist/contracts
 
 ### deploy to rinkbey info
 Running migration: 1_initial_migration.js

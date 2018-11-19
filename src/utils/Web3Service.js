@@ -10,9 +10,16 @@ export default class Web3Service {
     if (typeof window.web3 !== 'undefined') {
       this.web3 = new Web3(window.web3.currentProvider);
     }
-    provider = new Web3.providers['HttpProvider'](
-      process.env.REACT_APP_REMOTE_WEB3_PROVIDER,
-    );
+
+    if (process.env.NODE_ENV === 'development') {
+      provider = new Web3.providers['HttpProvider'](
+        process.env.REACT_APP_LOC_REMOTE_WEB3_PROVIDER,
+      );
+    } else {
+      provider = new Web3.providers['HttpProvider'](
+        process.env.REACT_APP_REMOTE_WEB3_PROVIDER,
+      );
+    }
 
     this.web3Remote = new Web3(provider);
     this.mainAccount = await this.getMainAccount();
@@ -44,6 +51,14 @@ export default class Web3Service {
 
   async toEth(amount) {
     return await this.web3.utils.fromWei(amount, 'ether');
+  }
+
+  fromAscii(value) {
+    return this.web3.utils.fromAscii(value);
+  }
+
+  toAscii(value) {
+    return this.web3.utils.toAscii(value);
   }
 }
 

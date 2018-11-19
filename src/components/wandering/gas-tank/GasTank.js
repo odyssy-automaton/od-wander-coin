@@ -32,13 +32,13 @@ class GasTank extends Component {
   render() {
     return (
       <div>
-          <h5>GAS TANK</h5>
-          { this.state.balance > 0.1 &&
-            <p>Gas is healthy! ({this.state.balance} ETH)</p>
-          }
-          { this.state.balance < 0.1 &&
-            <p>Gas is dangerously low! ({this.state.balance} ETH)</p>
-          }
+        <h5>GAS TANK</h5>
+        {this.state.balance > 0.1 && (
+          <p>Gas is healthy! ({this.state.balance} ETH)</p>
+        )}
+        {this.state.balance < 0.1 && (
+          <p>Gas is dangerously low! ({this.state.balance} ETH)</p>
+        )}
         <div>
           <input
             className="Wandering__address-input"
@@ -47,7 +47,9 @@ class GasTank extends Component {
             value={this.state.amount}
             onChange={this.handleChange}
           />
-          <button className="button" onClick={this.handleSubmit}>GIVE ME SOME GAS</button>
+          <button className="button" onClick={this.handleSubmit}>
+            GIVE ME SOME GAS
+          </button>
         </div>
       </div>
     );
