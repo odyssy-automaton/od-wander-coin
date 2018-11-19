@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { AccountConsumer } from '../../../contexts/AccountContext';
+import { ClientInfoConsumer } from '../../../contexts/ClientInfoContext';
 
 import './Header.scss';
 
 class Header extends Component {
   render() {
     return (
-      <AccountConsumer>
+      <ClientInfoConsumer>
         {(context) => (
           <div className="Header">
             <div>
@@ -21,7 +21,7 @@ class Header extends Component {
             {context.accounts && <p>{context.accounts[0]}</p>}
           </div>
         )}
-      </AccountConsumer>
+      </ClientInfoConsumer>
     );
   }
 }
