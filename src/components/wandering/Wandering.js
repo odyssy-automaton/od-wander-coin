@@ -61,7 +61,7 @@ class Wandering extends Component {
       },
     ];
 
-    this.setState({ coordinates });
+    this.setState({ coordinates, owner: transfer.toAddress });
   };
 
   handleSubmitGasForm = async (amount) => {
