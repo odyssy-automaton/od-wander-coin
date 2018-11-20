@@ -27,6 +27,10 @@ class GasTank extends Component {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
 
+    if (!transfer.amount) {
+      throw 'value must not be empty';
+    }
+
     await onSubmit(transfer);
 
     this.setState({

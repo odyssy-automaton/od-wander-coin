@@ -138,11 +138,18 @@ export default class WanderingService {
   }
 
   async sendTransaction(from, value) {
-    return this.web3Service.web3.eth.sendTransaction({
-      from: from,
-      to: this.tokenAddress,
-      value: value,
-    });
+    return this.web3Service.web3.eth
+      .sendTransaction({
+        from: from,
+        to: this.tokenAddress,
+        value: value,
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   toEth(value) {
