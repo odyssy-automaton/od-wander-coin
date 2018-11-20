@@ -132,7 +132,7 @@ class Wandering extends Component {
                   </div>
                 ) : (
                   <div>
-                    <img alt="wander-coin icon" src={icon} />
+                    <img alt="wander-coin icon" src={icon} width="100px" height='100px'/>
                     <h2>The Wander Coin is in your wallet!</h2>
                     <WanderingNew onSubmit={this.handleSubmitAddressForm} />
                   </div>
