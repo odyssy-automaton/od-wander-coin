@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import CircularProgressbar from 'react-circular-progressbar';
-import GradientSVG from '../../../components/shared/gradient-svg/GradientSVG.js'
+import GaugeChart from '../../../components/shared/gauge-chart/GaugeChart.js'
 
 import './GasTank.scss'
 
@@ -31,35 +30,23 @@ class GasTank extends Component {
 
     this.setState({ amount: '' });
     this.getBalance();
+    this.chartValue = this.state.balance * 1000;
   };
 
   render() {
     // Set percentage
-    const percentage = (this.state.balance * 1000);
+    const chartValue = (this.state.balance * 500);
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
-          <GradientSVG
-            startColor='#F88073'
-            endColor='#5f5fff'
-            rotation='90'
-            idCSS='gas'
-          />
-          <CircularProgressbar
-            className="GasTank__bar"
-            percentage={percentage}
-            text={`${this.state.balance} ETH`}
-            styles={{
-              text: { fill: '#f88', fontSize: '16px' },
-            }}
-          />
+          <h5>GAS TANK</h5>
+          <GaugeChart dataKey={chartValue}/>
         </div>
         <div className="GasTank__info">
-          <h5>GAS TANK</h5>
-          {this.state.balance > 0.05 && (
-            <p className="color--success">Gas is healthy! ({this.state.balance} ETH)</p>
+          {this.state.balance > 0.01 && (
+            <p className="color--success">Gas is Healthy! ({this.state.balance} ETH)</p>
           )}
-          {this.state.balance <= 0.05 && (
+          {this.state.balance <= 0.01 &&  (
             <p className="color--danger">Gas is dangerously low! ({this.state.balance} ETH)</p>
           )}
           <div>
