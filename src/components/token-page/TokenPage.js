@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Switch, Route, Redirect } from 'react-router';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import TokenList from './token-list/TokenList';
