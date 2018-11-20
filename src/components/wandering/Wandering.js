@@ -7,6 +7,7 @@ import GasTank from './gas-tank/GasTank';
 import OdJsonService from '../../utils/OdJsonService';
 
 import './Wandering.scss';
+import icon from '../../assets/wander-coin.png';
 
 class Wandering extends Component {
   state = {
@@ -107,7 +108,9 @@ class Wandering extends Component {
             <p>What is this?</p>
             <p>
               Wander Coin is an experimental DApp and token model where there is
-              a supply of one non-fungible token to test various game theories. The goal is to get the coin all the way around the world without touching the same wallet.
+              a supply of one non-fungible token to test various game theories.
+              The goal is to get the coin all the way around the world without
+              touching the same wallet.
             </p>
             <a className="button od-primary" href="/">
               Read More
@@ -129,7 +132,7 @@ class Wandering extends Component {
                   </div>
                 ) : (
                   <div>
-                    <img alt="wander-coin icon" src="./src/assets/wander-coin.png" />
+                    <img alt="wander-coin icon" src={icon} />
                     <h2>The Wander Coin is in your wallet!</h2>
                     <WanderingNew onSubmit={this.handleSubmitAddressForm} />
                   </div>
