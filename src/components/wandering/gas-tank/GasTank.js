@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import CircularProgressbar from 'react-circular-progressbar';
 
 class GasTank extends Component {
   state = {
@@ -30,10 +31,21 @@ class GasTank extends Component {
   };
 
   render() {
+    // Set percentage
+    const percentage = (this.state.balance * 100);
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
-          <div className="GasTank__bar" />
+          <CircularProgressbar
+            className="GasTank__bar"
+            percentage={percentage}
+            text={`${percentage} ETH`}
+            styles={{
+              path: { stroke: `rgba(62, 152, 199, ${percentage / 100})` },
+              text: { fill: '#f88', fontSize: '16px' },
+              trail: { stroke: `red`},
+            }}
+          />
         </div>
         <div className="GasTank__info">
           <h5>GAS TANK</h5>
