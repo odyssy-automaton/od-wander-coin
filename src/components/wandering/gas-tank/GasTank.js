@@ -35,7 +35,7 @@ class GasTank extends Component {
 
   render() {
     // Set percentage
-    const percentage = (this.state.balance * 100);
+    const percentage = (this.state.balance * 1000);
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
@@ -56,10 +56,10 @@ class GasTank extends Component {
         </div>
         <div className="GasTank__info">
           <h5>GAS TANK</h5>
-          {this.state.balance > 0.1 && (
+          {this.state.balance > 0.05 && (
             <p className="color--success">Gas is healthy! ({this.state.balance} ETH)</p>
           )}
-          {this.state.balance <= 0.1 && (
+          {this.state.balance <= 0.05 && (
             <p className="color--danger">Gas is dangerously low! ({this.state.balance} ETH)</p>
           )}
           <div>
