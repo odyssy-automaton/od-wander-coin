@@ -46,12 +46,12 @@ export default class WanderingService {
       .send({ from: from });
   }
 
-  async launchToken(from, latitude, longitude) {
+  async launchToken(from, latitude, longitude, journal) {
     // build txJSON, save and get txURI
     const txJSON = {
       latitude: latitude,
       longitude: longitude,
-      journal: 'A new start.',
+      journal: journal,
     };
     const tokenJSON = {
       name: 'WanderCoin',

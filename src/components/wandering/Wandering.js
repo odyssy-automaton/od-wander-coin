@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
-import WanderingLaunch from './WanderingLaunch';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
-import TokenList from './token-list/TokenList';
-import OdJsonService from '../../utils/OdJsonService';
 
 import './Wandering.scss';
+import icon from '../../assets/wander-coin.png';
 
 class Wandering extends Component {
   state = {
@@ -17,29 +15,17 @@ class Wandering extends Component {
     latitude: null,
     owner: null,
     coordinates: [],
-    totalTokens: null,
   };
 
   componentDidMount() {
     this.wanderingService = new WanderingService(this.props.web3);
-    this.odJsonService = new OdJsonService();
     this.loadContract();
   }
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    const totalTokens = await this.getTotalTokens();
-    this.setState({ contract, totalTokens });
+    this.setState({ contract });
     this.getOwner();
-  };
-
-  getTotalTokens = async () => {
-    return await this.wanderingService.getTotalSupply();
-  };
-
-  handleTokenSelect = (tokenNumber) => {
-    console.log('handleTokenSelect', tokenNumber);
-    window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   getOwner = async () => {
@@ -49,6 +35,11 @@ class Wandering extends Component {
     );
     const coordinates = [...this.state.coordinates, ...coords];
     this.setState({ owner, coordinates });
+  };
+
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    return this.wanderingService.toEth(balance);
   };
 
   handleSubmitAddressForm = async (transfer) => {
@@ -73,27 +64,12 @@ class Wandering extends Component {
     this.setState({ coordinates });
   };
 
-  handleSubmitLaunchForm = async (transfer) => {
-    const newToken = await this.wanderingService.launchToken(
-      this.props.account,
-      transfer.latitude,
-      transfer.longitude,
-    );
-
-    console.log('new token is:', newToken);
-  };
-
   handleSubmitGasForm = async (amount) => {
     const amountInWei = await this.wanderingService.toWei(amount.amount);
     await this.wanderingService.sendTransaction(
       this.props.account,
       amountInWei,
     );
-  };
-
-  getBalance = async () => {
-    const balance = await this.wanderingService.balanceOfTank();
-    return this.wanderingService.toEth(balance);
   };
 
   render() {
@@ -110,6 +86,8 @@ class Wandering extends Component {
             <p>
               Wander Coin is an experimental DApp and token model where there is
               a supply of one non-fungible token to test various game theories.
+              The goal is to get the coin all the way around the world without
+              touching the same wallet.
             </p>
             <a className="button od-primary" href="/">
               Read More
@@ -131,7 +109,8 @@ class Wandering extends Component {
                   </div>
                 ) : (
                   <div>
-                    <h2>You're holding the Wander Coin!</h2>
+                    <img alt="wander-coin icon" src={icon} width="100px" height='100px'/>
+                    <h2>The Wander Coin is in your wallet!</h2>
                     <WanderingNew onSubmit={this.handleSubmitAddressForm} />
                   </div>
                 )}
@@ -143,25 +122,9 @@ class Wandering extends Component {
                 onLoad={this.getBalance}
               />
             </div>
-            <div className="Wandering__token-launcher">
-              <p>You can also launch another token.</p>
-              <WanderingLaunch onSubmit={this.handleSubmitLaunchForm} />
-            </div>
           </div>
           <div className="Wandering__map">
             <WanderingMapContainer coordinates={coordinates} />
-          </div>
-        </div>
-
-        <div className="Wandering__info">
-          <div>
-            <h3 className="Wandering__token-id">
-              Token # {this.props.tokenId} of {this.state.totalTokens} total
-            </h3>
-            <TokenList
-              onSelect={this.handleTokenSelect}
-              onLoad={this.getTotalTokens}
-            />
           </div>
         </div>
       </div>

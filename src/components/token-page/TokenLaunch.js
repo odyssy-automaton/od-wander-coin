@@ -4,12 +4,13 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 
-class WanderingNew extends Component {
+class TokenLaunch extends Component {
   state = {
     streetAddress: '',
     latitude: '',
     longitude: '',
     toAddress: '',
+    journal: '',
   };
 
   handleChange = (streetAddress) => {
@@ -33,6 +34,10 @@ class WanderingNew extends Component {
       .catch((error) => console.error('Error', error));
   };
 
+  handleJournalChange = (e) => {
+    this.setState({ journal: e.target.value });
+  };
+
   handleSubmit = () => {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
@@ -46,6 +51,7 @@ class WanderingNew extends Component {
       latitude: '',
       longitude: '',
       toAddress: '',
+      journal: '',
     });
   };
 
@@ -66,7 +72,7 @@ class WanderingNew extends Component {
                 <div className="Wandering__search-input-container">
                   <input
                     {...getInputProps({
-                      placeholder: 'Launch the coin from...',
+                      placeholder: 'Launch A new token from...',
                       className: 'Wandering__search-input',
                     })}
                   />
@@ -110,6 +116,19 @@ class WanderingNew extends Component {
             {showWarning ? <p>New coins origin will be...</p> : null}
             <p>Lat: {this.state.latitude}</p>
             <p>Lng: {this.state.longitude}</p>
+            <div className="step--1">
+              <p>
+                <strong>1.</strong> Share some wisdom along with the coin.
+                (Optional)
+              </p>
+              <input
+                className="Wandering__journal-input"
+                type="text"
+                placeholder="Enter your wisdom 🎩"
+                value={this.journal}
+                onChange={this.handleJournalChange}
+              />
+            </div>
             <div>
               <button onClick={this.handleSubmit}>Luanch the Coin</button>
             </div>
@@ -120,4 +139,4 @@ class WanderingNew extends Component {
   }
 }
 
-export default WanderingNew;
+export default TokenLaunch;

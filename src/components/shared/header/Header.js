@@ -10,15 +10,17 @@ class Header extends Component {
       <ClientInfoConsumer>
         {(context) => (
           <div className="Header">
-            <div>
+            <div className="Logo">
               <h1 className="Header__title">
                 <Link to="/">Wander Coin</Link>
               </h1>
             </div>
-            <Link to="/about">About</Link>
-            <Link to="/data">Data</Link>
-            <Link to="/tokens">Tokens</Link>
-            {context.accounts && <p>{context.accounts[0]}</p>}
+            <div className="Navigation--Desktop">
+              <Link to="/about">About</Link>
+              <Link to="/data">Data</Link>
+              <Link to="/tokens">Tokens</Link>
+              {context.accounts && <p>{context.accounts[0]}</p>}
+            </div>
           </div>
         )}
       </ClientInfoConsumer>

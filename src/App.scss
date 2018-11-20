@@ -7,3 +7,38 @@
 p.tiny {
   font-size: .75em;
 }
+
+p.large {
+  font-size: 1.15em;
+  color: #999;
+  font-weight: 100;
+}
+
+// utils
+.color--success {
+  color: green;
+}
+
+.color--danger {
+  color: red;
+}
+
+.GasTank {
+  .GasTank__gas {
+    float: left;
+    width: auto;
+    padding: 25px 25px 25px 0px;
+    .GasTank__bar {
+      width: 70px;
+      height: 70px;
+      text {
+        width: 100%;
+      }
+    }
+  }
+  .GasTank__info {
+    float: right;
+    width: calc(100% - 120px);
+
+  }
+}
