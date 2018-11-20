@@ -3,15 +3,11 @@ import React, { Component } from 'react';
 class TokenList extends Component {
   state = {
     totalTokens: '',
-    tokenNumber: 1,
+    tokenNumber: '',
   };
 
   componentDidMount() {
     this.getTotalTokens();
-    if (window.location.pathname !== '/') {
-      const tokenNumber = +window.location.pathname.split('/')[2];
-      this.setState({ tokenNumber: tokenNumber });
-    }
   }
 
   getTotalTokens = async () => {
@@ -30,9 +26,15 @@ class TokenList extends Component {
   };
 
   render() {
+    console.log(
+      'test!!!!!!!!!!!!1',
+      this.state.totalTokens,
+      this.state.tokenNumber,
+    );
+
     return (
       <div>
-        <h3>Token List {this.state.totalTokens}</h3>
+        <h3>Token List: {this.state.totalTokens} total</h3>
         <form>
           <select onChange={this.handleSelect} value={this.state.tokenNumber}>
             {[...Array(+this.state.totalTokens).keys()].map((i) => {

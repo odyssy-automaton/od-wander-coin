@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Switch, Route, Redirect } from 'react-router';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import TokenList from './token-list/TokenList';
+import { withRouter } from 'react-router-dom';
 
 class TokenPage extends Component {
   state = {
@@ -26,21 +28,24 @@ class TokenPage extends Component {
   };
 
   handleTokenSelect = (tokenNumber) => {
-    console.log('handleTokenSelect', tokenNumber);
-    window.location = `${window.location.origin}/${tokenNumber}`;
+    console.log('handleTokenSelect', this.props);
+
+    this.props.history.push(`/tokens/${tokenNumber}`);
+    // window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   render() {
     return (
       <div>
-        <h3>contract {this.state.totalTokens}</h3>
-        <TokenList
-          onLoad={this.getTotalTokens}
-          onSelect={this.handleTokenSelect}
-        />
+        {this.state.totalTokens ? (
+          <TokenList
+            onLoad={this.getTotalTokens}
+            onSelect={this.handleTokenSelect}
+          />
+        ) : null}
       </div>
     );
   }
 }
 
-export default TokenPage;
+export default withRouter(TokenPage);
