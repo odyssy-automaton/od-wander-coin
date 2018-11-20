@@ -4,7 +4,6 @@ import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
-import OdJsonService from '../../utils/OdJsonService';
 
 import './Wandering.scss';
 import icon from '../../assets/wander-coin.png';
@@ -16,7 +15,6 @@ class Wandering extends Component {
     latitude: null,
     owner: null,
     coordinates: [],
-    totalTokens: null,
   };
 
   componentDidMount() {
@@ -26,13 +24,8 @@ class Wandering extends Component {
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    const totalTokens = await this.getTotalTokens();
-    this.setState({ contract, totalTokens });
+    this.setState({ contract });
     this.getOwner();
-  };
-
-  getTotalTokens = async () => {
-    return await this.wanderingService.getTotalSupply();
   };
 
   getOwner = async () => {
@@ -47,11 +40,6 @@ class Wandering extends Component {
   getBalance = async () => {
     const balance = await this.wanderingService.balanceOfTank();
     return this.wanderingService.toEth(balance);
-  };
-
-  handleTokenSelect = (tokenNumber) => {
-    console.log('handleTokenSelect', tokenNumber);
-    window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   handleSubmitAddressForm = async (transfer) => {
@@ -74,16 +62,6 @@ class Wandering extends Component {
     ];
 
     this.setState({ coordinates });
-  };
-
-  handleSubmitLaunchForm = async (transfer) => {
-    const newToken = await this.wanderingService.launchToken(
-      this.props.account,
-      transfer.latitude,
-      transfer.longitude,
-    );
-
-    console.log('new token is:', newToken);
   };
 
   handleSubmitGasForm = async (amount) => {

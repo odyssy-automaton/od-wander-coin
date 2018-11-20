@@ -30,6 +30,7 @@ class TokenList extends Component {
       <div>
         <h3>Token List: {this.state.totalTokens} total</h3>
         <form>
+          Go To: &nbsp;
           <select onChange={this.handleSelect} value={this.state.tokenNumber}>
             {[...Array(+this.state.totalTokens).keys()].map((i) => {
               return (

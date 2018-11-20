@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 
 import WanderingService from '../../utils/WanderingWeb3';
-import TokenList from './token-list/TokenList';
+import TokenList from './TokenList';
+import TokenLaunch from './TokenLaunch';
 import { withRouter } from 'react-router-dom';
 
 class TokenPage extends Component {
@@ -32,15 +33,28 @@ class TokenPage extends Component {
     this.props.history.push(`/tokens/${tokenNumber}`);
   };
 
+  handleSubmitLaunchForm = async (transfer) => {
+    const newToken = await this.wanderingService.launchToken(
+      this.props.account,
+      transfer.latitude,
+      transfer.longitude,
+      transfer.journal,
+    );
+    this.props.history.push(`/tokens/${newToken}`);
+  };
+
   render() {
     return (
       <div>
+        <p>EXPLORE THE CURRENT TOKENS</p>
         {this.state.totalTokens ? (
           <TokenList
             onLoad={this.getTotalTokens}
             onSelect={this.handleTokenSelect}
           />
         ) : null}
+        <p>OR: </p>
+        <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
       </div>
     );
   }
