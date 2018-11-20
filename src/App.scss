@@ -31,8 +31,9 @@ p.large {
     .GasTank__bar {
       width: 70px;
       height: 70px;
-      border-radius: 50%;
-      border: 10px solid red;
+      text {
+        width: 100%;
+      }
     }
   }
   .GasTank__info {
