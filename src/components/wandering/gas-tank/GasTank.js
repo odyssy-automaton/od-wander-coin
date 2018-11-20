@@ -23,12 +23,16 @@ class GasTank extends Component {
     this.setState({ amount: e.target.value });
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
-    onSubmit(transfer);
 
-    this.setState({ amount: '' });
+    await onSubmit(transfer);
+
+    this.setState({
+      amount: '',
+    });
+
     this.getBalance();
     this.chartValue = this.state.balance * 1000;
   };

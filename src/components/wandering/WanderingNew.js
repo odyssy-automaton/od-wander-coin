@@ -184,13 +184,17 @@ class WanderingNew extends Component {
               />
             </div>
             <div>
-              <button
-                className="button"
-                onClick={this.handleSubmit}
-                disabled={invalidToAddress}
-              >
-                Send the Coin
-              </button>
+              {!this.props.loading ? (
+                <button
+                  className="button"
+                  onClick={this.handleSubmit}
+                  disabled={invalidToAddress}
+                >
+                  Send the Coin
+                </button>
+              ) : (
+                <p class="tiny">Waiting on tx ...</p>
+              )}
             </div>
           </div>
         )}
