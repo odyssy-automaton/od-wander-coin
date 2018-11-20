@@ -30,10 +30,10 @@
   display: flex;
   min-height: calc(100vh - 160px);
   .sidenav {
-    flex-basis: 25%;
+    width: 500px
   }
   .Wandering__map {
-    flex-basis: 75%;
+    flex-basis: calc(100% - 500px);
   }
 }
 
