@@ -41,9 +41,15 @@ export default class WanderingService {
 
     const txURI = await this.odJsonService.getUri(txJSON);
 
-    return await this.wanderingContract.methods
+    return this.wanderingContract.methods
       .safeTransferFrom(from, to, tokenId, '0x0', txURI)
-      .send({ from: from });
+      .send({ from: from })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   async launchToken(from, latitude, longitude, journal) {
@@ -81,6 +87,12 @@ export default class WanderingService {
 
   async getOwner(tokenId = 1) {
     return await this.wanderingContract.methods.ownerOf(tokenId).call();
+  }
+
+  async addrHasOwned(addr, tokenId = 1) {
+    return await this.wanderingContract.methods
+      .addrHasOwned(addr, tokenId)
+      .call();
   }
 
   async getAllOwnerCords(tokenId = 1) {
