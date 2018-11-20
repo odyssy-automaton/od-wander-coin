@@ -56,7 +56,7 @@ export default class WanderingService {
     const tokenJSON = {
       name: 'WanderCoin',
       description: 'A token that wanders around the world.',
-      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.jpg',
+      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.png',
     };
     const txURI = await this.odJsonService.getUri(txJSON);
     const tokenURI = await this.odJsonService.getUri(tokenJSON);
@@ -122,11 +122,11 @@ export default class WanderingService {
   }
 
   async balanceOfTank() {
-    return await this.wanderingContract.methods.balanceOfTank().call();
+    return this.wanderingContract.methods.balanceOfTank().call();
   }
 
   async sendTransaction(from, value) {
-    this.web3Service.web3.eth.sendTransaction({
+    return this.web3Service.web3.eth.sendTransaction({
       from: from,
       to: this.tokenAddress,
       value: value,

@@ -66,7 +66,7 @@ class Wandering extends Component {
 
   handleSubmitGasForm = async (amount) => {
     const amountInWei = await this.wanderingService.toWei(amount.amount);
-    await this.wanderingService.sendTransaction(
+    return this.wanderingService.sendTransaction(
       this.props.account,
       amountInWei,
     );
@@ -109,7 +109,12 @@ class Wandering extends Component {
                   </div>
                 ) : (
                   <div>
-                    <img alt="wander-coin icon" src={icon} width="100px" height='100px'/>
+                    <img
+                      alt="wander-coin icon"
+                      src={icon}
+                      width="100px"
+                      height="100px"
+                    />
                     <h2>The Wander Coin is in your wallet!</h2>
                     <WanderingNew onSubmit={this.handleSubmitAddressForm} />
                   </div>
