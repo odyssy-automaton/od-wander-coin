@@ -30,7 +30,6 @@ class TokenPage extends Component {
     console.log('handleTokenSelect', this.props);
 
     this.props.history.push(`/tokens/${tokenNumber}`);
-    // window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   render() {

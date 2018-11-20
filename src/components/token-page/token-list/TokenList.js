@@ -26,12 +26,6 @@ class TokenList extends Component {
   };
 
   render() {
-    console.log(
-      'test!!!!!!!!!!!!1',
-      this.state.totalTokens,
-      this.state.tokenNumber,
-    );
-
     return (
       <div>
         <h3>Token List: {this.state.totalTokens} total</h3>
