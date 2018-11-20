@@ -21,18 +21,22 @@ class GasTank extends Component {
     this.setState({ amount: e.target.value });
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
-    onSubmit(transfer);
 
-    this.setState({ amount: '' });
+    await onSubmit(transfer);
+
+    this.setState({
+      amount: '',
+    });
+
     this.getBalance();
   };
 
   render() {
     // Set percentage
-    const percentage = (this.state.balance * 100);
+    const percentage = this.state.balance * 100;
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
@@ -43,17 +47,21 @@ class GasTank extends Component {
             styles={{
               path: { stroke: `rgba(62, 152, 199, ${percentage / 100})` },
               text: { fill: '#f88', fontSize: '16px' },
-              trail: { stroke: `red`},
+              trail: { stroke: `red` },
             }}
           />
         </div>
         <div className="GasTank__info">
           <h5>GAS TANK</h5>
           {this.state.balance > 0.1 && (
-            <p className="color--success">Gas is healthy! ({this.state.balance} ETH)</p>
+            <p className="color--success">
+              Gas is healthy! ({this.state.balance} ETH)
+            </p>
           )}
           {this.state.balance <= 0.1 && (
-            <p className="color--danger">Gas is dangerously low! ({this.state.balance} ETH)</p>
+            <p className="color--danger">
+              Gas is dangerously low! ({this.state.balance} ETH)
+            </p>
           )}
           <div>
             <input
