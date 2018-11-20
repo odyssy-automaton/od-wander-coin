@@ -4,7 +4,6 @@ import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
-import OdJsonService from '../../utils/OdJsonService';
 
 import './Wandering.scss';
 import icon from '../../assets/wander-coin.png';
@@ -16,29 +15,17 @@ class Wandering extends Component {
     latitude: null,
     owner: null,
     coordinates: [],
-    totalTokens: null,
   };
 
   componentDidMount() {
     this.wanderingService = new WanderingService(this.props.web3);
-    this.odJsonService = new OdJsonService();
     this.loadContract();
   }
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    const totalTokens = await this.getTotalTokens();
-    this.setState({ contract, totalTokens });
+    this.setState({ contract });
     this.getOwner();
-  };
-
-  getTotalTokens = async () => {
-    return await this.wanderingService.getTotalSupply();
-  };
-
-  handleTokenSelect = (tokenNumber) => {
-    console.log('handleTokenSelect', tokenNumber);
-    window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   getOwner = async () => {
@@ -48,6 +35,11 @@ class Wandering extends Component {
     );
     const coordinates = [...this.state.coordinates, ...coords];
     this.setState({ owner, coordinates });
+  };
+
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    return this.wanderingService.toEth(balance);
   };
 
   handleSubmitAddressForm = async (transfer) => {
@@ -72,27 +64,12 @@ class Wandering extends Component {
     this.setState({ coordinates });
   };
 
-  handleSubmitLaunchForm = async (transfer) => {
-    const newToken = await this.wanderingService.launchToken(
-      this.props.account,
-      transfer.latitude,
-      transfer.longitude,
-    );
-
-    console.log('new token is:', newToken);
-  };
-
   handleSubmitGasForm = async (amount) => {
     const amountInWei = await this.wanderingService.toWei(amount.amount);
     await this.wanderingService.sendTransaction(
       this.props.account,
       amountInWei,
     );
-  };
-
-  getBalance = async () => {
-    const balance = await this.wanderingService.balanceOfTank();
-    return this.wanderingService.toEth(balance);
   };
 
   render() {
