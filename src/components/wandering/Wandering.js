@@ -21,7 +21,6 @@ class Wandering extends Component {
 
   componentDidMount() {
     this.wanderingService = new WanderingService(this.props.web3);
-    this.odJsonService = new OdJsonService();
     this.loadContract();
   }
 
@@ -36,11 +35,6 @@ class Wandering extends Component {
     return await this.wanderingService.getTotalSupply();
   };
 
-  handleTokenSelect = (tokenNumber) => {
-    console.log('handleTokenSelect', tokenNumber);
-    window.location = `${window.location.origin}/${tokenNumber}`;
-  };
-
   getOwner = async () => {
     const owner = await this.wanderingService.getOwner(this.props.tokenId);
     const coords = await this.wanderingService.getAllOwnerCords(
@@ -48,6 +42,16 @@ class Wandering extends Component {
     );
     const coordinates = [...this.state.coordinates, ...coords];
     this.setState({ owner, coordinates });
+  };
+
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    return this.wanderingService.toEth(balance);
+  };
+
+  handleTokenSelect = (tokenNumber) => {
+    console.log('handleTokenSelect', tokenNumber);
+    window.location = `${window.location.origin}/${tokenNumber}`;
   };
 
   handleSubmitAddressForm = async (transfer) => {
@@ -88,11 +92,6 @@ class Wandering extends Component {
       this.props.account,
       amountInWei,
     );
-  };
-
-  getBalance = async () => {
-    const balance = await this.wanderingService.balanceOfTank();
-    return this.wanderingService.toEth(balance);
   };
 
   render() {
