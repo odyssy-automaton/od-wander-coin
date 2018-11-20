@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import CircularProgressbar from 'react-circular-progressbar';
+import GradientSVG from '../../../components/shared/gradient-svg/GradientSVG.js'
+
+import './GasTank.scss'
 
 class GasTank extends Component {
   state = {
@@ -36,14 +39,18 @@ class GasTank extends Component {
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
+          <GradientSVG
+            startColor='#F88073'
+            endColor='#5f5fff'
+            rotation='90'
+            idCSS='gas'
+          />
           <CircularProgressbar
             className="GasTank__bar"
             percentage={percentage}
-            text={`${percentage} ETH`}
+            text={`${this.state.balance} ETH`}
             styles={{
-              path: { stroke: `rgba(62, 152, 199, ${percentage / 100})` },
               text: { fill: '#f88', fontSize: '16px' },
-              trail: { stroke: `red`},
             }}
           />
         </div>
