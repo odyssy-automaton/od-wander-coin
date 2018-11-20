@@ -163,7 +163,7 @@ class Wandering extends Component {
                       loading={this.state.loading}
                       onSubmit={this.handleSubmitAddressForm}
                     />
-                    <p class="tiny">{this.state.error}</p>
+                    <p className="tiny">{this.state.error}</p>
                   </div>
                 )}
               </div>

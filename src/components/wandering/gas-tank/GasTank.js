@@ -34,24 +34,27 @@ class GasTank extends Component {
     });
 
     this.getBalance();
-    this.chartValue = this.state.balance * 1000;
   };
 
   render() {
-    // Set percentage
-    const chartValue = (this.state.balance * 500);
+    // Set chartValue
+    const gasValue = this.state.balance * 500;
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
-          <h5>GAS TANK</h5>
-          <GaugeChart dataKey={chartValue}/>
+          <GaugeChart gasValue={gasValue}/>
+          <div className="label--empty">E</div>
+          <div className="label--full">F</div>
+          <p>{this.state.balance} ETH</p>
+
         </div>
         <div className="GasTank__info">
-          {this.state.balance > 0.01 && (
-            <p className="color--success">Gas is Healthy! ({this.state.balance} ETH)</p>
+          <h5>GAS TANK</h5>
+          {this.state.balance > 0.1 && (
+            <p className="color--success">Gas is Healthy!</p>
           )}
-          {this.state.balance <= 0.01 &&  (
-            <p className="color--danger">Gas is dangerously low! ({this.state.balance} ETH)</p>
+          {this.state.balance <= 0.1 &&  (
+            <p className="color--danger">Gas is dangerously low!</p>
           )}
           <div>
             <input

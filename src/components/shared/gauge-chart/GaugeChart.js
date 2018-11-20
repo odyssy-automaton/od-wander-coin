@@ -2,10 +2,10 @@ import React from 'react';
 import { Sector, Cell, PieChart, Pie } from 'recharts';
 import './GaugeChart.scss';
 
-const GaugeChart = () => {
-        const width = 200;
-        const height = 200;
-        const chartValue = 60;
+const GaugeChart = ({gasValue}) => {
+        const width = 120;
+        const height = 120;
+        const chartValue = gasValue < 187 ? gasValue : 187;
         const colorData = [{
                 value: 40, // Meaning span is 0 to 40
                 color: 'red'
@@ -41,12 +41,12 @@ const GaugeChart = () => {
             startAngle: 180,
             endAngle: 0,
             cx: width / 2,
-            cy: width / 2
+            cy: width / 2,
         };
 
         const pieRadius = {
-            innerRadius: (width / 2) * 0.35,
-            outerRadius: (width / 2) * 0.4
+            innerRadius: width * 0.25,
+            outerRadius: width * 0.35
         };
 
         const Arrow = ({ cx, cy, midAngle, outerRadius }) => { //eslint-disable-line react/no-multi-comp
