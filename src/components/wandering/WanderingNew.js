@@ -82,7 +82,7 @@ class WanderingNew extends Component {
   };
 
   handleScan = (data) => {
-    if (data && data.indexOf('ethereum') === 0) {
+    if (data) {
       this.setState({
         result: data,
         toAddress: data.slice(data.indexOf(':') + 1),
@@ -195,7 +195,7 @@ class WanderingNew extends Component {
                       delay={this.state.delay}
                       onError={this.handleError}
                       onScan={this.handleScan}
-                      style={{ width: 240, height: 320 }}
+                      style={{ width: '100%' }}
                     />
                     <p className="result">{this.state.result}</p>
                   </div>
@@ -212,7 +212,11 @@ class WanderingNew extends Component {
                   value={this.state.toAddress}
                   onChange={this.handleAddressChange}
                 />
-                <button className="button--qr" type="button" onClick={this.showModal}>
+                <button
+                  className="button--qr"
+                  type="button"
+                  onClick={this.showModal}
+                >
                   <IconQR />
                 </button>
               </div>
