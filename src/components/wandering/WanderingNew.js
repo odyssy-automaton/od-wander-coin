@@ -80,16 +80,18 @@ class WanderingNew extends Component {
     this.setState({ show: false });
   };
 
-  handleScan(data) {
-    if (data) {
+  handleScan = (data) => {
+    if (data && data.indexOf('ethereum') === 0) {
       this.setState({
         result: data,
+        toAddress: data.slice(data.indexOf(':') + 1),
       });
     }
-  }
-  handleError(err) {
+  };
+
+  handleError = (err) => {
     console.error(err);
-  }
+  };
 
   render() {
     const invalidToAddress = this.state.toAddress.length < 11;
@@ -209,7 +211,7 @@ class WanderingNew extends Component {
                 className="Wandering__address-input"
                 type="text"
                 placeholder="Enter the wallet address"
-                value={this.toAddress}
+                value={this.state.toAddress}
                 onChange={this.handleAddressChange}
               />
             </div>

@@ -9,9 +9,6 @@ class Modal extends Component {
       : 'modal display-none';
     const children = this.props.children;
     const handleClose = this.props.handleClose;
-    console.log(showHideClassname);
-    console.log(children);
-    console.log(handleClose);
 
     return (
       <div className={showHideClassname}>
