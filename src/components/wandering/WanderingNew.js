@@ -3,6 +3,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import QrReader from 'react-qr-reader';
 
 import { getCurrentLocation } from '../../utils/locationHelpers';
 
@@ -16,7 +17,9 @@ class WanderingNew extends Component {
     toAddress: '',
     journal: '',
     autolocated: false,
-    show: false,
+    show: false, // modal
+    delay: 300, // qr
+    result: 'No result', // qr
   };
 
   componentWillMount = () => {
@@ -76,6 +79,17 @@ class WanderingNew extends Component {
   hideModal = () => {
     this.setState({ show: false });
   };
+
+  handleScan(data) {
+    if (data) {
+      this.setState({
+        result: data,
+      });
+    }
+  }
+  handleError(err) {
+    console.error(err);
+  }
 
   render() {
     const invalidToAddress = this.state.toAddress.length < 11;
@@ -168,14 +182,24 @@ class WanderingNew extends Component {
             <div className="step--2">
               <p>
                 <strong>2.</strong> Enter the etheruem wallet address for whom
-                you'd like to send the coin.
+                you'd like to send the coin. {'heel' + this.state.show}
               </p>
               <Modal show={this.state.show} handleClose={this.hideModal}>
                 <p>Modal</p>
-                <p>Data</p>
+                {this.state.show ? (
+                  <div>
+                    <QrReader
+                      delay={this.state.delay}
+                      onError={this.handleError}
+                      onScan={this.handleScan}
+                      style={{ width: 240, height: 320 }}
+                    />
+                    <p>{this.state.result}</p>
+                  </div>
+                ) : null}
               </Modal>
               <button type="button" onClick={this.showModal}>
-                {'open ' + this.state.show}
+                open
               </button>
 
               {showWarning ? (
