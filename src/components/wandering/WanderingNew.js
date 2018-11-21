@@ -3,8 +3,12 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import QrReader from 'react-qr-reader';
+import IconQR from '../shared/icon-qr/IconQR';
 
 import { getCurrentLocation } from '../../utils/locationHelpers';
+
+import Modal from '../shared/modal/Modal';
 
 class WanderingNew extends Component {
   state = {
@@ -14,6 +18,9 @@ class WanderingNew extends Component {
     toAddress: '',
     journal: '',
     autolocated: false,
+    show: false, // modal
+    delay: 300, // qr
+    result: 'Scan a QR code to return a wallet address', // qr
   };
 
   componentWillMount = () => {
@@ -64,6 +71,27 @@ class WanderingNew extends Component {
       journal: '',
       autolocated: false,
     });
+  };
+
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
+  };
+
+  handleScan = (data) => {
+    if (data) {
+      this.setState({
+        result: data,
+        toAddress: data.slice(data.indexOf(':') + 1),
+      });
+    }
+  };
+
+  handleError = (err) => {
+    console.error(err);
   };
 
   render() {
@@ -157,18 +185,41 @@ class WanderingNew extends Component {
             <div className="step--2">
               <p>
                 <strong>2.</strong> Enter the etheruem wallet address for whom
-                you'd like to send the coin.
+                you'd like to send the coin. {'heel' + this.state.show}
               </p>
+              <Modal show={this.state.show} handleClose={this.hideModal}>
+                <h3>Scan a wallet address</h3>
+                {this.state.show ? (
+                  <div>
+                    <QrReader
+                      delay={this.state.delay}
+                      onError={this.handleError}
+                      onScan={this.handleScan}
+                      style={{ width: '100%' }}
+                    />
+                    <p className="result">{this.state.result}</p>
+                  </div>
+                ) : null}
+              </Modal>
               {showWarning ? (
                 <p className="tiny">Be sure to double check the address.</p>
               ) : null}
-              <input
-                className="Wandering__address-input"
-                type="text"
-                placeholder="Enter the wallet address"
-                value={this.toAddress}
-                onChange={this.handleAddressChange}
-              />
+              <div className="Wandering__wallet-address">
+                <input
+                  className="Wandering__address-input"
+                  type="text"
+                  placeholder="Enter the wallet address"
+                  value={this.state.toAddress}
+                  onChange={this.handleAddressChange}
+                />
+                <button
+                  className="button--qr"
+                  type="button"
+                  onClick={this.showModal}
+                >
+                  <IconQR />
+                </button>
+              </div>
             </div>
             <div className="step--3">
               <p>
