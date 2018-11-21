@@ -4,6 +4,7 @@ import PlacesAutocomplete, {
   getLatLng,
 } from 'react-places-autocomplete';
 import QrReader from 'react-qr-reader';
+import IconQR from '../shared/icon-qr/IconQR';
 
 import { getCurrentLocation } from '../../utils/locationHelpers';
 
@@ -19,7 +20,7 @@ class WanderingNew extends Component {
     autolocated: false,
     show: false, // modal
     delay: 300, // qr
-    result: 'No result', // qr
+    result: 'Scan a QR code to return a wallet address', // qr
   };
 
   componentWillMount = () => {
@@ -187,7 +188,7 @@ class WanderingNew extends Component {
                 you'd like to send the coin. {'heel' + this.state.show}
               </p>
               <Modal show={this.state.show} handleClose={this.hideModal}>
-                <p>Modal</p>
+                <h3>Scan a wallet address</h3>
                 {this.state.show ? (
                   <div>
                     <QrReader
@@ -196,24 +197,25 @@ class WanderingNew extends Component {
                       onScan={this.handleScan}
                       style={{ width: 240, height: 320 }}
                     />
-                    <p>{this.state.result}</p>
+                    <p className="result">{this.state.result}</p>
                   </div>
                 ) : null}
               </Modal>
-              <button type="button" onClick={this.showModal}>
-                open
-              </button>
-
               {showWarning ? (
                 <p className="tiny">Be sure to double check the address.</p>
               ) : null}
-              <input
-                className="Wandering__address-input"
-                type="text"
-                placeholder="Enter the wallet address"
-                value={this.state.toAddress}
-                onChange={this.handleAddressChange}
-              />
+              <div className="Wandering__wallet-address">
+                <input
+                  className="Wandering__address-input"
+                  type="text"
+                  placeholder="Enter the wallet address"
+                  value={this.state.toAddress}
+                  onChange={this.handleAddressChange}
+                />
+                <button className="button--qr" type="button" onClick={this.showModal}>
+                  <IconQR />
+                </button>
+              </div>
             </div>
             <div className="step--3">
               <p>
