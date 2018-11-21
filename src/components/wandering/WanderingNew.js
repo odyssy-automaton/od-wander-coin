@@ -6,6 +6,8 @@ import PlacesAutocomplete, {
 
 import { getCurrentLocation } from '../../utils/locationHelpers';
 
+import Modal from '../shared/modal/Modal';
+
 class WanderingNew extends Component {
   state = {
     streetAddress: '',
@@ -14,6 +16,7 @@ class WanderingNew extends Component {
     toAddress: '',
     journal: '',
     autolocated: false,
+    show: false,
   };
 
   componentWillMount = () => {
@@ -64,6 +67,14 @@ class WanderingNew extends Component {
       journal: '',
       autolocated: false,
     });
+  };
+
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
   };
 
   render() {
@@ -159,6 +170,14 @@ class WanderingNew extends Component {
                 <strong>2.</strong> Enter the etheruem wallet address for whom
                 you'd like to send the coin.
               </p>
+              <Modal show={this.state.show} handleClose={this.hideModal}>
+                <p>Modal</p>
+                <p>Data</p>
+              </Modal>
+              <button type="button" onClick={this.showModal}>
+                {'open ' + this.state.show}
+              </button>
+
               {showWarning ? (
                 <p className="tiny">Be sure to double check the address.</p>
               ) : null}
