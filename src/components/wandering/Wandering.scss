@@ -30,10 +30,10 @@
   display: flex;
   min-height: calc(100vh - 160px);
   .sidenav {
-    flex-basis: 25%;
+    width: 500px
   }
   .Wandering__map {
-    flex-basis: 75%;
+    flex-basis: calc(100% - 500px);
   }
 }
 
@@ -153,4 +153,30 @@
 
 .step--3 {
   padding-bottom: 25px;
+}
+
+.Wandering__wallet-address {
+  position: relative;
+}
+
+.button--qr {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all .15s linear;
+  position: absolute;
+  top: 0;
+  right: 0;
+  svg {
+    width: 28px;
+    fill: #5f5fff;
+    transition: all .15s linear;
+  }
+  &:hover {
+    background: transparent;
+    svg {
+      fill: #000;
+    }
+  }
 }

@@ -15,6 +15,8 @@ class Wandering extends Component {
     latitude: null,
     owner: null,
     coordinates: [],
+    error: null,
+    loading: false,
   };
 
   componentDidMount() {
@@ -43,7 +45,42 @@ class Wandering extends Component {
   };
 
   handleSubmitAddressForm = async (transfer) => {
-    await this.wanderingService.sendTo(
+    this.setState({ error: null, loading: true });
+    const gasTank = await this.getBalance();
+    if (gasTank < 0.002) {
+      this.setState({ error: 'not enough gas in the tank' });
+    }
+
+    const hasOwned = await this.wanderingService.addrHasOwned(
+      transfer.toAddress,
+      this.props.tokenId,
+    );
+
+    if (hasOwned) {
+      this.setState({
+        error: 'Receiving Address has already owned this token.',
+      });
+    }
+
+    if (this.props.account === transfer.toAddress) {
+      this.setState({ error: 'Cant send to self' });
+    }
+
+    if (
+      transfer.latitude <= -180 ||
+      transfer.latitude >= 180 ||
+      (transfer.latitude <= -90 || transfer.latitude >= 90)
+    ) {
+      this.setState({ error: 'invalid location' });
+    }
+    console.log(this.state);
+
+    if (this.state.error) {
+      this.setState({ loading: false });
+      throw this.state.error;
+    }
+
+    const tx = await this.wanderingService.sendTo(
       this.props.account,
       transfer.toAddress,
       transfer.latitude,
@@ -52,16 +89,21 @@ class Wandering extends Component {
       this.props.tokenId,
     );
 
-    const coordinates = [
-      ...this.state.coordinates,
-      {
-        lat: transfer.latitude,
-        lng: transfer.longitude,
-        journal: transfer.journal,
-      },
-    ];
+    if (!tx) {
+      this.setState({ error: 'user rejected', loading: false });
+      throw this.state.error;
+    } else {
+      const coordinates = [
+        ...this.state.coordinates,
+        {
+          lat: transfer.latitude,
+          lng: transfer.longitude,
+          journal: transfer.journal,
+        },
+      ];
 
-    this.setState({ coordinates, owner: transfer.toAddress });
+      this.setState({ coordinates, owner: transfer.toAddress, loading: false });
+    }
   };
 
   handleSubmitGasForm = async (amount) => {
@@ -116,7 +158,12 @@ class Wandering extends Component {
                       height="100px"
                     />
                     <h2>The Wander Coin is in your wallet!</h2>
-                    <WanderingNew onSubmit={this.handleSubmitAddressForm} />
+
+                    <WanderingNew
+                      loading={this.state.loading}
+                      onSubmit={this.handleSubmitAddressForm}
+                    />
+                    <p className="tiny">{this.state.error}</p>
                   </div>
                 )}
               </div>

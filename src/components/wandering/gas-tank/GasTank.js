@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import CircularProgressbar from 'react-circular-progressbar';
+import GaugeChart from '../../../components/shared/gauge-chart/GaugeChart.js'
+
+import './GasTank.scss'
 
 class GasTank extends Component {
   state = {
@@ -25,6 +27,10 @@ class GasTank extends Component {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
 
+    if (!transfer.amount) {
+      throw 'value must not be empty';
+    }
+
     await onSubmit(transfer);
 
     this.setState({
@@ -35,33 +41,24 @@ class GasTank extends Component {
   };
 
   render() {
-    // Set percentage
-    const percentage = this.state.balance * 100;
+    // Set chartValue
+    const gasValue = this.state.balance * 500;
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
-          <CircularProgressbar
-            className="GasTank__bar"
-            percentage={percentage}
-            text={`${percentage} ETH`}
-            styles={{
-              path: { stroke: `rgba(62, 152, 199, ${percentage / 100})` },
-              text: { fill: '#f88', fontSize: '16px' },
-              trail: { stroke: `red` },
-            }}
-          />
+          <GaugeChart gasValue={gasValue}/>
+          <div className="label--empty">E</div>
+          <div className="label--full">F</div>
+          <p>{this.state.balance} ETH</p>
+
         </div>
         <div className="GasTank__info">
           <h5>GAS TANK</h5>
           {this.state.balance > 0.1 && (
-            <p className="color--success">
-              Gas is healthy! ({this.state.balance} ETH)
-            </p>
+            <p className="color--success">Gas is Healthy!</p>
           )}
-          {this.state.balance <= 0.1 && (
-            <p className="color--danger">
-              Gas is dangerously low! ({this.state.balance} ETH)
-            </p>
+          {this.state.balance <= 0.1 &&  (
+            <p className="color--danger">Gas is dangerously low!</p>
           )}
           <div>
             <input

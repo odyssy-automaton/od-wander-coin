@@ -1,0 +1,28 @@
+.GasTank {
+  width: 100%;
+
+  .GasTank__gas {
+    position: relative;
+    width: 120px;
+    float: left;
+    text-align: center;
+    .label--full {
+      position: absolute;
+      top: 70px;
+      right: 15px;
+      color: #A6BF4C;
+    }
+    .label--empty {
+      position: absolute;
+      top: 70px;
+      left: 25px;
+      color: red;
+    }
+  }
+  .GasTank__info {
+    float: right;
+    width: calc(100% - 170px);
+    padding-right: 25px;
+    padding-left: 25px;
+  }
+}
