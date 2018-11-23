@@ -31,12 +31,13 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude, journal, tokenId) {
+  async sendTo(from, to, latitude, longitude, streetAddress, journal, tokenId) {
     // build txJSON, save and get txURI
     const txJSON = {
-      latitude: latitude,
-      longitude: longitude,
-      journal: journal,
+      latitude,
+      longitude,
+      streetAddress,
+      journal,
     };
 
     const txURI = await this.odJsonService.getUri(txJSON);
@@ -52,12 +53,13 @@ export default class WanderingService {
       });
   }
 
-  async launchToken(from, latitude, longitude, journal) {
+  async launchToken(from, latitude, longitude, streetAddress, journal) {
     // build txJSON, save and get txURI
     const txJSON = {
-      latitude: latitude,
-      longitude: longitude,
-      journal: journal,
+      latitude,
+      longitude,
+      streetAddress,
+      journal,
     };
     const tokenJSON = {
       name: 'WanderCoin',
@@ -110,7 +112,11 @@ export default class WanderingService {
         owners.push(addr);
 
         let txURI = await contract.getTxURI(addr, tokenId).call();
-        console.log('huh', txURI);
+        if (!this.odJsonService.verifyBaseURL(txURI)) {
+          console.log('huh', this.odJsonService.verifyBaseURL(txURI), txURI);
+          console.error({ error: 'not a valid uri' });
+          continue;
+        }
         //console.log('huh', this.web3Service.toAscii(txURI));
 
         const txJSON = await fetch(txURI, {
@@ -126,6 +132,7 @@ export default class WanderingService {
         coords.push({
           lat: txJSON.latitude,
           lng: txJSON.longitude,
+          streetAddress: txJSON.streetAddress,
           journal: txJSON.journal,
         });
       }

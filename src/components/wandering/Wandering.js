@@ -45,10 +45,24 @@ class Wandering extends Component {
   };
 
   handleSubmitAddressForm = async (transfer) => {
-    this.setState({ error: null, loading: true });
+    this.setState({ loading: true });
     const gasTank = await this.getBalance();
+
+    // if user decides to send it anyways on second press
+    if (this.state.error && this.state.error.code === 4) {
+      this.setState({
+        skipError: true,
+      });
+    }
+
     if (gasTank < 0.002) {
-      this.setState({ error: 'not enough gas in the tank' });
+      this.setState({
+        error: {
+          code: 4,
+          msg:
+            'Not enough gas in the tank. You will not forward any gas to the receiver. If that is ok you can press the send button again.',
+        },
+      });
     }
 
     const hasOwned = await this.wanderingService.addrHasOwned(
@@ -58,12 +72,15 @@ class Wandering extends Component {
 
     if (hasOwned) {
       this.setState({
-        error: 'Receiving Address has already owned this token.',
+        error: {
+          code: 5,
+          msg: 'Receiving Address has already owned this token.',
+        },
       });
     }
 
     if (this.props.account === transfer.toAddress) {
-      this.setState({ error: 'Cant send to self' });
+      this.setState({ error: { code: 3, msg: 'Cant send to self' } });
     }
 
     if (
@@ -71,11 +88,10 @@ class Wandering extends Component {
       transfer.latitude >= 180 ||
       (transfer.latitude <= -90 || transfer.latitude >= 90)
     ) {
-      this.setState({ error: 'invalid location' });
+      this.setState({ error: { code: 2, msg: 'invalid location' } });
     }
-    console.log(this.state);
 
-    if (this.state.error) {
+    if (this.state.error && !this.state.skipError) {
       this.setState({ loading: false });
       throw this.state.error;
     }
@@ -85,12 +101,16 @@ class Wandering extends Component {
       transfer.toAddress,
       transfer.latitude,
       transfer.longitude,
+      transfer.streetAddress,
       transfer.journal,
       this.props.tokenId,
     );
 
     if (!tx) {
-      this.setState({ error: 'user rejected', loading: false });
+      this.setState({
+        error: { code: 1, msg: 'user rejected' },
+        loading: false,
+      });
       throw this.state.error;
     } else {
       const coordinates = [
@@ -98,11 +118,17 @@ class Wandering extends Component {
         {
           lat: transfer.latitude,
           lng: transfer.longitude,
+          streetAddress: transfer.streetAddress,
           journal: transfer.journal,
         },
       ];
 
-      this.setState({ coordinates, owner: transfer.toAddress, loading: false });
+      this.setState({
+        error: null,
+        coordinates,
+        owner: transfer.toAddress,
+        loading: false,
+      });
     }
   };
 
@@ -158,12 +184,13 @@ class Wandering extends Component {
                       height="100px"
                     />
                     <h2>The Wander Coin is in your wallet!</h2>
-
                     <WanderingNew
                       loading={this.state.loading}
                       onSubmit={this.handleSubmitAddressForm}
                     />
-                    <p className="tiny">{this.state.error}</p>
+                    {this.state.error ? (
+                      <p className="tiny">{this.state.error.msg}</p>
+                    ) : null}
                   </div>
                 )}
               </div>

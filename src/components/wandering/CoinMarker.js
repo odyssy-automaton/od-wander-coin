@@ -28,6 +28,7 @@ class CoinMarker extends Component {
           <InfoWindow>
             <div>
               <h5>{token.journal}</h5>
+              <h6>{token.streetAddress}</h6>
               <p>Lat: {token.lat}</p>
               <p>Lng: {token.lng}</p>
             </div>

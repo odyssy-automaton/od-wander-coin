@@ -118,13 +118,12 @@ class TokenLaunch extends Component {
             <p>Lng: {this.state.longitude}</p>
             <div className="step--1">
               <p>
-                <strong>1.</strong> Share some wisdom along with the coin.
-                (Optional)
+                <strong>1.</strong> Share the purpose of this token. (Optional)
               </p>
               <input
                 className="Wandering__journal-input"
                 type="text"
-                placeholder="Enter your wisdom 🎩"
+                placeholder="Enter tokens purpose 🎩"
                 value={this.journal}
                 onChange={this.handleJournalChange}
               />

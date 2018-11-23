@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import GaugeChart from '../../../components/shared/gauge-chart/GaugeChart.js'
+import GaugeChart from '../../../components/shared/gauge-chart/GaugeChart.js';
 
-import './GasTank.scss'
+import './GasTank.scss';
 
 class GasTank extends Component {
   state = {
     amount: '',
     balance: '',
+    error: null,
   };
 
   componentDidMount() {
@@ -28,13 +29,18 @@ class GasTank extends Component {
     const transfer = { ...this.state };
 
     if (!transfer.amount) {
-      throw 'value must not be empty';
+      this.setState({
+        error: 'value must not be empty',
+      });
+      console.error(this.state.error);
+      return;
     }
 
     await onSubmit(transfer);
 
     this.setState({
       amount: '',
+      error: '',
     });
 
     this.getBalance();
@@ -46,18 +52,17 @@ class GasTank extends Component {
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
-          <GaugeChart gasValue={gasValue}/>
+          <GaugeChart gasValue={gasValue} />
           <div className="label--empty">E</div>
           <div className="label--full">F</div>
           <p>{this.state.balance} ETH</p>
-
         </div>
         <div className="GasTank__info">
           <h5>GAS TANK</h5>
           {this.state.balance > 0.1 && (
             <p className="color--success">Gas is Healthy!</p>
           )}
-          {this.state.balance <= 0.1 &&  (
+          {this.state.balance <= 0.1 && (
             <p className="color--danger">Gas is dangerously low!</p>
           )}
           <div>
@@ -68,6 +73,9 @@ class GasTank extends Component {
               value={this.state.amount}
               onChange={this.handleChange}
             />
+            {this.state.error ? (
+              <p className="tiny">{this.state.error}</p>
+            ) : null}
             <button className="button" onClick={this.handleSubmit}>
               GIVE ME SOME GAS
             </button>
