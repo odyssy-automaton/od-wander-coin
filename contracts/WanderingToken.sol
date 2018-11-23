@@ -89,6 +89,10 @@ contract WanderingToken is ERC721Full, Ownable {
         msg.sender.transfer(address(this).balance);
     }
 
+    function setFaucetAmount(uint amount) public onlyOwner {
+        faucetAmount = amount;
+    }
+
     function () public payable {}
 
 }
