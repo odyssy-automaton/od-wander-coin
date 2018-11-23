@@ -38,6 +38,7 @@ class TokenPage extends Component {
       this.props.account,
       transfer.latitude,
       transfer.longitude,
+      transfer.streetAddress,
       transfer.journal,
     );
     this.props.history.push(`/tokens/${newToken}`);

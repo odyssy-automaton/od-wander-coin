@@ -2,6 +2,11 @@ import uuid from 'uuid/v1';
 
 export default class OdJsonService {
   apiBaseURL = 'https://exav81qxa6.execute-api.us-east-1.amazonaws.com/dev';
+  jsonBaseUrl = 'https://s3.amazonaws.com/odyssy-json/';
+
+  verifyBaseURL(uri) {
+    return uri.indexOf(this.jsonBaseUrl) === 0;
+  }
 
   getUri(erc721Meta) {
     const uniqueName = uuid() + '.json';
@@ -28,8 +33,8 @@ export default class OdJsonService {
           body: blob,
         });
       })
-      .then(function() {
-        const uri = 'https://s3.amazonaws.com/odyssy-json/' + uniqueName;
+      .then(() => {
+        const uri = this.jsonBaseUrl + uniqueName;
         console.log('uri', uri);
 
         return uri;

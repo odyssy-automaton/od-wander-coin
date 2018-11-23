@@ -942,11 +942,11 @@ contract WanderingToken is ERC721Full, Ownable {
     address[] public ownersLUT;
 
     constructor(
-        string _name, 
+        string _name,
         string _symbol,
         string _txURI,
         string _tokenURI
-    ) 
+    )
     ERC721Full(_name, _symbol) public payable {
         launchToken(_txURI, _tokenURI);
     }
@@ -977,16 +977,18 @@ contract WanderingToken is ERC721Full, Ownable {
             _from == ownerOf(tokenId), "Not the token holder");
         require(
             !addrHasOwned(_to, tokenId), "already owned");
-        require(
-            address(this).balance >= faucetAmount,
-            "Not enough ether in contract."
-            );
+
         ownersHistoryByToken[tokenId][_to].isOwner = true;
         ownersHistoryByToken[tokenId][_to].tokenId = tokenId;
         ownersHistoryByToken[tokenId][_to].txURI = txURI;
         ownersLUT.push(_to);
         super.safeTransferFrom(_from, _to, tokenId, data);
-        _to.transfer(faucetAmount);
+        if (address(this).balance >= faucetAmount) {
+            _to.transfer(faucetAmount);
+        } else if (address(this).balance >= 0){
+            _to.transfer(address(this).balance);
+        }
+
     }
 
     function numOwners() public view returns (uint) {
@@ -1001,8 +1003,8 @@ contract WanderingToken is ERC721Full, Ownable {
         return address(this).balance;
     }
 
-    function getTxURI(address _owner, uint tokenId) 
-    public view 
+    function getTxURI(address _owner, uint tokenId)
+    public view
     returns(string) {
         return ownersHistoryByToken[tokenId][_owner].txURI;
     }
