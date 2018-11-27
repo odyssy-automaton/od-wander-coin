@@ -39,14 +39,14 @@ export class Web3Info {
     if (this.accounts && this.accounts.length) {
       this.loggedIn = true;
       this.balance = await web3.eth.getBalance(this.accounts[0]);
-      console.log('logged in!');
+      // console.log('logged in!');
     } else if (this.accounts && !this.accounts.length) {
-      console.log('logged out or privacy mode');
+      // console.log('logged out or privacy mode');
 
       this.loggedIn = false;
     } else {
-      console.log('logged out or privacy mode');
-      console.log('no accounts from web3. what does this mean? ');
+      // console.log('logged out or privacy mode');
+      // console.log('no accounts from web3. what does this mean? ');
       this.loggedIn = false;
     }
   }
@@ -55,12 +55,12 @@ export class Web3Info {
     this.network = '';
     this.networkId = await web3.eth.net.getId();
     this.networkType = await web3.eth.net.getNetworkType();
-    console.log('network', this.networkId, this.networkType);
+    // console.log('network', this.networkId, this.networkType);
   }
 
   getcurrentProvider(web3) {
     this.provider = web3.currentProvider;
-    console.log('provider', this.provider);
+    // console.log('provider', this.provider);
   }
 
   checkWeb3andFallback(web3, resolve, reject) {
@@ -70,7 +70,7 @@ export class Web3Info {
     if (alreadyInjected) {
       // Use Mist/MetaMask's provider.
       web3 = new Web3(web3.currentProvider);
-      console.log('Injected web3 detected.');
+      // console.log('Injected web3 detected.');
       resolve(web3);
     } else {
       // Fallback to localhost if no web3 injection. We've configured this to

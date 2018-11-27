@@ -244,7 +244,7 @@ class WanderingNew extends Component {
                   Send the Coin
                 </button>
               ) : (
-                <p class="tiny">Waiting on tx ...</p>
+                <p className="tiny">Waiting on tx ...</p>
               )}
             </div>
           </div>

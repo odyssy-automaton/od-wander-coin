@@ -78,7 +78,7 @@ class App extends Component {
               ) : (
                 <div>
                   <h2>
-                    Whoops! looks like you are devloping locally. Are you on a
+                    Whoops! looks like you are developing locally. Are you on a
                     private test rpc?
                   </h2>
                 </div>

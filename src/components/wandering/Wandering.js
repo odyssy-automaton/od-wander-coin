@@ -4,6 +4,7 @@ import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
+import DistanceFrom from '../shared/distance-from';
 
 import './Wandering.scss';
 import icon from '../../assets/wander-coin.png';
@@ -36,6 +37,7 @@ class Wandering extends Component {
       this.props.tokenId,
     );
     const coordinates = [...this.state.coordinates, ...coords];
+
     this.setState({ owner, coordinates });
   };
 
@@ -200,6 +202,9 @@ class Wandering extends Component {
                 onSubmit={this.handleSubmitGasForm}
                 onLoad={this.getBalance}
               />
+            </div>
+            <div>
+              <DistanceFrom origin={coordinates[0]} />
             </div>
           </div>
           <div className="Wandering__map">
