@@ -14,8 +14,6 @@ class CoinMarker extends Component {
     const { token } = this.props;
     const { showInfo } = this.state;
 
-    console.log(token);
-
     return (
       <Marker
         position={{
@@ -29,8 +27,6 @@ class CoinMarker extends Component {
             <div>
               <h5>{token.journal}</h5>
               <h6>{token.streetAddress}</h6>
-              <p>Lat: {token.lat}</p>
-              <p>Lng: {token.lng}</p>
             </div>
           </InfoWindow>
         )}

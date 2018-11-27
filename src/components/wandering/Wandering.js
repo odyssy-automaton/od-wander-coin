@@ -5,6 +5,8 @@ import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
 
+import { WanderInfoProvider } from '../../contexts/WanderInfoContext';
+
 import './Wandering.scss';
 import icon from '../../assets/wander-coin.png';
 
@@ -36,6 +38,7 @@ class Wandering extends Component {
       this.props.tokenId,
     );
     const coordinates = [...this.state.coordinates, ...coords];
+
     this.setState({ owner, coordinates });
   };
 
@@ -147,66 +150,68 @@ class Wandering extends Component {
     return !contract ? (
       <h3>Loading contract</h3>
     ) : (
-      <div className="Wandering">
-        <div className="Wandering__bar">
-          <div className="contents">
-            <p>What is this?</p>
-            <p>
-              Wander Coin is an experimental DApp and token model where there is
-              a supply of one non-fungible token to test various game theories.
-              The goal is to get the coin all the way around the world without
-              touching the same wallet.
-            </p>
-            <a className="button od-primary" href="/">
-              Read More
-            </a>
+      <WanderInfoProvider value={this.state}>
+        <div className="Wandering">
+          <div className="Wandering__bar">
+            <div className="contents">
+              <p>What is this?</p>
+              <p>
+                Wander Coin is an experimental DApp and token model where there
+                is a supply of one non-fungible token to test various game
+                theories. The goal is to get the coin all the way around the
+                world without touching the same wallet.
+              </p>
+              <a className="button od-primary" href="/">
+                Read More
+              </a>
+            </div>
           </div>
-        </div>
-        <div className="Wandering__container">
-          <div className="sidenav">
-            <div className="Wandering__transfer">
-              <div className="Wandering__form">
-                {!isOwner ? (
-                  <div>
-                    <h2>Wander Coin be wandering ... </h2>
-                    <p className="tiny">
-                      If you think you have it, make sure you’re on the Main
-                      Ethereum Network and connected to the wallet that the coin
-                      was sent to.
-                    </p>
-                  </div>
-                ) : (
-                  <div>
-                    <img
-                      alt="wander-coin icon"
-                      src={icon}
-                      width="100px"
-                      height="100px"
-                    />
-                    <h2>The Wander Coin is in your wallet!</h2>
-                    <WanderingNew
-                      loading={this.state.loading}
-                      onSubmit={this.handleSubmitAddressForm}
-                    />
-                    {this.state.error ? (
-                      <p className="tiny">{this.state.error.msg}</p>
-                    ) : null}
-                  </div>
-                )}
+          <div className="Wandering__container">
+            <div className="sidenav">
+              <div className="Wandering__transfer">
+                <div className="Wandering__form">
+                  {!isOwner ? (
+                    <div>
+                      <h2>Wander Coin be wandering ... </h2>
+                      <p className="tiny">
+                        If you think you have it, make sure you’re on the Main
+                        Ethereum Network and connected to the wallet that the
+                        coin was sent to.
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <img
+                        alt="wander-coin icon"
+                        src={icon}
+                        width="100px"
+                        height="100px"
+                      />
+                      <h2>The Wander Coin is in your wallet!</h2>
+                      <WanderingNew
+                        loading={this.state.loading}
+                        onSubmit={this.handleSubmitAddressForm}
+                      />
+                      {this.state.error ? (
+                        <p className="tiny">{this.state.error.msg}</p>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="Wandering__gas">
+                <GasTank
+                  onSubmit={this.handleSubmitGasForm}
+                  onLoad={this.getBalance}
+                />
               </div>
             </div>
-            <div className="Wandering__gas">
-              <GasTank
-                onSubmit={this.handleSubmitGasForm}
-                onLoad={this.getBalance}
-              />
+            <div className="Wandering__map">
+              <WanderingMapContainer coordinates={coordinates} />
             </div>
           </div>
-          <div className="Wandering__map">
-            <WanderingMapContainer coordinates={coordinates} />
-          </div>
         </div>
-      </div>
+      </WanderInfoProvider>
     );
   }
 }

@@ -15,13 +15,13 @@ export default class WanderingService {
     } else {
       this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     }
-    console.log(
-      'env',
-      process.env.NODE_ENV,
-      this.tokenAddress,
-      process.env.REACT_APP_CONTRACT_ADDRESS,
-      process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
-    );
+    // console.log(
+    //   'env',
+    //   process.env.NODE_ENV,
+    //   this.tokenAddress,
+    //   process.env.REACT_APP_CONTRACT_ADDRESS,
+    //   process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
+    // );
   }
 
   async initContracts() {
@@ -117,7 +117,6 @@ export default class WanderingService {
           console.error({ error: 'not a valid uri' });
           continue;
         }
-        //console.log('huh', this.web3Service.toAscii(txURI));
 
         const txJSON = await fetch(txURI, {
           method: 'GET',
@@ -127,7 +126,6 @@ export default class WanderingService {
         }).then(function(response) {
           return response.json();
         });
-        console.log(txJSON.latitude, txJSON.longitude);
 
         coords.push({
           lat: txJSON.latitude,
