@@ -5,6 +5,9 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import QrReader from 'react-qr-reader';
 import IconQR from '../shared/icon-qr/IconQR';
+import DistanceFrom from '../shared/distance-from';
+
+import { WanderInfoConsumer } from '../../contexts/WanderInfoContext';
 
 import { getCurrentLocation } from '../../utils/locationHelpers';
 
@@ -99,157 +102,175 @@ class WanderingNew extends Component {
     const showWarning = invalidToAddress && this.state.toAddress.length < 5;
 
     return (
-      <div>
-        <PlacesAutocomplete
-          onChange={this.handleChange}
-          value={this.state.streetAddress}
-          onSelect={this.handleSelect}
-          shouldFetchSuggestions={this.state.streetAddress.length > 2}
-        >
-          {({ getInputProps, suggestions, getSuggestionItemProps }) => {
-            return (
-              <div className="Wandering__search-bar-container">
-                <p className="large">
-                  You can send the Wander Coin to anyone you like as long as
-                  they have never held the coin before. When you send the coin,
-                  you can also add a message to your transaction which will also
-                  appear on the map along with your transaction. The goal is to
-                  pass the coin all the way around the world.
-                </p>
-                <div className="step--1">
-                  <p>
-                    <strong>1.</strong> First, check in with your location.
-                  </p>
-                  <div className="Wandering__search-input-container">
-                    <input
-                      {...getInputProps({
-                        placeholder: 'Enter your street address',
-                        className: 'Wandering__search-input',
-                      })}
-                    />
-                    {this.state.streetAddress.length > 0 && (
-                      <button
-                        className="Wandering__clear-button"
-                        onClick={this.handleCloseClick}
-                      >
-                        x
-                      </button>
+      <WanderInfoConsumer>
+        {(context) => (
+          <div>
+            <PlacesAutocomplete
+              onChange={this.handleChange}
+              value={this.state.streetAddress}
+              onSelect={this.handleSelect}
+              shouldFetchSuggestions={this.state.streetAddress.length > 2}
+            >
+              {({ getInputProps, suggestions, getSuggestionItemProps }) => {
+                return (
+                  <div className="Wandering__search-bar-container">
+                    <p className="large">
+                      You can send the Wander Coin to anyone you like as long as
+                      they have never held the coin before. When you send the
+                      coin, you can also add a message to your transaction which
+                      will also appear on the map along with your transaction.
+                      The goal is to pass the coin all the way around the world.
+                    </p>
+                    <div className="step--1">
+                      <p>
+                        <strong>1.</strong> First, check in with your location.
+                      </p>
+                      <div className="Wandering__search-input-container">
+                        <input
+                          {...getInputProps({
+                            placeholder: 'Enter your street address',
+                            className: 'Wandering__search-input',
+                          })}
+                        />
+                        {this.state.streetAddress.length > 0 && (
+                          <button
+                            className="Wandering__clear-button"
+                            onClick={this.handleCloseClick}
+                          >
+                            x
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    {this.state.autolocated && (
+                      <div>
+                        <p>Is this where you are?</p>
+                        <p>
+                          <button
+                            onClick={() =>
+                              this.handleSelect(this.state.streetAddress)
+                            }
+                          >
+                            Yep
+                          </button>
+                        </p>
+                        <p>
+                          <button onClick={this.handleCloseClick}>Nope</button>
+                        </p>
+                      </div>
+                    )}
+                    {this.state.latitude &&
+                      context.coordinates.length && (
+                        <DistanceFrom
+                          origin={
+                            context.coordinates[context.coordinates.length - 1]
+                          }
+                          destination={{
+                            lat: this.state.latitude,
+                            lng: this.state.longitude,
+                          }}
+                        />
+                      )}
+                    {suggestions.length > 0 && (
+                      <div className="Wandering__autocomplete-container">
+                        {suggestions.map((suggestion) => {
+                          const className = 'Wandering__suggestion-item';
+
+                          return (
+                            <div
+                              {...getSuggestionItemProps(suggestion, {
+                                className,
+                              })}
+                            >
+                              <strong>
+                                {suggestion.formattedSuggestion.mainText}
+                              </strong>{' '}
+                              <small>
+                                {suggestion.formattedSuggestion.secondaryText}
+                              </small>
+                            </div>
+                          );
+                        })}
+                        <div className="Wandering__dropdown-footer" />
+                      </div>
                     )}
                   </div>
-                </div>
-                {this.state.autolocated && (
-                  <div>
-                    <p>Is this where you are?</p>
-                    <p>
-                      <button
-                        onClick={() =>
-                          this.handleSelect(this.state.streetAddress)
-                        }
-                      >
-                        Yep
-                      </button>
-                    </p>
-                    <p>
-                      <button onClick={this.handleCloseClick}>Nope</button>
-                    </p>
-                  </div>
-                )}
-                {suggestions.length > 0 && (
-                  <div className="Wandering__autocomplete-container">
-                    {suggestions.map((suggestion) => {
-                      const className = 'Wandering__suggestion-item';
+                );
+              }}
+            </PlacesAutocomplete>
 
-                      return (
-                        <div
-                          {...getSuggestionItemProps(suggestion, { className })}
-                        >
-                          <strong>
-                            {suggestion.formattedSuggestion.mainText}
-                          </strong>{' '}
-                          <small>
-                            {suggestion.formattedSuggestion.secondaryText}
-                          </small>
-                        </div>
-                      );
-                    })}
-                    <div className="Wandering__dropdown-footer" />
-                  </div>
-                )}
-              </div>
-            );
-          }}
-        </PlacesAutocomplete>
-
-        {this.state.latitude && (
-          <div>
-            <div className="step--2">
-              <p>
-                <strong>2.</strong> Enter the etheruem wallet address for whom
-                you'd like to send the coin. {'heel' + this.state.show}
-              </p>
-              <Modal show={this.state.show} handleClose={this.hideModal}>
-                <h3>Scan a wallet address</h3>
-                {this.state.show ? (
-                  <div>
-                    <QrReader
-                      delay={this.state.delay}
-                      onError={this.handleError}
-                      onScan={this.handleScan}
-                      style={{ width: '100%' }}
+            {this.state.latitude && (
+              <div>
+                <div className="step--2">
+                  <p>
+                    <strong>2.</strong> Enter the etheruem wallet address for
+                    whom you'd like to send the coin. {'heel' + this.state.show}
+                  </p>
+                  <Modal show={this.state.show} handleClose={this.hideModal}>
+                    <h3>Scan a wallet address</h3>
+                    {this.state.show ? (
+                      <div>
+                        <QrReader
+                          delay={this.state.delay}
+                          onError={this.handleError}
+                          onScan={this.handleScan}
+                          style={{ width: '100%' }}
+                        />
+                        <p className="result">{this.state.result}</p>
+                      </div>
+                    ) : null}
+                  </Modal>
+                  {showWarning ? (
+                    <p className="tiny">Be sure to double check the address.</p>
+                  ) : null}
+                  <div className="Wandering__wallet-address">
+                    <input
+                      className="Wandering__address-input"
+                      type="text"
+                      placeholder="Enter the wallet address"
+                      value={this.state.toAddress}
+                      onChange={this.handleAddressChange}
                     />
-                    <p className="result">{this.state.result}</p>
+                    <button
+                      className="button--qr"
+                      type="button"
+                      onClick={this.showModal}
+                    >
+                      <IconQR />
+                    </button>
                   </div>
-                ) : null}
-              </Modal>
-              {showWarning ? (
-                <p className="tiny">Be sure to double check the address.</p>
-              ) : null}
-              <div className="Wandering__wallet-address">
-                <input
-                  className="Wandering__address-input"
-                  type="text"
-                  placeholder="Enter the wallet address"
-                  value={this.state.toAddress}
-                  onChange={this.handleAddressChange}
-                />
-                <button
-                  className="button--qr"
-                  type="button"
-                  onClick={this.showModal}
-                >
-                  <IconQR />
-                </button>
+                </div>
+                <div className="step--3">
+                  <p>
+                    <strong>3.</strong> Share some wisdom along with the coin.
+                    (Optional)
+                  </p>
+                  <input
+                    className="Wandering__journal-input"
+                    type="text"
+                    placeholder="Enter your wisdom 🎩"
+                    value={this.journal}
+                    onChange={this.handleJournalChange}
+                  />
+                </div>
+                <div>
+                  {!this.props.loading ? (
+                    <button
+                      className="button"
+                      onClick={this.handleSubmit}
+                      disabled={invalidToAddress}
+                    >
+                      Send the Coin
+                    </button>
+                  ) : (
+                    <p className="tiny">Waiting on tx ...</p>
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="step--3">
-              <p>
-                <strong>3.</strong> Share some wisdom along with the coin.
-                (Optional)
-              </p>
-              <input
-                className="Wandering__journal-input"
-                type="text"
-                placeholder="Enter your wisdom 🎩"
-                value={this.journal}
-                onChange={this.handleJournalChange}
-              />
-            </div>
-            <div>
-              {!this.props.loading ? (
-                <button
-                  className="button"
-                  onClick={this.handleSubmit}
-                  disabled={invalidToAddress}
-                >
-                  Send the Coin
-                </button>
-              ) : (
-                <p className="tiny">Waiting on tx ...</p>
-              )}
-            </div>
+            )}
           </div>
         )}
-      </div>
+      </WanderInfoConsumer>
     );
   }
 }
