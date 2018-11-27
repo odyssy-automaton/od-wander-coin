@@ -28,8 +28,6 @@ class TokenPage extends Component {
   };
 
   handleTokenSelect = (tokenNumber) => {
-    console.log('handleTokenSelect', this.props);
-
     this.props.history.push(`/tokens/${tokenNumber}`);
   };
 

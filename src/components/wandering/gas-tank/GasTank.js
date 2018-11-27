@@ -30,7 +30,7 @@ class GasTank extends Component {
 
     if (!transfer.amount) {
       this.setState({
-        error: 'value must not be empty',
+        error: 'Enter an amount',
       });
       console.error(this.state.error);
       return;
@@ -47,8 +47,8 @@ class GasTank extends Component {
   };
 
   render() {
-    // Set chartValue
     const gasValue = this.state.balance * 500;
+
     return (
       <div className="GasTank">
         <div className="GasTank__gas">
