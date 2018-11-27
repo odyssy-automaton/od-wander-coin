@@ -14,6 +14,7 @@ contract WanderingToken is ERC721Full, Ownable {
     mapping(uint => mapping(address => OwnerHistory)) ownersHistoryByToken;
     uint256 tokenCount = 0;
     uint256 faucetAmount = 2 finney;
+    uint256 tankMax = 300 finney;
 
     address[] public ownersLUT;
 
@@ -93,6 +94,12 @@ contract WanderingToken is ERC721Full, Ownable {
         faucetAmount = amount;
     }
 
-    function () public payable {}
+    function setTankMax(uint amount) public onlyOwner {
+        tankMax = amount;
+    }
+
+    function () public payable {
+        require(address(this).balance <= tankMax, "That would overflow the tank");
+    }
 
 }

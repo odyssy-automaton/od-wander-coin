@@ -58,8 +58,7 @@ class App extends Component {
               <Header />
               {web3 &&
               accounts &&
-              ((env === 'development' && network === 'private') ||
-                env === 'production') ? (
+              (env === 'development' || env === 'production') ? (
                 <div>
                   <Routes />
                 </div>
