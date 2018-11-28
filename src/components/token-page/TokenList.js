@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
+import './TokenPage.scss';
 
 class TokenList extends Component {
   state = {
@@ -13,6 +16,7 @@ class TokenList extends Component {
   getTotalTokens = async () => {
     const { onLoad } = this.props;
     const totalTokens = await onLoad();
+
     this.setState({ totalTokens });
   };
 
@@ -25,22 +29,43 @@ class TokenList extends Component {
     });
   };
 
+  tokenRows = () => {
+    return [...Array(+this.state.totalTokens).keys()].map((i) => {
+      return (
+        <div className="divTableRow" key={i}>
+          <div className="divTableCell">
+            <Link to={`/tokens/${i + 1}`}>{i + 1}</Link>
+          </div>
+          <div className="divTableCell" />
+          <div className="divTableCell" />
+          <div className="divTableCell" />
+          <div className="divTableCell" />
+        </div>
+      );
+    });
+  };
+
   render() {
+    const tokenRows = this.tokenRows();
+
     return (
       <div>
         <h3>Token List: {this.state.totalTokens} total</h3>
-        <form>
-          Go To: &nbsp;
-          <select onChange={this.handleSelect} value={this.state.tokenNumber}>
-            {[...Array(+this.state.totalTokens).keys()].map((i) => {
-              return (
-                <option key={i + 1} value={i + 1}>
-                  {i + 1}
-                </option>
-              );
-            })}
-          </select>
-        </form>
+
+        <div className="divTable">
+          <div className="divTableBody">
+            <div className="divTableRow">
+              <div className="divTableCell">Token Name</div>
+              <div className="divTableCell">Token Purpose</div>
+              <div className="divTableCell"># of Stops</div>
+              <div className="divTableCell">Miles Travelled</div>
+              <div className="divTableCell">MPH</div>
+            </div>
+            {tokenRows}
+          </div>
+        </div>
+
+        <hr />
       </div>
     );
   }
