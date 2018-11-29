@@ -47,7 +47,7 @@ class TokenPage extends Component {
     return (
       <TokensProvider value={this.state}>
         <div>
-          <p>EXPLORE THE CURRENT TOKENS</p>
+          <h3>Explore the wandering coins</h3>
           {this.state.totalTokens ? (
             <TokenList
               onLoad={this.getTotalTokens}
@@ -55,7 +55,7 @@ class TokenPage extends Component {
               contract={contract}
             />
           ) : null}
-          <p>OR: </p>
+          <h3>Launch a new coin</h3>
           <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
         </div>
       </TokensProvider>

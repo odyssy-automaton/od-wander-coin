@@ -3,22 +3,20 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
+import { CirclePicker } from 'react-color';
 
 class TokenLaunch extends Component {
   state = {
     streetAddress: '',
     latitude: '',
     longitude: '',
-    toAddress: '',
     journal: '',
+    tokenName: '',
+    tokenColor: '',
   };
 
   handleChange = (streetAddress) => {
     this.setState({ streetAddress });
-  };
-
-  handleAddressChange = (e) => {
-    this.setState({ toAddress: e.target.value });
   };
 
   handleSelect = (address) => {
@@ -38,6 +36,14 @@ class TokenLaunch extends Component {
     this.setState({ journal: e.target.value });
   };
 
+  handleTokenNameChange = (e) => {
+    this.setState({ tokenName: e.target.value });
+  };
+
+  handleColorChange = (color) => {
+    this.setState({ tokenColor: color.hex });
+  };
+
   handleSubmit = () => {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
@@ -52,12 +58,12 @@ class TokenLaunch extends Component {
       longitude: '',
       toAddress: '',
       journal: '',
+      tokenName: '',
+      tokenColor: '',
     });
   };
 
   render() {
-    const showWarning = this.state.toAddress.length < 5;
-
     return (
       <div>
         <PlacesAutocomplete
@@ -113,23 +119,43 @@ class TokenLaunch extends Component {
 
         {this.state.latitude && (
           <div>
-            {showWarning ? <p>New coins origin will be...</p> : null}
-            <p>Lat: {this.state.latitude}</p>
-            <p>Lng: {this.state.longitude}</p>
             <div className="step--1">
               <p>
-                <strong>1.</strong> Share the purpose of this token. (Optional)
+                <strong>2.</strong> Name the coin
               </p>
               <input
                 className="Wandering__journal-input"
                 type="text"
-                placeholder="Enter tokens purpose 🎩"
+                placeholder="Enter coin's name 😋"
+                value={this.tokenName}
+                onChange={this.handleTokenNameChange}
+              />
+            </div>
+            <div className="step--2">
+              <p>
+                <strong>2.</strong> Share the purpose of this coin. (Optional)
+              </p>
+              <input
+                className="Wandering__journal-input"
+                type="text"
+                placeholder="Enter coin's purpose 🎩"
                 value={this.journal}
                 onChange={this.handleJournalChange}
               />
             </div>
+            <div className="step--3">
+              <p>
+                <strong>3.</strong> Give the coin a color
+              </p>
+              <div>
+                <CirclePicker
+                  color={this.state.tokenColor}
+                  onChange={this.handleColorChange}
+                />
+              </div>
+            </div>
             <div>
-              <button onClick={this.handleSubmit}>Luanch the Coin</button>
+              <button onClick={this.handleSubmit}>Launch the Coin</button>
             </div>
           </div>
         )}
