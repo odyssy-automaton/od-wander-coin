@@ -34,8 +34,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "netlify-build": "truffle compile --contracts_build_directory=./src/dist/contracts && react-scripts build",
-    "env-build": "node ./scripts/create-env.js && react-scripts build",
+    "env-build": "truffle compile --contracts_build_directory=./src/dist/contracts && node ./scripts/create-env.js && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "link-contracts": "run-script-os",
