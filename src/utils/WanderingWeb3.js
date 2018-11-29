@@ -9,12 +9,14 @@ export default class WanderingService {
   constructor(web3) {
     this.web3Service = new Web3Service(web3);
     this.odJsonService = new OdJsonService();
+    this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-    if (process.env.NODE_ENV === 'development') {
-      this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
-    } else {
-      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-    }
+    // if (process.env.NODE_ENV === 'development') {
+    //   this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
+    // } else {
+    //      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+
+    // }
     // console.log(
     //   'env',
     //   process.env.NODE_ENV,

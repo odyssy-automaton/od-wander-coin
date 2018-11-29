@@ -13,7 +13,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Web3Provider>
+        <Web3Provider supportedNetworks={[1, 3, 4, 42, 4447]}>
           <BrowserRouter>
             <Fragment>
               <Header />
