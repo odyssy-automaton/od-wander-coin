@@ -22,15 +22,6 @@ class TokenList extends Component {
     this.setState({ totalTokens });
   };
 
-  handleSelect = (event) => {
-    event.persist();
-
-    const { onSelect } = this.props;
-    this.setState({ tokenNumber: event.target.value }, () => {
-      onSelect(this.state.tokenNumber);
-    });
-  };
-
   tokenRows = () => {
     return [...Array(+this.state.totalTokens).keys()].map((i) => {
       return (
@@ -58,6 +49,7 @@ class TokenList extends Component {
         <div className="divTable">
           <div className="divTableBody">
             <div className="divTableRow">
+              <div className="divTableCell" />
               <div className="divTableCell">Token Name</div>
               <div className="divTableCell">Token Purpose</div>
               <div className="divTableCell"># of Stops</div>

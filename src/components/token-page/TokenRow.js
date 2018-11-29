@@ -1,43 +1,60 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import { totalDistance } from '../../utils/distanceHelpers';
+
 class TokenRow extends Component {
   state = {
     loading: true,
-    tokenMeta: [],
+    txMeta: [],
+    totalDistance: null,
+    tokenMeta: null,
   };
 
   componentDidMount() {
-    console.log('this.props');
-    console.log(this.props);
-
-    this.loadTokenMeta();
+    this.loadMeta();
   }
 
-  loadTokenMeta = async () => {
-    const tokenMeta = await this.props.context.wanderingService.getAllOwnerCords(
+  loadMeta = async () => {
+    const txMeta = await this.props.context.wanderingService.getAllOwnerCords(
       this.props.tokenId,
     );
 
-    this.setState({ tokenMeta, loading: false });
+    const tokenMeta = await this.props.context.wanderingService.getTokenMetaData(
+      this.props.tokenId,
+    );
 
-    console.log(tokenMeta);
+    this.setState({
+      txMeta,
+      tokenMeta,
+      loading: false,
+      totalDistance: totalDistance(txMeta),
+    });
+
+    // const total = totalDistance(txMeta);
+
+    // console.log(total);
   };
 
   render() {
     const { tokenId } = this.props;
-    const { loading, tokenMeta } = this.state;
+    const { loading, tokenMeta, txMeta, totalDistance } = this.state;
 
     return loading ? (
       <p>loading token data</p>
     ) : (
       <div className="divTableRow">
         <div className="divTableCell">
-          <Link to={`/tokens/${tokenId}`}>{tokenId}</Link>
+          <img src={tokenMeta.image} width="20px" />
         </div>
-        <div className="divTableCell" />
-        <div className="divTableCell">{tokenMeta.length}</div>
-        <div className="divTableCell" />
+        <div className="divTableCell">
+          <Link to={`/tokens/${tokenId}`}>
+            {tokenId}. {tokenMeta.name}
+          </Link>
+        </div>
+        <div className="divTableCell">{tokenMeta.description}</div>
+        <div className="divTableCell">{txMeta.length}</div>
+        <div className="divTableCell">{totalDistance}</div>
         <div className="divTableCell" />
       </div>
     );
