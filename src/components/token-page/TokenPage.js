@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import TokenList from './TokenList';
 import TokenLaunch from './TokenLaunch';
-import { withRouter } from 'react-router-dom';
+import { TokensProvider } from '../../contexts/TokensContext';
 
 class TokenPage extends Component {
   state = {
     contract: null,
-    owner: null,
     totalTokens: null,
+    wanderingService: null,
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.wanderingService = new WanderingService(this.props.web3);
-    this.loadContract();
-  }
-
-  loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
     const totalTokens = await this.getTotalTokens();
-    this.setState({ contract, totalTokens });
+    this.setState({
+      contract,
+      totalTokens,
+      wanderingService: this.wanderingService,
+    });
   };
 
   getTotalTokens = async () => {
@@ -43,18 +44,23 @@ class TokenPage extends Component {
   };
 
   render() {
+    const { contract } = this.state;
+
     return (
-      <div>
-        <p>EXPLORE THE CURRENT TOKENS</p>
-        {this.state.totalTokens ? (
-          <TokenList
-            onLoad={this.getTotalTokens}
-            onSelect={this.handleTokenSelect}
-          />
-        ) : null}
-        <p>OR: </p>
-        <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
-      </div>
+      <TokensProvider value={this.state}>
+        <div>
+          <p>EXPLORE THE CURRENT TOKENS</p>
+          {this.state.totalTokens ? (
+            <TokenList
+              onLoad={this.getTotalTokens}
+              onSelect={this.handleTokenSelect}
+              contract={contract}
+            />
+          ) : null}
+          <p>OR: </p>
+          <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
+        </div>
+      </TokensProvider>
     );
   }
 }

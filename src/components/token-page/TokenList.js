@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+
+import TokenRow from './TokenRow';
+import { TokensConsumer } from '../../contexts/TokensContext';
 
 import './TokenPage.scss';
 
@@ -9,9 +11,9 @@ class TokenList extends Component {
     tokenNumber: '',
   };
 
-  componentDidMount() {
+  componentDidMount = async () => {
     this.getTotalTokens();
-  }
+  };
 
   getTotalTokens = async () => {
     const { onLoad } = this.props;
@@ -32,15 +34,16 @@ class TokenList extends Component {
   tokenRows = () => {
     return [...Array(+this.state.totalTokens).keys()].map((i) => {
       return (
-        <div className="divTableRow" key={i}>
-          <div className="divTableCell">
-            <Link to={`/tokens/${i + 1}`}>{i + 1}</Link>
-          </div>
-          <div className="divTableCell" />
-          <div className="divTableCell" />
-          <div className="divTableCell" />
-          <div className="divTableCell" />
-        </div>
+        <TokensConsumer key={i}>
+          {(context) => (
+            <TokenRow
+              tokenId={i + 1}
+              contract={this.props.contract}
+              key={i}
+              context={context}
+            />
+          )}
+        </TokensConsumer>
       );
     });
   };
