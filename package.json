@@ -13,6 +13,7 @@
     "react-dom": "^16.5.2",
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
+    "react-helmet": "^5.2.0",
     "react-motion": "^0.5.2",
     "react-places-autocomplete": "^7.2.0",
     "react-qr-reader": "^2.1.1",

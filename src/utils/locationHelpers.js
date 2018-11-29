@@ -1,27 +1,27 @@
 import Geocode from 'react-geocode';
 
 export const getCurrentLocation = () => {
-  const location = {
-    streetAddress: '',
-    latitude: '',
-    longitude: '',
-  };
+  // let location = {
+  //   streetAddress: '',
+  //   latitude: '',
+  //   longitude: '',
+  // };
 
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      return {
-        streetAddress: addressFromGeo(
-          position.coords.latitude,
-          position.coords.longitude,
-        ),
+  // if ('geolocation' in navigator) {
+  return new Promise((resolve) => {
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const geoAddress = await addressFromGeo(
+        position.coords.latitude,
+        position.coords.longitude,
+      );
+
+      resolve({
+        streetAddress: geoAddress,
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
-        autolocated: true,
-      };
+      });
     });
-  }
-
-  return location;
+  });
 };
 
 export const defaultLocation = () => {
@@ -29,9 +29,9 @@ export const defaultLocation = () => {
 };
 
 export const addressFromGeo = (lat, lng) => {
-  Geocode.setApiKey('AIzaSyC5UNPRmxLtv-42ZBHnArD6msTp5aiEAGc');
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_API_KEY);
 
-  Geocode.fromLatLng(lat, lng).then(
+  return Geocode.fromLatLng(lat, lng).then(
     (response) => {
       return response.results[0].formatted_address;
     },
