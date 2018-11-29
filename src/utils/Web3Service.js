@@ -64,6 +64,10 @@ export default class Web3Service {
   toAscii(value) {
     return this.web3.utils.toAscii(value);
   }
+
+  asciiToHex(value) {
+    return this.web3.utils.asciiToHex(value);
+  }
 }
 
 //const web3Service = new Web3Service();

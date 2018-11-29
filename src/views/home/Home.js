@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Web3 from 'web3';
 import WanderingToken from '../../components/wandering';
 import { Web3Consumer } from 'web3-react';
 
@@ -11,7 +11,7 @@ class Home extends Component {
       <Web3Consumer>
         {(context) => (
           <WanderingToken
-            web3={context.web3js}
+            web3={new Web3(context.web3js.givenProvider)}
             account={context.account}
             tokenId={tokenId}
           />
