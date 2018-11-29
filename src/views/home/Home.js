@@ -11,7 +11,7 @@ class Home extends Component {
       <Web3Consumer>
         {(context) => (
           <WanderingToken
-            web3={new Web3(context.web3js.givenProvider)}
+            web3={new Web3(context.web3js.givenProvider)} // force .34 version of web3
             account={context.account}
             tokenId={tokenId}
           />

@@ -26,10 +26,14 @@ class WanderingNew extends Component {
     result: 'Scan a QR code to return a wallet address', // qr
   };
 
-  componentWillMount = () => {
-    this.setState({
-      ...getCurrentLocation(),
-    });
+  componentWillMount = async () => {
+    if ('geolocation' in navigator) {
+      const location = await getCurrentLocation();
+      this.setState({
+        ...location,
+        autolocated: true,
+      });
+    }
   };
 
   handleChange = (streetAddress) => {

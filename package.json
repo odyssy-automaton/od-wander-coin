@@ -13,6 +13,7 @@
     "react-dom": "16.7.0-alpha.0",
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
+    "react-helmet": "^5.2.0",
     "react-motion": "^0.5.2",
     "react-places-autocomplete": "^7.2.0",
     "react-qr-reader": "^2.1.1",
@@ -35,7 +36,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "env-build": "node ./scripts/create-env.js && react-scripts build",
+    "env-build": "truffle compile --contracts_build_directory=./src/dist/contracts && node ./scripts/create-env.js && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "link-contracts": "run-script-os",

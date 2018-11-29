@@ -9,22 +9,12 @@ export default class WanderingService {
   constructor(web3) {
     this.web3Service = new Web3Service(web3);
     this.odJsonService = new OdJsonService();
-    this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-    this.web3 = web3;
 
-    // if (process.env.NODE_ENV === 'development') {
-    //   this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
-    // } else {
-    //      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
-
-    // }
-    // console.log(
-    //   'env',
-    //   process.env.NODE_ENV,
-    //   this.tokenAddress,
-    //   process.env.REACT_APP_CONTRACT_ADDRESS,
-    //   process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
-    // );
+    if (process.env.NODE_ENV === 'development') {
+      this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
+    } else {
+      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
+    }
   }
 
   async initContracts() {
@@ -117,7 +107,6 @@ export default class WanderingService {
 
         let txURI = await contract.getTxURI(addr, tokenId).call();
         if (!this.odJsonService.verifyBaseURL(txURI)) {
-          console.log('huh', this.odJsonService.verifyBaseURL(txURI), txURI);
           console.error({ error: 'not a valid uri' });
           continue;
         }
@@ -161,19 +150,28 @@ export default class WanderingService {
       });
   }
 
+  getTokenURI(tokenId) {
+    return this.wanderingContract.methods.tokenURI(tokenId).call();
+  }
+
+  async getTokenMetaData(tokenId) {
+    const tokenURI = await this.getTokenURI(tokenId);
+
+    return fetch(tokenURI, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(function(response) {
+      return response.json();
+    });
+  }
+
   toEth(value) {
     return this.web3Service.toEth(value);
   }
 
   toWei(value) {
     return this.web3Service.toWei(value);
-  }
-
-  coordinateToInt(coordinate) {
-    return Math.round(coordinate * 10000000, 7);
-  }
-
-  intToCoordinate(int) {
-    return parseInt(int, 10) / 10000000;
   }
 }

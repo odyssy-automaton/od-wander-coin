@@ -12,3 +12,15 @@ export const distanceFrom = (origin, destination) => {
   const km = 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
   return (0.6213 * km).toFixed(2);
 };
+
+export const totalDistance = (coords) => {
+  const distance = coords.reduce((sum, coord, i, a) => {
+    if (a[i + 1]) {
+      return +sum + +distanceFrom(coord, a[i + 1]);
+    } else {
+      return +sum;
+    }
+  }, 0);
+
+  return distance.toFixed(2);
+};
