@@ -10,6 +10,7 @@
     "google-maps-react": "^2.0.2",
     "openzeppelin-solidity": "^2.0.0",
     "react": "16.7.0-alpha.0",
+    "react-color": "^2.14.1",
     "react-dom": "16.7.0-alpha.0",
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
