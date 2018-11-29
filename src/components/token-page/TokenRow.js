@@ -30,10 +30,6 @@ class TokenRow extends Component {
       loading: false,
       totalDistance: totalDistance(txMeta),
     });
-
-    // const total = totalDistance(txMeta);
-
-    // console.log(total);
   };
 
   render() {
