@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { ClientInfo } from './utils/getWeb3';
 import Routes from './Routes';
@@ -52,6 +53,14 @@ class App extends Component {
 
     return (
       <div>
+        <Helmet>
+          <script
+            type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${
+              process.env.REACT_APP_GOOGLE_API_KEY
+            }&libraries=places&geocode`}
+          />
+        </Helmet>
         <ClientInfoProvider value={this.state}>
           <BrowserRouter>
             <Fragment>
