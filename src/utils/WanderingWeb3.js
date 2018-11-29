@@ -115,6 +115,7 @@ export default class WanderingService {
           lng: txJSON.longitude,
           streetAddress: txJSON.streetAddress,
           journal: txJSON.journal,
+          timestamp: txJSON.timestamp || '',
         });
       }
     }
