@@ -24,14 +24,9 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude, streetAddress, journal, tokenId) {
+  async sendTo(from, to, tokenId, transfer) {
     // build txJSON, save and get txURI
-    const txJSON = {
-      latitude,
-      longitude,
-      streetAddress,
-      journal,
-    };
+    const txJSON = transfer;
 
     const txURI = await this.odJsonService.getUri(txJSON);
     const dummydata = this.web3Service.asciiToHex('0');
@@ -47,14 +42,9 @@ export default class WanderingService {
       });
   }
 
-  async launchToken(from, latitude, longitude, streetAddress, journal) {
+  async launchToken(from, transfer) {
     // build txJSON, save and get txURI
-    const txJSON = {
-      latitude,
-      longitude,
-      streetAddress,
-      journal,
-    };
+    const txJSON = transfer;
     const tokenJSON = {
       name: 'WanderCoin',
       description: 'A token that wanders around the world.',

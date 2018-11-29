@@ -64,9 +64,15 @@ class WanderingNew extends Component {
 
   handleSubmit = () => {
     const { onSubmit } = this.props;
-    const transfer = { ...this.state };
+    const transfer = {
+      streetAddress: this.state.streetAddress,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      toAddress: this.state.toAddress,
+      journal: this.state.journal,
+    };
 
-    onSubmit(transfer);
+    onSubmit(this.state.toAddress, transfer);
   };
 
   handleCloseClick = () => {

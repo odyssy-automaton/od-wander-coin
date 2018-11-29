@@ -33,12 +33,10 @@ class TokenPage extends Component {
   };
 
   handleSubmitLaunchForm = async (transfer) => {
+    transfer.timestamp = new Date().getTime();
     const newToken = await this.wanderingService.launchToken(
       this.props.account,
-      transfer.latitude,
-      transfer.longitude,
-      transfer.streetAddress,
-      transfer.journal,
+      transfer,
     );
     this.props.history.push(`/tokens/${newToken}`);
   };
