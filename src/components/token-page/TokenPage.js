@@ -33,7 +33,6 @@ class TokenPage extends Component {
   };
 
   handleSubmitLaunchForm = async (transfer) => {
-    transfer.timestamp = new Date().getTime();
     const newToken = await this.wanderingService.launchToken(
       this.props.account,
       transfer,

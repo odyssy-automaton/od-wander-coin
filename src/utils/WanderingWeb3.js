@@ -43,15 +43,25 @@ export default class WanderingService {
   }
 
   async launchToken(from, transfer) {
-    // build txJSON, save and get txURI
-    const txJSON = transfer;
     const tokenJSON = {
-      name: 'WanderCoin',
-      description: 'A token that wanders around the world.',
+      name: transfer.tokenName,
+      description: transfer.journal,
       image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.png',
+      extra: {
+        color: transfer.tokenColor,
+      },
     };
-    const txURI = await this.odJsonService.getUri(txJSON);
+
+    const txJSON = {
+      latitude: transfer.latitude,
+      longitude: transfer.longitude,
+      streetAddress: transfer.streetAddress,
+      journal: transfer.journal,
+      timestamp: new Date().getTime(),
+    };
+
     const tokenURI = await this.odJsonService.getUri(tokenJSON);
+    const txURI = await this.odJsonService.getUri(txJSON);
 
     await this.wanderingContract.methods
       .launchToken(txURI, tokenURI)
@@ -154,6 +164,7 @@ export default class WanderingService {
         'Content-Type': 'application/json',
       },
     }).then(function(response) {
+      console.log(response);
       return response.json();
     });
   }
