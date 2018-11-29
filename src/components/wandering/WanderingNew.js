@@ -29,7 +29,6 @@ class WanderingNew extends Component {
   componentWillMount = async () => {
     if ('geolocation' in navigator) {
       const location = await getCurrentLocation();
-      console.log(location);
       this.setState({
         ...location,
         autolocated: true,

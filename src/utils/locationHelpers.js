@@ -1,13 +1,6 @@
 import Geocode from 'react-geocode';
 
 export const getCurrentLocation = () => {
-  // let location = {
-  //   streetAddress: '',
-  //   latitude: '',
-  //   longitude: '',
-  // };
-
-  // if ('geolocation' in navigator) {
   return new Promise((resolve) => {
     navigator.geolocation.getCurrentPosition(async (position) => {
       const geoAddress = await addressFromGeo(
