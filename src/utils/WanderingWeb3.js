@@ -15,13 +15,6 @@ export default class WanderingService {
     } else {
       this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     }
-    // console.log(
-    //   'env',
-    //   process.env.NODE_ENV,
-    //   this.tokenAddress,
-    //   process.env.REACT_APP_CONTRACT_ADDRESS,
-    //   process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
-    // );
   }
 
   async initContracts() {
@@ -41,9 +34,10 @@ export default class WanderingService {
     };
 
     const txURI = await this.odJsonService.getUri(txJSON);
+    const dummydata = this.web3Service.asciiToHex('0');
 
     return this.wanderingContract.methods
-      .safeTransferFrom(from, to, tokenId, '0x0', txURI)
+      .safeTransferFrom(from, to, tokenId, dummydata, txURI)
       .send({ from: from })
       .then((res) => {
         return res;
@@ -113,7 +107,6 @@ export default class WanderingService {
 
         let txURI = await contract.getTxURI(addr, tokenId).call();
         if (!this.odJsonService.verifyBaseURL(txURI)) {
-          console.log('huh', this.odJsonService.verifyBaseURL(txURI), txURI);
           console.error({ error: 'not a valid uri' });
           continue;
         }
@@ -180,13 +173,5 @@ export default class WanderingService {
 
   toWei(value) {
     return this.web3Service.toWei(value);
-  }
-
-  coordinateToInt(coordinate) {
-    return Math.round(coordinate * 10000000, 7);
-  }
-
-  intToCoordinate(int) {
-    return parseInt(int, 10) / 10000000;
   }
 }

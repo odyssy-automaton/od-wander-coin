@@ -41,7 +41,7 @@ class TokenRow extends Component {
     ) : (
       <div className="divTableRow">
         <div className="divTableCell">
-          <img src={tokenMeta.image} width="20px" />
+          <img alt="" src={tokenMeta.image} width="20px" />
         </div>
         <div className="divTableCell">
           <Link to={`/tokens/${tokenId}`}>
