@@ -9,7 +9,7 @@
     "ethereumjs-util": "^5.2.0",
     "google-maps-react": "^2.0.2",
     "openzeppelin-solidity": "^2.0.0",
-    "react": "^16.4.2",
+    "react": "^16.6.3",
     "react-dom": "^16.5.2",
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
