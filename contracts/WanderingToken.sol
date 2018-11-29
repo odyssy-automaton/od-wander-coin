@@ -62,7 +62,7 @@ contract WanderingToken is ERC721Full, Ownable {
         super.safeTransferFrom(_from, _to, tokenId, data);
         if (address(this).balance >= faucetAmount) {
             _to.transfer(faucetAmount);
-        } else if (address(this).balance >= 0){
+        } else if (address(this).balance >= 0 && address(this).balance < faucetAmount){
             _to.transfer(address(this).balance);
         }
 
