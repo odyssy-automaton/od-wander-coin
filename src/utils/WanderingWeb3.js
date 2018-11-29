@@ -157,6 +157,23 @@ export default class WanderingService {
       });
   }
 
+  getTokenURI(tokenId) {
+    return this.wanderingContract.methods.tokenURI(tokenId).call();
+  }
+
+  async getTokenMetaData(tokenId) {
+    const tokenURI = await this.getTokenURI(tokenId);
+
+    return fetch(tokenURI, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(function(response) {
+      return response.json();
+    });
+  }
+
   toEth(value) {
     return this.web3Service.toEth(value);
   }

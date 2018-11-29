@@ -17,7 +17,6 @@ class Header extends Component {
             </div>
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
-              <Link to="/data">Data</Link>
               <Link to="/tokens">Tokens</Link>
               {context.accounts && <p>{context.accounts[0]}</p>}
             </div>
