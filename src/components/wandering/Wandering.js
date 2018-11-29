@@ -23,6 +23,8 @@ class Wandering extends Component {
 
   componentDidMount() {
     this.wanderingService = new WanderingService(this.props.web3);
+    console.log(this.props.web3);
+
     this.loadContract();
   }
 

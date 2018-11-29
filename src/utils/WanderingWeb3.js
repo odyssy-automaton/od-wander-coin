@@ -47,11 +47,19 @@ export default class WanderingService {
     return this.wanderingContract.methods
       .safeTransferFrom(from, to, tokenId, '0x0', txURI)
       .send({ from: from })
+      .once('transactionHash', (hash) => console.log('transactionHash', hash))
+      .once('receipt', (receipt) => console.log('receipt', receipt))
+      .once('confirmation', (confirmation, receipt) =>
+        console.log('confirmation', confirmation, receipt),
+      )
+      .once('error', (error) => console.log(error))
       .then((res) => {
+        console.log('res', res);
+
         return res;
       })
       .catch((err) => {
-        console.log(err);
+        console.log('err', err);
       });
   }
 
