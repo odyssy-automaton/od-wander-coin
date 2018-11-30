@@ -125,11 +125,11 @@ class WanderingNew extends Component {
                 return (
                   <div className="Wandering__search-bar-container">
                     <p className="large">
-                      You can send the Wander Coin to anyone you like as long as
-                      they have never held the coin before. When you send the
-                      coin, you can also add a message to your transaction which
-                      will also appear on the map along with your transaction.
-                      The goal is to pass the coin all the way around the world.
+                      You can send the coin to anyone you like as long as they
+                      have never held the coin before. When you send the coin,
+                      you can also add a message to your transaction which will
+                      also appear on the map along with your transaction. The
+                      goal is to pass the coin all the way around the world.
                     </p>
                     <div className="step--1">
                       <p>
@@ -141,11 +141,13 @@ class WanderingNew extends Component {
                             placeholder: 'Enter your street address',
                             className: 'Wandering__search-input',
                           })}
+                          disabled={this.props.loading ? 'disabled' : ''}
                         />
                         {this.state.streetAddress.length > 0 && (
                           <button
                             className="Wandering__clear-button"
                             onClick={this.handleCloseClick}
+                            disabled={this.props.loading ? 'disabled' : ''}
                           >
                             x
                           </button>
@@ -160,12 +162,18 @@ class WanderingNew extends Component {
                             onClick={() =>
                               this.handleSelect(this.state.streetAddress)
                             }
+                            disabled={this.props.loading ? 'disabled' : ''}
                           >
                             Yep
                           </button>
                         </p>
                         <p>
-                          <button onClick={this.handleCloseClick}>Nope</button>
+                          <button
+                            onClick={this.handleCloseClick}
+                            disabled={this.props.loading ? 'disabled' : ''}
+                          >
+                            Nope
+                          </button>
                         </p>
                       </div>
                     )}
@@ -239,11 +247,13 @@ class WanderingNew extends Component {
                       placeholder="Enter the wallet address"
                       value={this.state.toAddress}
                       onChange={this.handleAddressChange}
+                      disabled={this.props.loading ? 'disabled' : ''}
                     />
                     <button
                       className="button--qr"
                       type="button"
                       onClick={this.showModal}
+                      disabled={this.props.loading ? 'disabled' : ''}
                     >
                       <IconQR />
                     </button>
@@ -260,6 +270,7 @@ class WanderingNew extends Component {
                     placeholder="Enter your wisdom 🎩"
                     value={this.journal}
                     onChange={this.handleJournalChange}
+                    disabled={this.props.loading ? 'disabled' : ''}
                   />
                 </div>
                 <div>
@@ -272,7 +283,9 @@ class WanderingNew extends Component {
                       Send the Coin
                     </button>
                   ) : (
-                    <p className="tiny">Waiting on tx ...</p>
+                    <p className="tiny">
+                      Waiting on transaction ... Please check Metamask.
+                    </p>
                   )}
                 </div>
               </div>

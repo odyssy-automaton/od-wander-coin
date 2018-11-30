@@ -63,11 +63,19 @@ export default class WanderingService {
     const tokenURI = await this.odJsonService.getUri(tokenJSON);
     const txURI = await this.odJsonService.getUri(txJSON);
 
-    await this.wanderingContract.methods
+    return this.wanderingContract.methods
       .launchToken(txURI, tokenURI)
-      .send({ from: from });
+      .send({ from: from })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    return await this.wanderingContract.methods.totalSupply().call();
+    // .once('transactionHash', (hash) => {
+    //   return hash;
+    // })
   }
 
   async getTotalSupply() {
@@ -88,7 +96,13 @@ export default class WanderingService {
   async addrHasOwned(addr, tokenId = 1) {
     return await this.wanderingContract.methods
       .addrHasOwned(addr, tokenId)
-      .call();
+      .call()
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   async getAllOwnerCords(tokenId = 1) {
@@ -163,9 +177,13 @@ export default class WanderingService {
       headers: {
         'Content-Type': 'application/json',
       },
-    }).then(function(response) {
-      return response.json();
-    });
+
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .catch((err) => console.log(err));
+
   }
 
   toEth(value) {
