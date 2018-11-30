@@ -6,6 +6,7 @@ import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
 
 import { WanderInfoProvider } from '../../contexts/WanderInfoContext';
+import Modal from '../shared/modal/Modal';
 
 import { totalDistance } from '../../utils/distanceHelpers';
 
@@ -21,9 +22,11 @@ class Wandering extends Component {
     coordinates: [],
     error: null,
     loading: false,
+    showSuccessModal: false,
     txMeta: null,
     tokenMeta: null,
     totalDistance: null,
+
   };
   _isMounted = false;
 
@@ -81,6 +84,10 @@ class Wandering extends Component {
     if (this.state.error && this.state.error.code === 4) {
       this.setState({
         skipError: true,
+      });
+    } else {
+      this.setState({
+        error: false,
       });
     }
 
@@ -155,6 +162,7 @@ class Wandering extends Component {
         coordinates,
         owner: toAddress,
         loading: false,
+        showSuccessModal: true,
       });
     }
   };
@@ -165,6 +173,10 @@ class Wandering extends Component {
       this.props.account,
       amountInWei,
     );
+  };
+
+  hideModal = () => {
+    this.setState({ showSuccessModal: false });
   };
 
   render() {
@@ -182,6 +194,12 @@ class Wandering extends Component {
     ) : (
       <WanderInfoProvider value={this.state}>
         <div className="Wandering">
+          <Modal
+            show={this.state.showSuccessModal}
+            handleClose={this.hideModal}
+          >
+            <h3>Successfully sent token</h3>
+          </Modal>
           <div className="Wandering__bar">
             <div className="contents">
               <p>What is this?</p>

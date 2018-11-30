@@ -56,7 +56,6 @@ class TokenLaunch extends Component {
       streetAddress: '',
       latitude: '',
       longitude: '',
-      toAddress: '',
       journal: '',
       tokenName: '',
       tokenColor: '',
@@ -66,7 +65,7 @@ class TokenLaunch extends Component {
   render() {
     return (
       <div>
-      <h3>Launch a New Token</h3>
+        <h3>Launch a New Token</h3>
         <PlacesAutocomplete
           onChange={this.handleChange}
           value={this.state.streetAddress}
@@ -77,12 +76,15 @@ class TokenLaunch extends Component {
             return (
               <div className="Wandering__search-bar-container">
                 <div className="Wandering__search-input-container">
-                <p className="label">Enter a physical address to launch the token from.</p>
+                  <p className="label">
+                    Enter a physical address to launch the token from.
+                  </p>
                   <input
                     {...getInputProps({
                       placeholder: 'Enter a physical address',
                       className: 'Wandering__search-input',
                     })}
+                    disabled={this.props.loading ? 'disabled' : ''}
                   />
                   {this.state.streetAddress.length > 0 && (
                     <button
@@ -131,6 +133,7 @@ class TokenLaunch extends Component {
                 placeholder="Enter coin's name 😋"
                 value={this.tokenName}
                 onChange={this.handleTokenNameChange}
+                disabled={this.props.loading ? 'disabled' : ''}
               />
             </div>
             <div className="step--2">
@@ -143,21 +146,40 @@ class TokenLaunch extends Component {
                 placeholder="Enter coin's purpose 🎩"
                 value={this.journal}
                 onChange={this.handleJournalChange}
+                disabled={this.props.loading ? 'disabled' : ''}
               />
             </div>
             <div className="step--3">
               <p>
                 <strong>3.</strong> Give the coin a color
               </p>
-              <div>
-                <CirclePicker
-                  color={this.state.tokenColor}
-                  onChange={this.handleColorChange}
-                />
-              </div>
+              {!this.props.loading ? (
+                <div>
+                  <CirclePicker
+                    color={this.state.tokenColor}
+                    onChange={this.handleColorChange}
+                  />
+                </div>
+              ) : (
+                <div style={{ backgroundColor: this.state.tokenColor }}>
+                  Color Picked
+                </div>
+              )}
             </div>
             <div>
-              <button onClick={this.handleSubmit}>Launch the Coin</button>
+              {!this.props.loading ? (
+                <button
+                  onClick={this.handleSubmit}
+                  disabled={this.props.loading ? 'disabled' : ''}
+                >
+                  Launch the Coin
+                </button>
+              ) : (
+                <p className="tiny">
+                  Waiting on transaction ... Please check Metamask.{' '}
+                  {this.props.transactionHash}
+                </p>
+              )}
             </div>
           </div>
         )}

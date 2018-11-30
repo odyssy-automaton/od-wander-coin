@@ -141,11 +141,13 @@ class WanderingNew extends Component {
                             placeholder: 'Enter your street address',
                             className: 'Wandering__search-input',
                           })}
+                          disabled={this.props.loading ? 'disabled' : ''}
                         />
                         {this.state.streetAddress.length > 0 && (
                           <button
                             className="Wandering__clear-button"
                             onClick={this.handleCloseClick}
+                            disabled={this.props.loading ? 'disabled' : ''}
                           >
                             x
                           </button>
@@ -160,12 +162,18 @@ class WanderingNew extends Component {
                             onClick={() =>
                               this.handleSelect(this.state.streetAddress)
                             }
+                            disabled={this.props.loading ? 'disabled' : ''}
                           >
                             Yep
                           </button>
                         </p>
                         <p>
-                          <button onClick={this.handleCloseClick}>Nope</button>
+                          <button
+                            onClick={this.handleCloseClick}
+                            disabled={this.props.loading ? 'disabled' : ''}
+                          >
+                            Nope
+                          </button>
                         </p>
                       </div>
                     )}
@@ -240,11 +248,13 @@ class WanderingNew extends Component {
                       placeholder="Enter the wallet address"
                       value={this.state.toAddress}
                       onChange={this.handleAddressChange}
+                      disabled={this.props.loading ? 'disabled' : ''}
                     />
                     <button
                       className="button--qr"
                       type="button"
                       onClick={this.showModal}
+                      disabled={this.props.loading ? 'disabled' : ''}
                     >
                       <IconQR />
                     </button>
@@ -261,6 +271,7 @@ class WanderingNew extends Component {
                     placeholder="Enter your wisdom 🎩"
                     value={this.journal}
                     onChange={this.handleJournalChange}
+                    disabled={this.props.loading ? 'disabled' : ''}
                   />
                 </div>
                 <div>
@@ -273,7 +284,9 @@ class WanderingNew extends Component {
                       Send the Coin
                     </button>
                   ) : (
-                    <p className="tiny">Waiting on tx ...</p>
+                    <p className="tiny">
+                      Waiting on transaction ... Please check Metamask.
+                    </p>
                   )}
                 </div>
               </div>
