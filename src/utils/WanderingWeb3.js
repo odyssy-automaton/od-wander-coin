@@ -46,7 +46,7 @@ export default class WanderingService {
     const tokenJSON = {
       name: transfer.tokenName,
       description: transfer.journal,
-      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.png',
+      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface2.png',
       extra: {
         color: transfer.tokenColor,
       },
