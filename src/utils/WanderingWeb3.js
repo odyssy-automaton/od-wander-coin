@@ -46,7 +46,7 @@ export default class WanderingService {
     const tokenJSON = {
       name: transfer.tokenName,
       description: transfer.journal,
-      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.png',
+      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface2.png',
       extra: {
         color: transfer.tokenColor,
       },
@@ -91,19 +91,21 @@ export default class WanderingService {
   }
 
   async getOwner(tokenId = 1) {
-    return await this.wanderingContract.methods.ownerOf(tokenId).call();
+    try {
+      return await this.wanderingContract.methods.ownerOf(tokenId).call();
+    } catch {
+      return false;
+    }
   }
 
   async addrHasOwned(addr, tokenId = 1) {
-    return await this.wanderingContract.methods
-      .addrHasOwned(addr, tokenId)
-      .call()
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    try {
+      return await this.wanderingContract.methods
+        .addrHasOwned(addr, tokenId)
+        .call();
+    } catch {
+      return 'bad addr';
+    }
   }
 
   async getAllOwnerCords(tokenId = 1) {

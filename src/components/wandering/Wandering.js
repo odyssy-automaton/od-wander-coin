@@ -88,6 +88,7 @@ class Wandering extends Component {
       });
     }
 
+    // add to config
     if (gasTank < 0.002) {
       this.setState({
         error: {
@@ -103,7 +104,14 @@ class Wandering extends Component {
       this.props.tokenId,
     );
 
-    if (hasOwned) {
+    if (hasOwned === 'bad addr') {
+      this.setState({
+        error: {
+          code: 6,
+          msg: 'Receiving Address is not valid.',
+        },
+      });
+    } else if (hasOwned) {
       this.setState({
         error: {
           code: 5,
