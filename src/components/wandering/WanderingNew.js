@@ -91,7 +91,7 @@ class WanderingNew extends Component {
   };
 
   hideModal = () => {
-    this.setState({ show: false }); 
+    this.setState({ show: false });
   };
 
   handleScan = (data) => {
@@ -125,11 +125,11 @@ class WanderingNew extends Component {
                 return (
                   <div className="Wandering__search-bar-container">
                     <p className="large">
-                      You can send the Wander Coin to anyone you like as long as
-                      they have never held the coin before. When you send the
-                      coin, you can also add a message to your transaction which
-                      will also appear on the map along with your transaction.
-                      The goal is to pass the coin all the way around the world.
+                      You can send the coin to anyone you like as long as they
+                      have never held the coin before. When you send the coin,
+                      you can also add a message to your transaction which will
+                      also appear on the map along with your transaction. The
+                      goal is to pass the coin all the way around the world.
                     </p>
                     <div className="step--1">
                       <p>
