@@ -40,12 +40,11 @@ class TokenRow extends Component {
       <p>Loading Tokens ...</p>
     ) : (
       <div className="divTableRow">
-        <div className="divTableCell">
-          {tokenId}
-        </div>
+        <div className="divTableCell">{tokenId}</div>
         <div className="divTableCell">
           <Link to={`/tokens/${tokenId}`}>
-            <img src={tokenMeta.image} width="28px" alt="token icon"/> {tokenMeta.name}
+            <img src={tokenMeta.image} width="28px" alt="token icon" />{' '}
+            {tokenMeta.name}
           </Link>
         </div>
         <div className="divTableCell">{tokenMeta.description}</div>
