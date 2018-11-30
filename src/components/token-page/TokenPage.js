@@ -58,7 +58,7 @@ class TokenPage extends Component {
       transfer.tokenName === '' ||
       transfer.tokenColor === ''
     ) {
-      error = { code: 9, msg: 'Cant not be blank' };
+      error = { code: 9, msg: 'Cannot not be blank' };
     }
 
     if (error) {
