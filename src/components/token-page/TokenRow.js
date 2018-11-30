@@ -37,21 +37,21 @@ class TokenRow extends Component {
     const { loading, tokenMeta, txMeta, totalDistance } = this.state;
 
     return loading ? (
-      <p>loading token data</p>
+      <p>Loading Tokens ...</p>
     ) : (
       <div className="divTableRow">
         <div className="divTableCell">
-          <img src={tokenMeta.image} width="20px" />
+          {tokenId}
         </div>
         <div className="divTableCell">
           <Link to={`/tokens/${tokenId}`}>
-            {tokenId}. {tokenMeta.name}
+            <img src={tokenMeta.image} width="28px" alt="token icon"/> {tokenMeta.name}
           </Link>
         </div>
         <div className="divTableCell">{tokenMeta.description}</div>
         <div className="divTableCell">{txMeta.length}</div>
         <div className="divTableCell">{totalDistance}</div>
-        <div className="divTableCell" />
+        <div className="divTableCell">MPH</div>
       </div>
     );
   }

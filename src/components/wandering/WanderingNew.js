@@ -81,7 +81,7 @@ class WanderingNew extends Component {
   };
 
   hideModal = () => {
-    this.setState({ show: false });
+    this.setState({ show: false }); 
   };
 
   handleScan = (data) => {

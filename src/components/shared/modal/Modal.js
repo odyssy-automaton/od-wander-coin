@@ -13,13 +13,17 @@ class Modal extends Component {
     return (
       <div className={showHideClassname}>
         <section className="modal-main">
+          <div className="header">
+            <button className="button transparent" onClick={handleClose}>X</button>
+          </div>
           <div className="contents">
             {children}
-          </div>
-          <div className="footer">
-            <button className="button" onClick={handleClose}>Close</button>
+            <div className="footer">
+              <button className="button" onClick={handleClose}>Close</button>
+            </div>
           </div>
         </section>
+        <div className="Modal__backdrop" onClick={handleClose}></div>
       </div>
     );
   }

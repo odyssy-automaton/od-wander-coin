@@ -60,6 +60,7 @@ class TokenLaunch extends Component {
 
     return (
       <div>
+      <h3>Launch a New Token</h3>
         <PlacesAutocomplete
           onChange={this.handleChange}
           value={this.state.streetAddress}
@@ -70,9 +71,10 @@ class TokenLaunch extends Component {
             return (
               <div className="Wandering__search-bar-container">
                 <div className="Wandering__search-input-container">
+                <p className="label">Enter a physical address to launch the token from.</p>
                   <input
                     {...getInputProps({
-                      placeholder: 'Launch A new token from...',
+                      placeholder: 'Enter a physical address',
                       className: 'Wandering__search-input',
                     })}
                   />

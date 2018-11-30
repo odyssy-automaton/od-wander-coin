@@ -44,23 +44,21 @@ class TokenList extends Component {
 
     return (
       <div>
-        <h3>Token List: {this.state.totalTokens} total</h3>
+        <p>{this.state.totalTokens} Token(s)</p>
 
         <div className="divTable">
           <div className="divTableBody">
             <div className="divTableRow">
-              <div className="divTableCell" />
-              <div className="divTableCell">Token Name</div>
-              <div className="divTableCell">Token Purpose</div>
-              <div className="divTableCell"># of Stops</div>
-              <div className="divTableCell">Miles Travelled</div>
-              <div className="divTableCell">MPH</div>
+              <div className="divTableCell Column--Heading">ID</div>
+              <div className="divTableCell Column--Heading">Name</div>
+              <div className="divTableCell Column--Heading">Purpose</div>
+              <div className="divTableCell Column--Heading"># of Stops</div>
+              <div className="divTableCell Column--Heading">Miles Traveled</div>
+              <div className="divTableCell Column--Heading">MPH</div>
             </div>
             {tokenRows}
           </div>
         </div>
-
-        <hr />
       </div>
     );
   }
