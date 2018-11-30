@@ -20,16 +20,24 @@ class Wandering extends Component {
     error: null,
     loading: false,
   };
+  _isMounted = false;
 
   componentDidMount() {
+    this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
-
     this.loadContract();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    this.setState({ contract });
+
+    if (this._isMounted) {
+      this.setState({ contract });
+    }
     this.getOwner();
   };
 
@@ -40,7 +48,9 @@ class Wandering extends Component {
     );
     const coordinates = [...this.state.coordinates, ...coords];
 
-    this.setState({ owner, coordinates });
+    if (this._isMounted) {
+      this.setState({ owner, coordinates });
+    }
   };
 
   getBalance = async () => {
