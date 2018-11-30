@@ -56,6 +56,7 @@ class TokenRow extends Component {
               color={tokenMeta.extra.color}
               id={tokenId}
               name={tokenMeta.name}
+              className="Tokens__Icon--Small"
             />
             {tokenMeta.name}
           </Link>
