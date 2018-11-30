@@ -14,6 +14,9 @@ class TokenPage extends Component {
     totalTokens: null,
     wanderingService: null,
     show: false, // modal,
+    loading: false,
+    transactionHash: '',
+    error: null,
   };
 
   componentDidMount = async () => {
@@ -36,11 +39,36 @@ class TokenPage extends Component {
   };
 
   handleSubmitLaunchForm = async (transfer) => {
+    let error;
+    this.setState({
+      loading: true,
+    });
+
+    if (
+      transfer.journal === '' ||
+      transfer.tokenName === '' ||
+      transfer.tokenColor === ''
+    ) {
+      error = { code: 9, msg: 'Cant not be blank' };
+    }
+
+    if (error) {
+      this.setState({ error, loading: false });
+      throw error;
+    }
+
     const newToken = await this.wanderingService.launchToken(
       this.props.account,
       transfer,
     );
-    this.props.history.push(`/tokens/${newToken}`);
+    if (newToken) {
+      console.log(newToken);
+
+      this.props.history.push(`/tokens/${newToken}`);
+    }
+    this.setState({
+      loading: false,
+    });
   };
 
   // Modal
@@ -60,14 +88,23 @@ class TokenPage extends Component {
         <Modal show={this.state.show} handleClose={this.hideModal}>
           {this.state.show ? (
             <div>
-              <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
+              <TokenLaunch
+                loading={this.state.loading}
+                transactionHash={this.state.transactionHash}
+                onSubmit={this.handleSubmitLaunchForm}
+              />
+              {this.state.error ? (
+                <p className="tiny">{this.state.error.msg}</p>
+              ) : null}
             </div>
           ) : null}
         </Modal>
         <div className="Tokens__Container">
           <div className="Tokens__Header">
-          <h3>Explore Current Tokens</h3>
-          <button className="button" onClick={this.showModal}>+ Launch a New Token</button>
+            <h3>Explore Current Tokens</h3>
+            <button className="button" onClick={this.showModal}>
+              + Launch a New Token
+            </button>
           </div>
           <div className="Tokens__Explore">
             {this.state.totalTokens ? (

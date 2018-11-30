@@ -8,6 +8,7 @@ class GasTank extends Component {
     amount: '',
     balance: '',
     error: null,
+    loading: false,
   };
 
   componentDidMount() {
@@ -27,12 +28,15 @@ class GasTank extends Component {
   handleSubmit = async () => {
     const { onSubmit } = this.props;
     const transfer = { ...this.state };
+    this.setState({
+      loading: true,
+    });
 
     if (!transfer.amount) {
       this.setState({
         error: 'Enter an amount',
+        loading: false,
       });
-      console.error(this.state.error);
       return;
     }
 
@@ -41,6 +45,7 @@ class GasTank extends Component {
     this.setState({
       amount: '',
       error: '',
+      loading: false,
     });
 
     this.getBalance();
@@ -72,13 +77,25 @@ class GasTank extends Component {
               placeholder="Amount of ETH"
               value={this.state.amount}
               onChange={this.handleChange}
+              disabled={this.state.loading ? 'disabled' : ''}
             />
             {this.state.error ? (
               <p className="tiny">{this.state.error}</p>
             ) : null}
-            <button className="button" onClick={this.handleSubmit}>
-              GIVE ME SOME GAS
-            </button>
+
+            {!this.state.loading ? (
+              <button
+                className="button"
+                onClick={this.handleSubmit}
+                disabled={this.state.loading ? 'disabled' : ''}
+              >
+                GIVE ME SOME GAS
+              </button>
+            ) : (
+              <p className="tiny">
+                Waiting on transaction ... Please check Metamask.
+              </p>
+            )}
           </div>
         </div>
       </div>
