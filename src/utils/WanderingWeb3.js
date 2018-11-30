@@ -67,7 +67,8 @@ export default class WanderingService {
       .launchToken(txURI, tokenURI)
       .send({ from: from })
       .then((res) => {
-        return res;
+        console.log('success', res);
+        return this.wanderingContract.methods.totalSupply().call();
       })
       .catch((err) => {
         console.log(err);
@@ -177,13 +178,11 @@ export default class WanderingService {
       headers: {
         'Content-Type': 'application/json',
       },
-
     })
       .then(function(response) {
         return response.json();
       })
       .catch((err) => console.log(err));
-
   }
 
   toEth(value) {
