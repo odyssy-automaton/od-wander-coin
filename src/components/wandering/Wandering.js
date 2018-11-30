@@ -8,6 +8,8 @@ import GasTank from './gas-tank/GasTank';
 import { WanderInfoProvider } from '../../contexts/WanderInfoContext';
 import Modal from '../shared/modal/Modal';
 
+import { totalDistance } from '../../utils/distanceHelpers';
+
 import './Wandering.scss';
 import icon from '../../assets/wander-coin.png';
 
@@ -21,28 +23,51 @@ class Wandering extends Component {
     error: null,
     loading: false,
     showSuccessModal: false,
+    txMeta: null,
+    tokenMeta: null,
+    totalDistance: null,
+
   };
+  _isMounted = false;
 
   componentDidMount() {
+    this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
-
     this.loadContract();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    this.setState({ contract });
-    this.getOwner();
+    if (this._isMounted) {
+      this.setState({ contract });
+    }
+    this.getOwnerAndMeta();
+
   };
 
-  getOwner = async () => {
+  getOwnerAndMeta = async () => {
     const owner = await this.wanderingService.getOwner(this.props.tokenId);
     const coords = await this.wanderingService.getAllOwnerCords(
       this.props.tokenId,
     );
     const coordinates = [...this.state.coordinates, ...coords];
 
-    this.setState({ owner, coordinates });
+    const tokenMeta = await this.wanderingService.getTokenMetaData(
+      this.props.tokenId,
+    );
+    if (this._isMounted) {
+      this.setState({
+        tokenMeta,
+        owner,
+        coordinates,
+        totalDistance: totalDistance(coords),
+      });
+    }
+
   };
 
   getBalance = async () => {
@@ -155,7 +180,13 @@ class Wandering extends Component {
   };
 
   render() {
-    const { contract, owner, coordinates } = this.state;
+    const {
+      contract,
+      owner,
+      coordinates,
+      tokenMeta,
+      totalDistance,
+    } = this.state;
     const isOwner = owner === this.props.account;
 
     return !contract ? (
@@ -189,22 +220,39 @@ class Wandering extends Component {
                 <div className="Wandering__form">
                   {!isOwner ? (
                     <div>
-                      <h2>Wander Coin be wandering ... </h2>
-                      <p className="tiny">
-                        If you think you have it, make sure you’re on the Main
-                        Ethereum Network and connected to the wallet that the
-                        coin was sent to.
-                      </p>
+                      {tokenMeta ? (
+                        <div>
+                          <h2>The {tokenMeta.name} be wandering ...</h2>
+                          <p className="tiny">
+                            If you think you have it, make sure you’re on the
+                            Main Ethereum Network and connected to the wallet
+                            that the coin was sent to.
+                          </p>
+                        </div>
+                      ) : (
+                        <h2>Loading...</h2>
+                      )}
                     </div>
                   ) : (
                     <div>
                       <img
                         alt="wander-coin icon"
-                        src={icon}
+                        src={tokenMeta.image || icon}
                         width="100px"
                         height="100px"
                       />
-                      <h2>The Wander Coin is in your wallet!</h2>
+                      {tokenMeta ? (
+                        <div>
+                          <h2>The {tokenMeta.name} is in your wallet!</h2>
+                          <p className="tiny">
+                            It's purpose is {tokenMeta.description}
+                          </p>
+                          <p className="tiny">
+                            Distance traveled so far: {totalDistance} miles
+                          </p>
+                        </div>
+                      ) : null}
+
                       <WanderingNew
                         loading={this.state.loading}
                         onSubmit={this.handleSubmitAddressForm}
