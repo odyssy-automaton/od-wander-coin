@@ -88,6 +88,7 @@ class Wandering extends Component {
       });
     }
 
+    // add to config
     if (gasTank < 0.002) {
       this.setState({
         error: {
