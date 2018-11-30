@@ -96,7 +96,13 @@ export default class WanderingService {
   async addrHasOwned(addr, tokenId = 1) {
     return await this.wanderingContract.methods
       .addrHasOwned(addr, tokenId)
-      .call();
+      .call()
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   async getAllOwnerCords(tokenId = 1) {
