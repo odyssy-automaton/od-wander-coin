@@ -158,7 +158,13 @@ class Wandering extends Component {
   };
 
   render() {
-    const { contract, owner, coordinates, tokenMeta } = this.state;
+    const {
+      contract,
+      owner,
+      coordinates,
+      tokenMeta,
+      totalDistance,
+    } = this.state;
     const isOwner = owner === this.props.account;
 
     return !contract ? (
@@ -212,6 +218,9 @@ class Wandering extends Component {
                           <h2>The {tokenMeta.name} is in your wallet!</h2>
                           <p className="tiny">
                             It's purpose is {tokenMeta.description}
+                          </p>
+                          <p className="tiny">
+                            Distance traveled so far: {totalDistance} miles
                           </p>
                         </div>
                       ) : null}
