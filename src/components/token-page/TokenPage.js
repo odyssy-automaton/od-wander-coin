@@ -57,7 +57,6 @@ class TokenPage extends Component {
 
     return (
       <TokensProvider value={this.state}>
-<<<<<<< HEAD
         <Modal show={this.state.show} handleClose={this.hideModal}>
           {this.state.show ? (
             <div>
@@ -79,19 +78,6 @@ class TokenPage extends Component {
               />
             ) : null}
           </div>
-=======
-        <div>
-          <h3>Explore the wandering coins</h3>
-          {this.state.totalTokens ? (
-            <TokenList
-              onLoad={this.getTotalTokens}
-              onSelect={this.handleTokenSelect}
-              contract={contract}
-            />
-          ) : null}
-          <h3>Launch a new coin</h3>
-          <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
->>>>>>> 2ce17f7fa6dc8f80dfc2a94e22161037ea6e2e8f
         </div>
       </TokensProvider>
     );
