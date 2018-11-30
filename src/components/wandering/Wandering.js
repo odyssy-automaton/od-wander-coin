@@ -26,7 +26,6 @@ class Wandering extends Component {
     txMeta: null,
     tokenMeta: null,
     totalDistance: null,
-
   };
   _isMounted = false;
 
@@ -46,7 +45,6 @@ class Wandering extends Component {
       this.setState({ contract });
     }
     this.getOwnerAndMeta();
-
   };
 
   getOwnerAndMeta = async () => {
@@ -67,7 +65,6 @@ class Wandering extends Component {
         totalDistance: totalDistance(coords),
       });
     }
-
   };
 
   getBalance = async () => {
