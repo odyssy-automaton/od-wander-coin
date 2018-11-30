@@ -164,7 +164,6 @@ export default class WanderingService {
         'Content-Type': 'application/json',
       },
     }).then(function(response) {
-      console.log(response);
       return response.json();
     });
   }

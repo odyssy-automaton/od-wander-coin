@@ -66,8 +66,10 @@ class TokenPage extends Component {
         </Modal>
         <div className="Tokens__Container">
           <div className="Tokens__Header">
-          <h3>Explore Current Tokens</h3>
-          <button className="button" onClick={this.showModal}>+ Launch a New Token</button>
+            <h3>Explore Current Tokens</h3>
+            <button className="button" onClick={this.showModal}>
+              + Launch a New Token
+            </button>
           </div>
           <div className="Tokens__Explore">
             {this.state.totalTokens ? (
