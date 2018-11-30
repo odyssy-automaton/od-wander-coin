@@ -62,7 +62,17 @@ class TokenLaunch extends Component {
     });
   };
 
+  isValid = () => {
+    return (
+      this.state.journal !== '' &&
+      this.state.tokenName !== '' &&
+      this.state.tokenColor !== ''
+    );
+  };
+
   render() {
+    const validLaunch = this.isValid();
+
     return (
       <div>
         <h3>Launch a New Token</h3>
@@ -77,7 +87,8 @@ class TokenLaunch extends Component {
               <div className="Wandering__search-bar-container">
                 <div className="Wandering__search-input-container">
                   <p className="label">
-                    Enter a physical address to launch the token from.
+                    <strong>1.</strong> Enter a physical address to launch the
+                    token from.
                   </p>
                   <input
                     {...getInputProps({
@@ -123,7 +134,7 @@ class TokenLaunch extends Component {
 
         {this.state.latitude && (
           <div>
-            <div className="step--1">
+            <div className="step--2">
               <p>
                 <strong>2.</strong> Name the coin
               </p>
@@ -136,9 +147,9 @@ class TokenLaunch extends Component {
                 disabled={this.props.loading ? 'disabled' : ''}
               />
             </div>
-            <div className="step--2">
+            <div className="step--3">
               <p>
-                <strong>2.</strong> Share the purpose of this coin. (Optional)
+                <strong>3.</strong> Share the purpose of this coin.
               </p>
               <input
                 className="Wandering__journal-input"
@@ -149,9 +160,9 @@ class TokenLaunch extends Component {
                 disabled={this.props.loading ? 'disabled' : ''}
               />
             </div>
-            <div className="step--3">
+            <div className="step--4">
               <p>
-                <strong>3.</strong> Give the coin a color
+                <strong>4.</strong> Give the coin a color
               </p>
               {!this.props.loading ? (
                 <div>
@@ -170,7 +181,7 @@ class TokenLaunch extends Component {
               {!this.props.loading ? (
                 <button
                   onClick={this.handleSubmit}
-                  disabled={this.props.loading ? 'disabled' : ''}
+                  disabled={this.props.loading || !validLaunch}
                 >
                   Launch the Coin
                 </button>

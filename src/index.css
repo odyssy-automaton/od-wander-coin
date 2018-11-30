@@ -61,6 +61,11 @@ button:hover {
   color: white;
 }
 
+button:disabled {
+  background-color: #595959;
+  color: #a6a6a6;
+}
+
 input {
   padding: 10px 5px;
   outline: none;
