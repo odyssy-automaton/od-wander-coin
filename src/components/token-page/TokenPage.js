@@ -6,11 +6,14 @@ import TokenList from './TokenList';
 import TokenLaunch from './TokenLaunch';
 import { TokensProvider } from '../../contexts/TokensContext';
 
+import Modal from '../shared/modal/Modal';
+
 class TokenPage extends Component {
   state = {
     contract: null,
     totalTokens: null,
     wanderingService: null,
+    show: false, // modal,
   };
 
   componentDidMount = async () => {
@@ -35,12 +38,18 @@ class TokenPage extends Component {
   handleSubmitLaunchForm = async (transfer) => {
     const newToken = await this.wanderingService.launchToken(
       this.props.account,
-      transfer.latitude,
-      transfer.longitude,
-      transfer.streetAddress,
-      transfer.journal,
+      transfer,
     );
     this.props.history.push(`/tokens/${newToken}`);
+  };
+
+  // Modal
+  showModal = () => {
+    this.setState({ show: true });
+  };
+
+  hideModal = () => {
+    this.setState({ show: false });
   };
 
   render() {
@@ -48,17 +57,27 @@ class TokenPage extends Component {
 
     return (
       <TokensProvider value={this.state}>
-        <div>
-          <p>EXPLORE THE CURRENT TOKENS</p>
-          {this.state.totalTokens ? (
-            <TokenList
-              onLoad={this.getTotalTokens}
-              onSelect={this.handleTokenSelect}
-              contract={contract}
-            />
+        <Modal show={this.state.show} handleClose={this.hideModal}>
+          {this.state.show ? (
+            <div>
+              <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
+            </div>
           ) : null}
-          <p>OR: </p>
-          <TokenLaunch onSubmit={this.handleSubmitLaunchForm} />
+        </Modal>
+        <div className="Tokens__Container">
+          <div className="Tokens__Header">
+          <h3>Explore Current Tokens</h3>
+          <button className="button" onClick={this.showModal}>+ Launch a New Token</button>
+          </div>
+          <div className="Tokens__Explore">
+            {this.state.totalTokens ? (
+              <TokenList
+                onLoad={this.getTotalTokens}
+                onSelect={this.handleTokenSelect}
+                contract={contract}
+              />
+            ) : null}
+          </div>
         </div>
       </TokensProvider>
     );

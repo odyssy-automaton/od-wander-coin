@@ -48,9 +48,10 @@ class Wandering extends Component {
     return this.wanderingService.toEth(balance);
   };
 
-  handleSubmitAddressForm = async (transfer) => {
+  handleSubmitAddressForm = async (toAddress, transfer) => {
     this.setState({ loading: true });
     const gasTank = await this.getBalance();
+    transfer.timestamp = new Date().getTime();
 
     // if user decides to send it anyways on second press
     if (this.state.error && this.state.error.code === 4) {
@@ -70,7 +71,7 @@ class Wandering extends Component {
     }
 
     const hasOwned = await this.wanderingService.addrHasOwned(
-      transfer.toAddress,
+      toAddress,
       this.props.tokenId,
     );
 
@@ -83,7 +84,7 @@ class Wandering extends Component {
       });
     }
 
-    if (this.props.account === transfer.toAddress) {
+    if (this.props.account === toAddress) {
       this.setState({ error: { code: 3, msg: 'Cant send to self' } });
     }
 
@@ -102,12 +103,9 @@ class Wandering extends Component {
 
     const tx = await this.wanderingService.sendTo(
       this.props.account,
-      transfer.toAddress,
-      transfer.latitude,
-      transfer.longitude,
-      transfer.streetAddress,
-      transfer.journal,
+      toAddress,
       this.props.tokenId,
+      transfer,
     );
 
     if (!tx) {
@@ -124,13 +122,14 @@ class Wandering extends Component {
           lng: transfer.longitude,
           streetAddress: transfer.streetAddress,
           journal: transfer.journal,
+          timestamp: transfer.timestamp,
         },
       ];
 
       this.setState({
         error: null,
         coordinates,
-        owner: transfer.toAddress,
+        owner: toAddress,
         loading: false,
       });
     }
