@@ -6,8 +6,6 @@ import { defaultLocation } from '../../utils/locationHelpers';
 import { mapStyles } from './mapStyles';
 
 const WanderingMap = withGoogleMap((props) => {
-  const mapRef = React.createRef();
-
   const markers = props.tokens.map((token, i) => (
     <CoinMarker key={i} token={token} />
   ));
