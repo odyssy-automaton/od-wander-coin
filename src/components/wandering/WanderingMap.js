@@ -23,7 +23,7 @@ const WanderingMap = withGoogleMap((props) => {
         center={centerCoord}
       >
         {markers}
-        <Polyline path={props.tokens} options={{}} strokecolor="FF0000"/>
+        <Polyline path={props.tokens} options={{}} strokecolor="5f5fff"/>
       </GoogleMap>
     </div>
   );
