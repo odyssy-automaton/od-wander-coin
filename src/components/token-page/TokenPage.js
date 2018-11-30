@@ -18,17 +18,26 @@ class TokenPage extends Component {
     transactionHash: '',
     error: null,
   };
+  _isMounted = false;
 
   componentDidMount = async () => {
+    this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
     const contract = await this.wanderingService.initContracts();
     const totalTokens = await this.getTotalTokens();
-    this.setState({
-      contract,
-      totalTokens,
-      wanderingService: this.wanderingService,
-    });
+
+    if (this._isMounted) {
+      this.setState({
+        contract,
+        totalTokens,
+        wanderingService: this.wanderingService,
+      });
+    }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   getTotalTokens = async () => {
     return await this.wanderingService.getTotalSupply();
@@ -49,7 +58,7 @@ class TokenPage extends Component {
       transfer.tokenName === '' ||
       transfer.tokenColor === ''
     ) {
-      error = { code: 9, msg: 'Cant not be blank' };
+      error = { code: 9, msg: 'Cannot not be blank' };
     }
 
     if (error) {

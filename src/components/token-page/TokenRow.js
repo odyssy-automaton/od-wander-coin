@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+import TokenIcon from '../shared/token-icon';
 import { totalDistance, mphFromLaunch } from '../../utils/distanceHelpers';
 
 class TokenRow extends Component {
@@ -53,7 +54,12 @@ class TokenRow extends Component {
         <div className="divTableCell">{tokenId}</div>
         <div className="divTableCell">
           <Link to={`/tokens/${tokenId}`}>
-            <img src={tokenMeta.image} width="28px" alt="token icon" />{' '}
+            <TokenIcon
+              color={tokenMeta.extra.color}
+              id={tokenId}
+              name={tokenMeta.name}
+              className="Tokens__Icon--Small"
+            />
             {tokenMeta.name}
           </Link>
         </div>
