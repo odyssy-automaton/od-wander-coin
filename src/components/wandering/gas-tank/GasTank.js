@@ -40,6 +40,15 @@ class GasTank extends Component {
       return;
     }
 
+    // add to config
+    if (+transfer.amount + +this.state.balance > 0.3) {
+      this.setState({
+        error: 'This would overflow the tank. Do not add more than .3 total.',
+        loading: false,
+      });
+      return;
+    }
+
     await onSubmit(transfer);
 
     this.setState({
@@ -52,6 +61,7 @@ class GasTank extends Component {
   };
 
   render() {
+    // add to config
     const gasValue = this.state.balance * 500;
 
     return (
