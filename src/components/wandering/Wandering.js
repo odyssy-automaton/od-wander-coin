@@ -25,17 +25,25 @@ class Wandering extends Component {
     tokenMeta: null,
     totalDistance: null,
   };
+  _isMounted = false;
 
   componentDidMount() {
+    this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
-
     this.loadContract();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   loadContract = async () => {
     const contract = await this.wanderingService.initContracts();
-    this.setState({ contract });
+    if (this._isMounted) {
+      this.setState({ contract });
+    }
     this.getOwnerAndMeta();
+
   };
 
   getOwnerAndMeta = async () => {
@@ -48,13 +56,15 @@ class Wandering extends Component {
     const tokenMeta = await this.wanderingService.getTokenMetaData(
       this.props.tokenId,
     );
+    if (this._isMounted) {
+      this.setState({
+        tokenMeta,
+        owner,
+        coordinates,
+        totalDistance: totalDistance(coords),
+      });
+    }
 
-    this.setState({
-      tokenMeta,
-      owner,
-      coordinates,
-      totalDistance: totalDistance(coords),
-    });
   };
 
   getBalance = async () => {

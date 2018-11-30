@@ -10,9 +10,15 @@ class TokenRow extends Component {
     totalDistance: null,
     tokenMeta: null,
   };
+  _isMounted = false;
 
   componentDidMount() {
+    this._isMounted = true;
     this.loadMeta();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   loadMeta = async () => {
@@ -24,12 +30,14 @@ class TokenRow extends Component {
       this.props.tokenId,
     );
 
-    this.setState({
-      txMeta,
-      tokenMeta,
-      loading: false,
-      totalDistance: totalDistance(txMeta),
-    });
+    if (this._isMounted) {
+      this.setState({
+        txMeta,
+        tokenMeta,
+        loading: false,
+        totalDistance: totalDistance(txMeta),
+      });
+    }
   };
 
   render() {
@@ -40,12 +48,11 @@ class TokenRow extends Component {
       <p>Loading Tokens ...</p>
     ) : (
       <div className="divTableRow">
-        <div className="divTableCell">
-          {tokenId}
-        </div>
+        <div className="divTableCell">{tokenId}</div>
         <div className="divTableCell">
           <Link to={`/tokens/${tokenId}`}>
-            <img src={tokenMeta.image} width="28px" alt="token icon"/> {tokenMeta.name}
+            <img src={tokenMeta.image} width="28px" alt="token icon" />{' '}
+            {tokenMeta.name}
           </Link>
         </div>
         <div className="divTableCell">{tokenMeta.description}</div>

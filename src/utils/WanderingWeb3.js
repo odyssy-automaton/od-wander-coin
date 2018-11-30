@@ -163,12 +163,13 @@ export default class WanderingService {
       headers: {
         'Content-Type': 'application/json',
       },
+
     })
       .then(function(response) {
-        console.log(response);
         return response.json();
       })
       .catch((err) => console.log(err));
+
   }
 
   toEth(value) {
