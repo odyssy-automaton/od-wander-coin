@@ -91,7 +91,7 @@ class WanderingNew extends Component {
   };
 
   hideModal = () => {
-    this.setState({ show: false }); 
+    this.setState({ show: false });
   };
 
   handleScan = (data) => {
@@ -169,18 +169,17 @@ class WanderingNew extends Component {
                         </p>
                       </div>
                     )}
-                    {this.state.latitude &&
-                      context.coordinates.length && (
-                        <DistanceFrom
-                          origin={
-                            context.coordinates[context.coordinates.length - 1]
-                          }
-                          destination={{
-                            lat: this.state.latitude,
-                            lng: this.state.longitude,
-                          }}
-                        />
-                      )}
+                    {this.state.latitude && context.coordinates.length && (
+                      <DistanceFrom
+                        origin={
+                          context.coordinates[context.coordinates.length - 1]
+                        }
+                        destination={{
+                          lat: this.state.latitude,
+                          lng: this.state.longitude,
+                        }}
+                      />
+                    )}
                     {suggestions.length > 0 && (
                       <div className="Wandering__autocomplete-container">
                         {suggestions.map((suggestion) => {
@@ -214,7 +213,7 @@ class WanderingNew extends Component {
                 <div className="step--2">
                   <p>
                     <strong>2.</strong> Enter the etheruem wallet address for
-                    whom you'd like to send the coin. {'heel' + this.state.show}
+                    whom you'd like to send the coin.
                   </p>
                   <Modal show={this.state.show} handleClose={this.hideModal}>
                     <h3>Scan a wallet address</h3>
