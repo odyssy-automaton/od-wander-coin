@@ -10,15 +10,23 @@ class GasTank extends Component {
     error: null,
     loading: false,
   };
+  _isMounted = false;
 
   componentDidMount() {
+    this._isMounted = true;
     this.getBalance();
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   getBalance = async () => {
     const { onLoad } = this.props;
     const gasBalance = await onLoad();
-    this.setState({ balance: gasBalance });
+    if (this._isMounted) {
+      this.setState({ balance: gasBalance });
+    }
   };
 
   handleChange = (e) => {
