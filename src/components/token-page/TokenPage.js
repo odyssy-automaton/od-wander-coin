@@ -18,17 +18,26 @@ class TokenPage extends Component {
     transactionHash: '',
     error: null,
   };
+  _isMounted = false;
 
   componentDidMount = async () => {
+    this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
     const contract = await this.wanderingService.initContracts();
     const totalTokens = await this.getTotalTokens();
-    this.setState({
-      contract,
-      totalTokens,
-      wanderingService: this.wanderingService,
-    });
+
+    if (this._isMounted) {
+      this.setState({
+        contract,
+        totalTokens,
+        wanderingService: this.wanderingService,
+      });
+    }
   };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   getTotalTokens = async () => {
     return await this.wanderingService.getTotalSupply();
