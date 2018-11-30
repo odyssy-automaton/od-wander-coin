@@ -13,6 +13,9 @@ class CoinMarker extends Component {
   render() {
     const { token } = this.props;
     const { showInfo } = this.state;
+    const timestamp = token.timestamp
+      ? new Date(token.timestamp).toLocaleString()
+      : '';
 
     return (
       <Marker
@@ -27,6 +30,7 @@ class CoinMarker extends Component {
             <div>
               <h5>{token.journal}</h5>
               <h6>{token.streetAddress}</h6>
+              <h6>{timestamp}</h6>
             </div>
           </InfoWindow>
         )}

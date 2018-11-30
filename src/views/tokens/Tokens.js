@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ClientInfoConsumer } from '../../contexts/ClientInfoContext';
+import { Web3Consumer } from 'web3-react';
+
 import TokenPage from '../../components/token-page/TokenPage';
 
 class Tokens extends Component {
@@ -7,15 +8,15 @@ class Tokens extends Component {
     const { tokenId } = this.props.match.params;
 
     return (
-      <ClientInfoConsumer>
+      <Web3Consumer>
         {(context) => (
           <TokenPage
-            web3={context.web3}
-            account={context.accounts[0]}
+            web3={context.web3js}
+            account={context.account}
             tokenId={tokenId}
           />
         )}
-      </ClientInfoConsumer>
+      </Web3Consumer>
     );
   }
 }

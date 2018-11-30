@@ -39,7 +39,10 @@ class TokenRow extends Component {
     return loading ? (
       <p>Loading Tokens ...</p>
     ) : (
-      <div className="divTableRow">
+      <div
+        className="divTableRow"
+        style={{ background: tokenMeta.extra.color }}
+      >
         <div className="divTableCell">
           {tokenId}
         </div>

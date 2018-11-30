@@ -15,13 +15,6 @@ export default class WanderingService {
     } else {
       this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     }
-    // console.log(
-    //   'env',
-    //   process.env.NODE_ENV,
-    //   this.tokenAddress,
-    //   process.env.REACT_APP_CONTRACT_ADDRESS,
-    //   process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
-    // );
   }
 
   async initContracts() {
@@ -31,19 +24,15 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude, streetAddress, journal, tokenId) {
+  async sendTo(from, to, tokenId, transfer) {
     // build txJSON, save and get txURI
-    const txJSON = {
-      latitude,
-      longitude,
-      streetAddress,
-      journal,
-    };
+    const txJSON = transfer;
 
     const txURI = await this.odJsonService.getUri(txJSON);
+    const dummydata = this.web3Service.asciiToHex('0');
 
     return this.wanderingContract.methods
-      .safeTransferFrom(from, to, tokenId, '0x0', txURI)
+      .safeTransferFrom(from, to, tokenId, dummydata, txURI)
       .send({ from: from })
       .then((res) => {
         return res;
@@ -53,21 +42,26 @@ export default class WanderingService {
       });
   }
 
-  async launchToken(from, latitude, longitude, streetAddress, journal) {
-    // build txJSON, save and get txURI
-    const txJSON = {
-      latitude,
-      longitude,
-      streetAddress,
-      journal,
-    };
+  async launchToken(from, transfer) {
     const tokenJSON = {
-      name: 'WanderCoin',
-      description: 'A token that wanders around the world.',
+      name: transfer.tokenName,
+      description: transfer.journal,
       image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.png',
+      extra: {
+        color: transfer.tokenColor,
+      },
     };
-    const txURI = await this.odJsonService.getUri(txJSON);
+
+    const txJSON = {
+      latitude: transfer.latitude,
+      longitude: transfer.longitude,
+      streetAddress: transfer.streetAddress,
+      journal: transfer.journal,
+      timestamp: new Date().getTime(),
+    };
+
     const tokenURI = await this.odJsonService.getUri(tokenJSON);
+    const txURI = await this.odJsonService.getUri(txJSON);
 
     await this.wanderingContract.methods
       .launchToken(txURI, tokenURI)
@@ -113,7 +107,6 @@ export default class WanderingService {
 
         let txURI = await contract.getTxURI(addr, tokenId).call();
         if (!this.odJsonService.verifyBaseURL(txURI)) {
-          console.log('huh', this.odJsonService.verifyBaseURL(txURI), txURI);
           console.error({ error: 'not a valid uri' });
           continue;
         }
@@ -132,6 +125,7 @@ export default class WanderingService {
           lng: txJSON.longitude,
           streetAddress: txJSON.streetAddress,
           journal: txJSON.journal,
+          timestamp: txJSON.timestamp || '',
         });
       }
     }
@@ -170,6 +164,7 @@ export default class WanderingService {
         'Content-Type': 'application/json',
       },
     }).then(function(response) {
+      console.log(response);
       return response.json();
     });
   }
@@ -180,13 +175,5 @@ export default class WanderingService {
 
   toWei(value) {
     return this.web3Service.toWei(value);
-  }
-
-  coordinateToInt(coordinate) {
-    return Math.round(coordinate * 10000000, 7);
-  }
-
-  intToCoordinate(int) {
-    return parseInt(int, 10) / 10000000;
   }
 }

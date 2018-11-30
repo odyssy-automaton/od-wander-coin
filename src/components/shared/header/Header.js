@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { ClientInfoConsumer } from '../../../contexts/ClientInfoContext';
+import { Web3Consumer } from 'web3-react';
 
 import './Header.scss';
 
 class Header extends Component {
   render() {
     return (
-      <ClientInfoConsumer>
+      <Web3Consumer>
         {(context) => (
           <div className="Header">
             <div className="Logo">
@@ -18,11 +18,11 @@ class Header extends Component {
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
               <Link to="/tokens">Tokens</Link>
-              {context.accounts && <p>{context.accounts[0]}</p>}
+              {context.account && <p>{context.account}</p>}
             </div>
           </div>
         )}
-      </ClientInfoConsumer>
+      </Web3Consumer>
     );
   }
 }
