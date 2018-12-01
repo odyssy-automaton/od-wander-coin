@@ -128,8 +128,7 @@ class WanderingNew extends Component {
                       You can send the coin to anyone you like as long as they
                       have never held the coin before. When you send the coin,
                       you can also add a message to your transaction which will
-                      also appear on the map along with your transaction. The
-                      goal is to pass the coin all the way around the world.
+                      also appear on the map along with your transaction.
                     </p>
                     <div className="step--1">
                       <p>
@@ -155,9 +154,9 @@ class WanderingNew extends Component {
                       </div>
                     </div>
                     {this.state.autolocated && (
-                      <div>
-                        <p>Is this where you are?</p>
+                      <div className="ConfirmAutolocated">
                         <p>
+                          <span>Is this where you are?</span>
                           <button
                             onClick={() =>
                               this.handleSelect(this.state.streetAddress)
@@ -166,8 +165,6 @@ class WanderingNew extends Component {
                           >
                             Yep
                           </button>
-                        </p>
-                        <p>
                           <button
                             onClick={this.handleCloseClick}
                             disabled={this.props.loading ? 'disabled' : ''}
@@ -216,11 +213,11 @@ class WanderingNew extends Component {
               }}
             </PlacesAutocomplete>
 
-            {this.state.latitude && (
+            {this.state.latitude && !this.state.autolocated && (
               <div>
                 <div className="step--2">
                   <p>
-                    <strong>2.</strong> Enter the etheruem wallet address for
+                    <strong>2.</strong> Enter the Ethereum wallet address for
                     whom you'd like to send the coin.
                   </p>
                   <Modal show={this.state.show} handleClose={this.hideModal}>
