@@ -107,7 +107,7 @@ class Wandering extends Component {
       this.setState({
         error: {
           code: 5,
-          msg: 'Receiving Address has already owned this token.',
+          msg: 'Receiving wallet address has already owned this token.',
         },
       });
     }
@@ -232,20 +232,20 @@ class Wandering extends Component {
                     </div>
                   ) : (
                     <div>
-                      <img
-                        alt="wander-coin icon"
-                        src={tokenMeta.image || icon}
-                        width="100px"
-                        height="100px"
-                      />
+
                       {tokenMeta ? (
                         <div>
-                          <h2>The {tokenMeta.name} is in your wallet!</h2>
+                          <h2><img
+                            alt="wander-coin icon"
+                            src={tokenMeta.image || icon}
+                            width="60px"
+                            height="60px"
+                          /> {tokenMeta.name} is in your wallet!</h2>
                           <p className="tiny">
-                            It's purpose is {tokenMeta.description}
+                            Purpose: {tokenMeta.description}
                           </p>
                           <p className="tiny">
-                            Distance traveled so far: {totalDistance} miles
+                            Distance traveled: {totalDistance} miles
                           </p>
                         </div>
                       ) : null}

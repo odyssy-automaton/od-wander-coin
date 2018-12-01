@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Marker, InfoWindow } from 'react-google-maps';
+import wanderMarker from '../../../src/assets/wanderMarker.svg'
 
 class CoinMarker extends Component {
   state = {
@@ -23,12 +24,13 @@ class CoinMarker extends Component {
           lat: token.lat,
           lng: token.lng,
         }}
+        icon={wanderMarker}
         onClick={this.onMarkerClick}
       >
         {showInfo && (
           <InfoWindow>
             <div>
-              <h5>{token.journal}</h5>
+              <p>{token.journal}</p>
               <h6>{token.streetAddress}</h6>
               <h6>{timestamp}</h6>
             </div>
