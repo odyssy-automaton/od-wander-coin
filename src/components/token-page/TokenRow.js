@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import TokenIcon from '../shared/token-icon';
-import { totalDistance } from '../../utils/distanceHelpers';
+import { totalDistance, mphFromLaunch } from '../../utils/distanceHelpers';
 
 class TokenRow extends Component {
   state = {
@@ -10,6 +10,7 @@ class TokenRow extends Component {
     txMeta: [],
     totalDistance: null,
     tokenMeta: null,
+    mph: null,
   };
   _isMounted = false;
 
@@ -37,13 +38,14 @@ class TokenRow extends Component {
         tokenMeta,
         loading: false,
         totalDistance: totalDistance(txMeta),
+        mph: mphFromLaunch(txMeta, totalDistance(txMeta)),
       });
     }
   };
 
   render() {
     const { tokenId } = this.props;
-    const { loading, tokenMeta, txMeta, totalDistance } = this.state;
+    const { loading, tokenMeta, txMeta, totalDistance, mph } = this.state;
 
     return loading ? (
       <p>Loading Tokens ...</p>
@@ -64,7 +66,7 @@ class TokenRow extends Component {
         <div className="divTableCell">{tokenMeta.description}</div>
         <div className="divTableCell">{txMeta.length}</div>
         <div className="divTableCell">{totalDistance}</div>
-        <div className="divTableCell">MPH</div>
+        <div className="divTableCell">{mph}</div>
       </div>
     );
   }

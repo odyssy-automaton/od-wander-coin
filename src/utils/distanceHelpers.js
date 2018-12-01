@@ -24,3 +24,12 @@ export const totalDistance = (coords) => {
 
   return distance.toFixed(2);
 };
+
+export const mphFromLaunch = (launchDate, totalDistance) => {
+  const ts = new Date(launchDate[0].timestamp);
+  const now = new Date();
+  const mph = totalDistance
+    ? totalDistance / ((now - ts) / (1000 * 60 * 60))
+    : 0;
+  return mph.toFixed(2);
+};

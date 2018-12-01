@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import WanderingService from '../../utils/WanderingWeb3';
 import WanderingNew from './WanderingNew';
@@ -88,6 +89,7 @@ class Wandering extends Component {
       });
     }
 
+    // add to config
     if (gasTank < 0.002) {
       this.setState({
         error: {
@@ -103,7 +105,14 @@ class Wandering extends Component {
       this.props.tokenId,
     );
 
-    if (hasOwned) {
+    if (hasOwned === 'bad addr') {
+      this.setState({
+        error: {
+          code: 6,
+          msg: 'Receiving Address is not valid.',
+        },
+      });
+    } else if (hasOwned) {
       this.setState({
         error: {
           code: 5,
@@ -206,9 +215,9 @@ class Wandering extends Component {
                 theories. The goal is to get the coin all the way around the
                 world without touching the same wallet.
               </p>
-              <a className="button od-primary" href="/">
+              <Link className="button od-primary" to={`/about`}>
                 Read More
-              </a>
+              </Link>
             </div>
           </div>
           <div className="Wandering__container">
