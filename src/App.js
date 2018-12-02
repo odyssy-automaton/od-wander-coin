@@ -9,9 +9,15 @@ import Header from './components/shared/header';
 import './App.scss';
 
 class App extends Component {
+  // move to env config
+  networks = [4];
+
   componentDidMount = async () => {};
 
   render() {
+    if (process.env.NODE_ENV === 'development') {
+      this.networks = [1, 3, 4, 42, 4447];
+    }
     return (
       <div>
         <Helmet>
@@ -22,7 +28,7 @@ class App extends Component {
             }&libraries=places&geocode`}
           />
         </Helmet>
-        <Web3Provider supportedNetworks={[1, 3, 4, 42, 4447]}>
+        <Web3Provider supportedNetworks={this.networks}>
           <BrowserRouter>
             <Fragment>
               <Header />
