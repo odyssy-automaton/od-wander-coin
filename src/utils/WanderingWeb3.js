@@ -63,20 +63,7 @@ export default class WanderingService {
     const tokenURI = await this.odJsonService.getUri(tokenJSON);
     const txURI = await this.odJsonService.getUri(txJSON);
 
-    return this.wanderingContract.methods
-      .launchToken(txURI, tokenURI)
-      .send({ from: from })
-      .then((res) => {
-        console.log('success', res);
-        return this.wanderingContract.methods.totalSupply().call();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // .once('transactionHash', (hash) => {
-    //   return hash;
-    // })
+    return this.wanderingContract.methods.launchToken(txURI, tokenURI);
   }
 
   async getTotalSupply() {
@@ -170,6 +157,10 @@ export default class WanderingService {
 
   getTokenURI(tokenId) {
     return this.wanderingContract.methods.tokenURI(tokenId).call();
+  }
+
+  async totalSupply() {
+    return await this.wanderingContract.methods.totalSupply().call();
   }
 
   async getTokenMetaData(tokenId) {

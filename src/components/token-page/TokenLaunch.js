@@ -187,8 +187,8 @@ class TokenLaunch extends Component {
                 </button>
               ) : (
                 <p className="tiny">
-                  Waiting on transaction ... Please check Metamask.{' '}
                   {this.props.transactionHash}
+                  Waiting on transaction ... Please check Metamask.
                 </p>
               )}
             </div>

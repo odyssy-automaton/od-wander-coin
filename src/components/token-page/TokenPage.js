@@ -15,7 +15,7 @@ class TokenPage extends Component {
     wanderingService: null,
     show: false, // modal,
     loading: false,
-    transactionHash: '',
+    transactionHash: null,
     error: null,
   };
   _isMounted = false;
@@ -66,14 +66,27 @@ class TokenPage extends Component {
       throw error;
     }
 
-    const newToken = await this.wanderingService.launchToken(
-      this.props.account,
-      transfer,
-    );
-    if (newToken) {
-      console.log(newToken);
+    const newToken = await this.wanderingService
+      .launchToken(this.props.account, transfer)
+      .then((res) => {
+        return res
+          .send({ from: this.props.account })
+          .once('transactionHash', (hash) => {
+            this.setState({ transactionHash: hash });
+          })
+          .then(() => {
+            return this.wanderingService.totalSupply();
+          })
+          .catch((err) => {
+            const error = { code: 11, msg: 'something went wrong. ' + err };
+            this.setState({ error });
+          });
+      });
 
-      this.props.history.push(`/tokens/${newToken}`);
+    if (newToken) {
+      console.log('go to', newToken);
+
+      //this.props.history.push(`/tokens/${newToken}`);
     }
     this.setState({
       loading: false,
@@ -104,6 +117,9 @@ class TokenPage extends Component {
               />
               {this.state.error ? (
                 <p className="tiny">{this.state.error.msg}</p>
+              ) : null}
+              {this.state.transactionHash ? (
+                <p className="tiny">{this.state.transactionHash}</p>
               ) : null}
             </div>
           ) : null}
