@@ -31,18 +31,16 @@ export default class WanderingService {
     const txURI = await this.odJsonService.getUri(txJSON);
     const dummydata = this.web3Service.asciiToHex('0');
 
-    return this.wanderingContract.methods
-      .safeTransferFrom(from, to, tokenId, dummydata, txURI)
-      .send({ from: from })
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    return this.wanderingContract.methods.safeTransferFrom(
+      from,
+      to,
+      tokenId,
+      dummydata,
+      txURI,
+    );
   }
 
-  async launchToken(from, transfer) {
+  async launchToken(transfer) {
     const tokenJSON = {
       name: transfer.tokenName,
       description: transfer.journal,

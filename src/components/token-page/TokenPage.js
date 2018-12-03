@@ -67,7 +67,7 @@ class TokenPage extends Component {
     }
 
     const newToken = await this.wanderingService
-      .launchToken(this.props.account, transfer)
+      .launchToken(transfer)
       .then((res) => {
         return res
           .send({ from: this.props.account })

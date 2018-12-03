@@ -177,17 +177,18 @@ class WanderingNew extends Component {
                         </p>
                       </div>
                     )}
-                    {this.state.latitude && context.coordinates.length && (
-                      <DistanceFrom
-                        origin={
-                          context.coordinates[context.coordinates.length - 1]
-                        }
-                        destination={{
-                          lat: this.state.latitude,
-                          lng: this.state.longitude,
-                        }}
-                      />
-                    )}
+                    {this.state.latitude &&
+                      context.coordinates.length && (
+                        <DistanceFrom
+                          origin={
+                            context.coordinates[context.coordinates.length - 1]
+                          }
+                          destination={{
+                            lat: this.state.latitude,
+                            lng: this.state.longitude,
+                          }}
+                        />
+                      )}
                     {suggestions.length > 0 && (
                       <div className="Wandering__autocomplete-container">
                         {suggestions.map((suggestion) => {
@@ -284,7 +285,8 @@ class WanderingNew extends Component {
                     </button>
                   ) : (
                     <p className="tiny">
-                      Waiting on transaction ... Please check Metamask.
+                      Waiting on transaction ... Please check Metamask.{' '}
+                      {this.props.transactionHash}
                     </p>
                   )}
                 </div>

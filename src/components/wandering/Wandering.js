@@ -27,6 +27,7 @@ class Wandering extends Component {
     txMeta: null,
     tokenMeta: null,
     totalDistance: null,
+    transactionHash: null,
   };
   _isMounted = false;
 
@@ -138,12 +139,24 @@ class Wandering extends Component {
       throw this.state.error;
     }
 
-    const tx = await this.wanderingService.sendTo(
-      this.props.account,
-      toAddress,
-      this.props.tokenId,
-      transfer,
-    );
+    console.log(this.props.account, toAddress, this.props.tokenId, transfer);
+
+    const tx = await this.wanderingService
+      .sendTo(this.props.account, toAddress, this.props.tokenId, transfer)
+      .then((res) => {
+        return res
+          .send({ from: this.props.account })
+          .once('transactionHash', (hash) => {
+            this.setState({ transactionHash: hash });
+          })
+          .then((res) => {
+            return res;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+    console.log('tx', tx);
 
     if (!tx) {
       this.setState({
@@ -205,6 +218,7 @@ class Wandering extends Component {
             handleClose={this.hideModal}
           >
             <h3>Successfully sent token</h3>
+            <p>{this.state.transactionHash}</p>
           </Modal>
           <div className="Wandering__bar">
             <div className="contents">
@@ -260,6 +274,7 @@ class Wandering extends Component {
                       ) : null}
 
                       <WanderingNew
+                        transactionHash={this.state.transactionHash}
                         loading={this.state.loading}
                         onSubmit={this.handleSubmitAddressForm}
                       />
