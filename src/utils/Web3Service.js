@@ -34,6 +34,10 @@ export default class Web3Service {
     return await new this.web3Remote.eth.Contract(abi, address);
   }
 
+  async getTransactionStatus(transactionHash) {
+    return await this.web3.eth.getTransaction(transactionHash);
+  }
+
   async toWei(amount) {
     return await this.web3.utils.toWei(amount);
   }

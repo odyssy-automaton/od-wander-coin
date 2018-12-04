@@ -151,7 +151,11 @@ class Wandering extends Component {
           .send({ from: this.props.account })
           .once('transactionHash', (hash) => {
             this.setState({ transactionHash: hash });
-            this.BcProcessorService.setTx(hash, 'sending token');
+            this.BcProcessorService.setTx(
+              hash,
+              this.props.account,
+              'sending token',
+            );
           })
           .then((res) => {
             return res;
@@ -179,7 +183,12 @@ class Wandering extends Component {
           timestamp: transfer.timestamp,
         },
       ];
-      this.BcProcessorService.setTx(this.transactionHash, 'sent token', false);
+      this.BcProcessorService.setTx(
+        this.state.transactionHash,
+        this.props.account,
+        'sent token',
+        false,
+      );
 
       this.setState({
         error: null,
@@ -193,10 +202,19 @@ class Wandering extends Component {
 
   handleSubmitGasForm = async (amount) => {
     const amountInWei = await this.wanderingService.toWei(amount.amount);
-    return this.wanderingService.sendTransaction(
+    const tx = await this.wanderingService.sendTransaction(
       this.props.account,
       amountInWei,
     );
+    console.log('tx', tx);
+    this.BcProcessorService.setTx(
+      tx.transactionHash,
+      this.props.account,
+      'sent gas',
+      false,
+    );
+
+    return tx;
   };
 
   hideModal = () => {

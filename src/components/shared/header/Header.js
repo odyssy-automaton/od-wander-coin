@@ -26,7 +26,7 @@ class Header extends Component {
           <div className="Header">
             <Modal show={this.state.show} handleClose={this.hideModal}>
               <div>
-                <BcProcessor />
+                <BcProcessor account={context.account} web3={context.web3js} />
               </div>
             </Modal>
             <div className="Logo">
