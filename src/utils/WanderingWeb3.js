@@ -145,6 +145,9 @@ export default class WanderingService {
         to: this.tokenAddress,
         value: value,
       })
+      .once('transactionHash', (hash) => {
+        console.log(hash);
+      })
       .then((res) => {
         return res;
       })
