@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import WanderingService from '../../utils/WanderingWeb3';
+import BcProcessorService from '../../utils/BcProcessorService';
+
 import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
 import GasTank from './gas-tank/GasTank';
@@ -34,6 +36,7 @@ class Wandering extends Component {
   componentDidMount() {
     this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
+    this.BcProcessorService = new BcProcessorService();
     this.loadContract();
   }
 
@@ -148,6 +151,7 @@ class Wandering extends Component {
           .send({ from: this.props.account })
           .once('transactionHash', (hash) => {
             this.setState({ transactionHash: hash });
+            this.BcProcessorService.setTx(hash, 'sending token');
           })
           .then((res) => {
             return res;
@@ -175,6 +179,7 @@ class Wandering extends Component {
           timestamp: transfer.timestamp,
         },
       ];
+      this.BcProcessorService.setTx(this.transactionHash, 'sent token', false);
 
       this.setState({
         error: null,
@@ -255,15 +260,17 @@ class Wandering extends Component {
                     </div>
                   ) : (
                     <div>
-
                       {tokenMeta ? (
                         <div>
-                          <h2><img
-                            alt="wander-coin icon"
-                            src={tokenMeta.image || icon}
-                            width="60px"
-                            height="60px"
-                          /> {tokenMeta.name} is in your wallet!</h2>
+                          <h2>
+                            <img
+                              alt="wander-coin icon"
+                              src={tokenMeta.image || icon}
+                              width="60px"
+                              height="60px"
+                            />{' '}
+                            {tokenMeta.name} is in your wallet!
+                          </h2>
                           <p className="tiny">
                             Purpose: {tokenMeta.description}
                           </p>

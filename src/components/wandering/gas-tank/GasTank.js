@@ -39,7 +39,6 @@ class GasTank extends Component {
     this.setState({
       loading: true,
     });
-
     if (!transfer.amount) {
       this.setState({
         error: 'Enter an amount',
