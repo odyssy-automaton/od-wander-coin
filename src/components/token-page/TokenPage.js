@@ -114,7 +114,7 @@ class TokenPage extends Component {
   };
 
   hideModal = () => {
-    this.setState({ show: false });
+    this.setState({ show: false, error: null, transactionHash: null });
   };
 
   render() {
@@ -132,9 +132,6 @@ class TokenPage extends Component {
               />
               {this.state.error ? (
                 <p className="tiny">{this.state.error.msg}</p>
-              ) : null}
-              {this.state.transactionHash ? (
-                <p className="tiny">{this.state.transactionHash}</p>
               ) : null}
             </div>
           ) : null}

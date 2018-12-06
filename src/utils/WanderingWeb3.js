@@ -98,21 +98,28 @@ export default class WanderingService {
     const owners = [];
     const contract = this.wanderingContract.methods;
     const numOwners = await contract.numOwners().call();
+    // loop through the total number of owners on all tokens
     for (let i = 0; i < numOwners; i++) {
+      // get the owners address from look up table
       let addr = await contract.ownersLUT(i).call();
       let addrHasOwned = await contract.addrHasOwned(addr, tokenId).call();
+      // check if owner has owned a token by id
       if (addrHasOwned) {
-        if (owners.includes(addr)) {
+        // check if this owner has been added already
+        // if so continue because that means its a different token id
+        if (i > 1 && owners.includes(addr)) {
           continue;
         }
         owners.push(addr);
-
+        // get the URI for the tx meta
         let txURI = await contract.getTxURI(addr, tokenId).call();
+        // verfiy that txURI is from our server
         if (!this.odJsonService.verifyBaseURL(txURI)) {
           console.error({ error: 'not a valid uri' });
           continue;
         }
 
+        // get meta json for tx
         const txJSON = await fetch(txURI, {
           method: 'GET',
           headers: {
@@ -121,7 +128,6 @@ export default class WanderingService {
         }).then(function(response) {
           return response.json();
         });
-
         coords.push({
           lat: txJSON.latitude,
           lng: txJSON.longitude,
