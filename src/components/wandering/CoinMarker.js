@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Marker, InfoWindow } from 'react-google-maps';
-import wanderMarker from '../../../src/assets/wanderMarker.svg'
+import wanderMarker from '../../../src/assets/wanderMarker.svg';
 
 class CoinMarker extends Component {
   state = {
