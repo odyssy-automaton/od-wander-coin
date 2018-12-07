@@ -2,21 +2,23 @@ import React, { Component } from 'react';
 import Web3 from 'web3';
 import WanderingToken from '../../components/wandering';
 import { Web3Consumer } from 'web3-react';
+import { BcProcessorConsumer } from '../../contexts/BcProcessorContext';
 
 class Home extends Component {
   render() {
     const { tokenId } = this.props.match.params;
 
     return (
-      <Web3Consumer>
-        {(context) => (
+      <BcProcessorConsumer>
+        {(bcContext) => (
           <WanderingToken
-            web3={new Web3(context.web3js.givenProvider)} // force .34 version of web3
-            account={context.account}
+            web3={bcContext.web3} // force .34 version of web3
+            account={bcContext.account}
             tokenId={tokenId}
+            bcProcessor={bcContext}
           />
         )}
-      </Web3Consumer>
+      </BcProcessorConsumer>
     );
   }
 }

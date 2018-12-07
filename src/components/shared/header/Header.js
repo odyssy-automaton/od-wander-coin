@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Web3Consumer } from 'web3-react';
 import Modal from '../modal/Modal';
 import BcProcessor from '../bc-processor/BcProcessor';
 
 import './Header.scss';
+import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
 
 class Header extends Component {
   state = {
@@ -20,13 +20,19 @@ class Header extends Component {
   };
 
   render() {
+    console.log('account', this.props);
+
     return (
-      <Web3Consumer>
+      <BcProcessorConsumer>
         {(context) => (
           <div className="Header">
             <Modal show={this.state.show} handleClose={this.hideModal}>
               <div>
-                <BcProcessor account={context.account} web3={context.web3js} />
+                <BcProcessor
+                  bcProcessor={context}
+                  account={context.account}
+                  web3={context.web3}
+                />
               </div>
             </Modal>
             <div className="Logo">
@@ -44,7 +50,7 @@ class Header extends Component {
             </div>
           </div>
         )}
-      </Web3Consumer>
+      </BcProcessorConsumer>
     );
   }
 }

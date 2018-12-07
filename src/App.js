@@ -1,12 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import Web3Provider from 'web3-react';
+import Web3Provider, { Web3Consumer } from 'web3-react';
 import { Helmet } from 'react-helmet';
 
 import Routes from './Routes';
 import Header from './components/shared/header';
 
 import './App.scss';
+import BcProcessorProvider from './contexts/BcProcessorContext';
+import Web3 from 'web3';
 
 class App extends Component {
   // move to env config
@@ -30,12 +32,21 @@ class App extends Component {
         </Helmet>
         <Web3Provider supportedNetworks={this.networks}>
           <BrowserRouter>
-            <Fragment>
-              <Header />
-              <div>
-                <Routes />
-              </div>
-            </Fragment>
+            <Web3Consumer>
+              {(context) => (
+                <BcProcessorProvider
+                  web3={new Web3(context.web3js.givenProvider)}
+                  account={context.account}
+                >
+                  <Fragment>
+                    <Header />
+                    <div>
+                      <Routes />
+                    </div>
+                  </Fragment>
+                </BcProcessorProvider>
+              )}
+            </Web3Consumer>
           </BrowserRouter>
         </Web3Provider>
       </div>

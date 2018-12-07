@@ -1,52 +1,23 @@
 import React, { Component } from 'react';
 
-import BcProcessorService from '../../../utils/BcProcessorService';
-import Web3Service from '../../../utils/Web3Service';
-
 import './BcProcessor.scss';
+import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
 
 class BcProcessor extends Component {
-  state = {
-    txList: [],
-  };
-  componentDidMount() {
-    this._isMounted = true;
-    this.BcProcessorService = new BcProcessorService();
-    this.web3Service = new Web3Service(this.props.web3);
-    if (this._isMounted) {
-      // this probably needs to be a prop
-      setInterval(() => {
-        const txList = this.BcProcessorService.getTxList(this.props.account);
-        this.setState({ txList });
-      }, 1000);
-    }
-  }
-
-  clearHistory = () => {
-    this.BcProcessorService.clearHistory();
-    this.setState({ txList: [] });
-  };
-
-  async checkTransaction(transactionHash) {
-    const status = await this.web3Service.getTransactionStatus(transactionHash);
-    if (status) {
-      this.BcProcessorService.setTx(
-        transactionHash,
-        this.props.account,
-        'completed',
-        false,
-      );
-    }
-    console.log(status);
-  }
+  componentDidMount() {}
 
   render() {
     return (
       <div>
-        <div className="divTable">
-          {!this.state.txList.length ? <p>no txs</p> : null}
+        <p>{this.props.bcProcessor.test}</p>
+        <button onClick={this.props.bcProcessor.clearHistory}>
+          Clear History
+        </button>
 
-          {this.state.txList.map((txItem) => {
+        <div className="divTable">
+          {!this.props.bcProcessor.txList.length ? <p>no txs</p> : null}
+
+          {this.props.bcProcessor.txList.map((txItem) => {
             return (
               <div className="divTableRow" key={txItem.tx}>
                 <div className="divTableCell">{txItem.tx}</div>
@@ -57,7 +28,11 @@ class BcProcessor extends Component {
                 <div className="divTableCell">waiting: {'' + txItem.open}</div>
                 <div className="divTableCell">
                   {txItem.open ? (
-                    <button onClick={() => this.checkTransaction(txItem.tx)}>
+                    <button
+                      onClick={() =>
+                        this.props.bcProcessor.checkTransaction(txItem.tx)
+                      }
+                    >
                       ?
                     </button>
                   ) : null}
@@ -66,8 +41,10 @@ class BcProcessor extends Component {
             );
           })}
         </div>
-        {this.state.txList.length ? (
-          <button onClick={this.clearHistory}>Clear History</button>
+        {this.props.bcProcessor.txList.length ? (
+          <button onClick={this.props.bcProcessor.clearHistory}>
+            Clear History
+          </button>
         ) : null}
       </div>
     );
