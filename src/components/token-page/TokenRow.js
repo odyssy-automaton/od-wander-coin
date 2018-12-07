@@ -8,6 +8,7 @@ class TokenRow extends Component {
   state = {
     loading: true,
     txMeta: [],
+    owner: null,
     totalDistance: null,
     tokenMeta: null,
     mph: null,
@@ -32,10 +33,15 @@ class TokenRow extends Component {
       this.props.tokenId,
     );
 
+    const owner = await this.props.context.wanderingService.getOwner(
+      this.props.tokenId,
+    );
+
     if (this._isMounted) {
       this.setState({
         txMeta,
         tokenMeta,
+        owner,
         loading: false,
         totalDistance: totalDistance(txMeta),
         mph: mphFromLaunch(txMeta, totalDistance(txMeta)),
@@ -44,8 +50,15 @@ class TokenRow extends Component {
   };
 
   render() {
-    const { tokenId } = this.props;
-    const { loading, tokenMeta, txMeta, totalDistance, mph } = this.state;
+    const { tokenId, account } = this.props;
+    const {
+      loading,
+      tokenMeta,
+      txMeta,
+      totalDistance,
+      mph,
+      owner,
+    } = this.state;
 
     return loading ? (
       <p>Loading Tokens ...</p>
@@ -60,7 +73,7 @@ class TokenRow extends Component {
               name={tokenMeta.name}
               className="Tokens__Icon--Small"
             />
-            {tokenMeta.name}
+            {tokenMeta.name} {owner === account ? <span>(★ yours)</span> : null}
           </Link>
         </div>
         <div className="divTableCell">{tokenMeta.description}</div>
