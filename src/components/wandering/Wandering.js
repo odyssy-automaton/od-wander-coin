@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import WanderingService from '../../utils/WanderingWeb3';
-import BcProcessorService from '../../utils/BcProcessorService';
 
 import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
@@ -35,8 +34,8 @@ class Wandering extends Component {
 
   componentDidMount() {
     this._isMounted = true;
+
     this.wanderingService = new WanderingService(this.props.web3);
-    this.BcProcessorService = new BcProcessorService();
     this.loadContract();
   }
 
@@ -151,7 +150,7 @@ class Wandering extends Component {
           .send({ from: this.props.account })
           .once('transactionHash', (hash) => {
             this.setState({ transactionHash: hash });
-            this.BcProcessorService.setTx(
+            this.props.bcProcessor.setTx(
               hash,
               this.props.account,
               'sending token',
@@ -183,7 +182,7 @@ class Wandering extends Component {
           timestamp: transfer.timestamp,
         },
       ];
-      this.BcProcessorService.setTx(
+      this.props.bcProcessor.setTx(
         this.state.transactionHash,
         this.props.account,
         'sent token',
@@ -207,7 +206,8 @@ class Wandering extends Component {
       amountInWei,
     );
     console.log('tx', tx);
-    this.BcProcessorService.setTx(
+    console.log(this.props);
+    this.props.bcProcessor.setTx(
       tx.transactionHash,
       this.props.account,
       'sent gas',
@@ -303,6 +303,7 @@ class Wandering extends Component {
                         loading={this.state.loading}
                         onSubmit={this.handleSubmitAddressForm}
                       />
+
                       {this.state.error ? (
                         <p className="tiny">{this.state.error.msg}</p>
                       ) : null}
