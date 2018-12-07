@@ -147,6 +147,7 @@ class TokenPage extends Component {
                 onLoad={this.getTotalTokens}
                 onSelect={this.handleTokenSelect}
                 contract={contract}
+                account={this.props.account}
               />
             ) : null}
           </div>

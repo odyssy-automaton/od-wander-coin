@@ -32,6 +32,7 @@ class TokenList extends Component {
               contract={this.props.contract}
               key={i}
               context={context}
+              account={this.props.account}
             />
           )}
         </TokensConsumer>
