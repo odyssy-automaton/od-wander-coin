@@ -20,8 +20,6 @@ class Header extends Component {
   };
 
   render() {
-    console.log('account', this.props);
-
     return (
       <BcProcessorConsumer>
         {(context) => (

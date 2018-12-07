@@ -7,8 +7,6 @@ export default class WanderingService {
   wanderingContract;
 
   constructor(web3) {
-    console.log('*****', web3);
-
     this.web3Service = new Web3Service(web3);
     this.odJsonService = new OdJsonService();
 

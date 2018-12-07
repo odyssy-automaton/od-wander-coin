@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Web3Service from '../utils/Web3Service';
 
 const BcProcessorContext = React.createContext();
 
@@ -9,56 +10,54 @@ export default class BcProcessorProvider extends Component {
     open: null,
     description: null,
   };
-  state = {
-    test: 'hello test',
-    clearHistory: this.clearHistory,
-    checkTransaction: this.checkTransaction,
-    setTx: this.setTx,
-    txList: [],
-    web3: this.props.web3,
-    account: this.props.account,
-  };
 
   constructor(props) {
     super(props);
-    console.log('prps', props);
+    this.state = {
+      clearHistory: this.clearHistory,
+      checkTransaction: this.checkTransaction,
+      setTx: this.setTx,
+      txList: [],
+      web3: this.props.web3,
+      account: this.props.account,
+    };
+    this.web3Service = new Web3Service(this.props.web3);
   }
 
-  onComponentDidMount() {
+  componentDidMount() {
     const txList = this.getTxList(this.props.account);
+    let pendingList = this.getTxPendingList(this.props.account);
 
     this.setState({ txList, web3: this.props.web3 });
 
-    setInterval(() => {
-      console.log('test');
+    if (pendingList.length) {
+      const intervalId = setInterval(() => {
+        console.log('interval running', pendingList.length);
 
-      const txList = this.getTxList(this.props.account);
-      this.setState({ txList });
-    }, 1000);
-  }
-
-  async checkTransaction(transactionHash) {
-    const status = await this.web3Service.getTransactionStatus(transactionHash);
-    console.log(status);
-
-    if (status) {
-      this.BcProcessorService.setTx(
-        transactionHash,
-        this.props.account,
-        'completed',
-        false,
-      );
+        for (let i = 0; i < pendingList.length - 1; i++) {
+          this.checkTransaction(pendingList[i].tx);
+        }
+        pendingList = this.getTxPendingList(this.props.account);
+        if (!pendingList.length) {
+          clearInterval(intervalId);
+        }
+      }, 1000);
     }
-    console.log(status);
   }
 
-  setTx(tx, account, description = '', open = true) {
-    console.log(tx, account, (description = ''), (open = true));
+  checkTransaction = async (transactionHash) => {
+    const status = await this.web3Service.getTransactionStatus(transactionHash);
+    console.log(status, transactionHash);
 
+    if (status.blockNumber) {
+      this.setTx(transactionHash, this.props.account, 'completed', false);
+    }
+  };
+
+  setTx = (tx, account, description = '', open = true) => {
     const txList = JSON.parse(localStorage.getItem('txList')) || [];
     const txItem = {};
     const exists = txList.findIndex((item) => item.tx === tx);
-    console.log('[[[[', txItem);
 
     if (exists === -1) {
       txItem.tx = tx;
@@ -72,24 +71,32 @@ export default class BcProcessorProvider extends Component {
       txList[exists].description = description;
       localStorage.setItem('txList', JSON.stringify(txList));
     }
-    console.log('[[[[', txItem, txList);
-  }
+    this.setState({ txList });
+  };
 
-  getTxList(account) {
+  getTxList = (account) => {
     const txList = JSON.parse(localStorage.getItem('txList')) || [];
 
     return txList.filter((item) => item.account === account);
-  }
+  };
 
-  getTx(tx) {
+  getTxPendingList = (account) => {
+    const txList = JSON.parse(localStorage.getItem('txList')) || [];
+
+    return txList.filter((item) => item.account === account && item.open);
+  };
+
+  getTx = (tx) => {
     return JSON.parse(localStorage.getItem('txList')).find(
       (item) => item.tx === tx,
     );
-  }
+  };
 
-  clearHistory() {
+  clearHistory = () => {
     localStorage.removeItem('txList');
-  }
+    // needs to clear for account
+    this.setState({ txList: [] });
+  };
 
   render() {
     return (

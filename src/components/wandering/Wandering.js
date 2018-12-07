@@ -34,7 +34,6 @@ class Wandering extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    console.log('!!!!', this.props.web3);
 
     this.wanderingService = new WanderingService(this.props.web3);
     this.loadContract();

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import WanderingService from '../../utils/WanderingWeb3';
-import BcProcessorService from '../../utils/BcProcessorService';
 
 import TokenList from './TokenList';
 import TokenLaunch from './TokenLaunch';
@@ -25,7 +24,6 @@ class TokenPage extends Component {
   componentDidMount = async () => {
     this._isMounted = true;
     this.wanderingService = new WanderingService(this.props.web3);
-    this.BcProcessorService = new BcProcessorService();
     const contract = await this.wanderingService.initContracts();
     const totalTokens = await this.getTotalTokens();
 
@@ -76,7 +74,7 @@ class TokenPage extends Component {
           .send({ from: this.props.account })
           .once('transactionHash', (hash) => {
             this.setState({ transactionHash: hash });
-            this.BcProcessorService.setTx(
+            this.props.bcProcessor.setTx(
               hash,
               this.props.account,
               'launching token',
@@ -93,7 +91,7 @@ class TokenPage extends Component {
 
     if (newToken) {
       console.log('go to', newToken, this.state.transactionHash);
-      this.BcProcessorService.setTx(
+      this.props.bcProcessor.setTx(
         this.state.transactionHash,
         this.props.account,
         'launched token',

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 import './BcProcessor.scss';
-import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
 
 class BcProcessor extends Component {
   componentDidMount() {}
@@ -9,11 +8,6 @@ class BcProcessor extends Component {
   render() {
     return (
       <div>
-        <p>{this.props.bcProcessor.test}</p>
-        <button onClick={this.props.bcProcessor.clearHistory}>
-          Clear History
-        </button>
-
         <div className="divTable">
           {!this.props.bcProcessor.txList.length ? <p>no txs</p> : null}
 
@@ -42,7 +36,7 @@ class BcProcessor extends Component {
           })}
         </div>
         {this.props.bcProcessor.txList.length ? (
-          <button onClick={this.props.bcProcessor.clearHistory}>
+          <button onClick={() => this.props.bcProcessor.clearHistory()}>
             Clear History
           </button>
         ) : null}
