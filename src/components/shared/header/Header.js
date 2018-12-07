@@ -43,7 +43,12 @@ class Header extends Component {
               <Link to="/tokens">Tokens</Link>
               {context.account && <p>{context.account}</p>}
               <button className="button" onClick={this.showModal}>
-                tx list
+                tx list{' '}
+                {context.getTxPendingList().length ? (
+                  <span role="img" aria-label="indicator">
+                    💡
+                  </span>
+                ) : null}
               </button>
             </div>
           </div>

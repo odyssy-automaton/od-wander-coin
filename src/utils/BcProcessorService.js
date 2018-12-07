@@ -1,4 +1,5 @@
 export default class BcProcessorService {
+  // this service is not used anymore
   txItem = {
     tx: null,
     account: null,
