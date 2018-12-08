@@ -25,11 +25,11 @@ class Header extends Component {
         {(context) => (
           <div className="Header">
             <Modal show={this.state.show} handleClose={this.hideModal}>
-                <BcProcessor
-                  bcProcessor={context}
-                  account={context.account}
-                  web3={context.web3}
-                />
+              <BcProcessor
+                bcProcessor={context}
+                account={context.account}
+                web3={context.web3}
+              />
             </Modal>
             <div className="Logo">
               <h1 className="Header__title">
