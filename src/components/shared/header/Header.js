@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../modal/Modal';
 import BcProcessor from '../bc-processor/BcProcessor';
+import IconSwapHoriz from '../icon-swap-horiz/IconSwapHoriz';
 
 import './Header.scss';
 import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
@@ -39,9 +40,8 @@ class Header extends Component {
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
               <Link to="/tokens">Tokens</Link>
-              {context.account && <p>{context.account}</p>}
-              <button className="button" onClick={this.showModal}>
-                tx list
+              <button className="button button--BcProcessor" onClick={this.showModal}>
+                <IconSwapHoriz />
               </button>
             </div>
           </div>
