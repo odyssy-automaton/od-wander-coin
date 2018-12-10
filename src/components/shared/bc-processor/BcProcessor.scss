@@ -1,11 +1,13 @@
 .BcProcessor__Container {
-  width: 100%;
+  width: calc(100% - 30px);
+  height: 100%;
+  padding: 15px;
 }
 
 .Tx__List {
   width: 100%;
+  height: auto;
   text-align: left;
-  h6 { padding-left: 10px;}
 }
 
 .Tx {
