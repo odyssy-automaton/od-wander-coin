@@ -26,11 +26,11 @@ class Header extends Component {
         {(context) => (
           <div className="Header">
             <Modal show={this.state.show} handleClose={this.hideModal}>
-                <BcProcessor
-                  bcProcessor={context}
-                  account={context.account}
-                  web3={context.web3}
-                />
+              <BcProcessor
+                bcProcessor={context}
+                account={context.account}
+                web3={context.web3}
+              />
             </Modal>
             <div className="Logo">
               <h1 className="Header__title">
@@ -40,8 +40,13 @@ class Header extends Component {
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
               <Link to="/tokens">Tokens</Link>
-              <button className="button button--BcProcessor" onClick={this.showModal}>
-                <IconSwapHoriz />
+              <button className="button" onClick={this.showModal}>
+                <IconSwapHoriz />{' '}
+                {context.getTxPendingList().length ? (
+                  <span role="img" aria-label="indicator">
+                    💡
+                  </span>
+                ) : null}
               </button>
             </div>
           </div>

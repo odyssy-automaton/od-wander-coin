@@ -16,6 +16,7 @@ export default class BcProcessorProvider extends Component {
     this.state = {
       clearHistory: this.clearHistory,
       checkTransaction: this.checkTransaction,
+      getTxPendingList: this.getTxPendingList,
       setTx: this.setTx,
       txList: [],
       web3: this.props.web3,

@@ -10,7 +10,6 @@ class BcProcessor extends Component {
   render() {
     return (
       <div className="BcProcessor__Container">
-
         <div className="Tx__List">
           <h6>Transactions</h6>
           {!this.props.bcProcessor.txList.length ? <p>no txs</p> : null}
@@ -20,15 +19,21 @@ class BcProcessor extends Component {
               <div className="Tx" key={txItem.tx}>
                 <div className="Tx__Main">
                   <div className="Tx__Status">
-                    { !txItem.open &&
+                    {!txItem.open && (
                       <span className="color--success">Complete</span>
-                    }
-                    { txItem.open &&
-                      <span className="">Pending</span>
-                    }
+                    )}
+                    {txItem.open && <span className="">Pending</span>}
                   </div>
                   <div className="Tx__Description">{txItem.description}</div>
-                  <div className="Tx__Hash"><a href="https://etherscan.io/tx/{txItem.tx}" target="_blank" rel="noopener noreferrer">View on Etherscan</a></div>
+                  <div className="Tx__Hash">
+                    <a
+                      href={'https://etherscan.io/tx/' + txItem.tx}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View on Etherscan
+                    </a>
+                  </div>
                   <div className="Tx__Refresh">
                     {txItem.open ? (
                       <button
@@ -42,12 +47,16 @@ class BcProcessor extends Component {
                   </div>
                 </div>
                 <div className="Tx__Secondary">
-                  { !txItem.open &&
-                    <span><IconBlockCheck /></span>
-                  }
-                  { txItem.open &&
-                    <span><IconBlockPending /></span>
-                  }
+                  {!txItem.open && (
+                    <span>
+                      <IconBlockCheck />
+                    </span>
+                  )}
+                  {txItem.open && (
+                    <span>
+                      <IconBlockPending />
+                    </span>
+                  )}
                 </div>
               </div>
             );
