@@ -24,48 +24,6 @@ a {
   color: #5F5FFF;
 }
 
-button, .button {
-  appearance: none;
-  background-color: #5f5fff;
-  color: white;
-  padding: 10px 15px;
-  border-top-left-radius: 50px;
-  border-top-right-radius: 50px;
-  border-bottom-left-radius: 50px;
-  border-bottom-right-radius: 50px;
-  cursor: pointer;
-  border: none;
-  letter-spacing: .05em;
-  font-weight: 500;
-  transition: all .15s linear;
-}
-
-.button.invert {
-  background-color: white;
-  color: #5f5fff;
-}
-
-.button.od-primary {
-  background-color: transparent;
-  color: rgba(38,28,70,1);
-  border: 2px solid rgba(38,28,70,1);
-}
-
-.button.transparent {
-  background-color: transparent;
-  color: #5f5fff;
-}
-
-button:hover {
-  background-color: rgba(38,28,70,1);
-  color: white;
-}
-
-button:disabled {
-  background-color: #595959;
-  color: #a6a6a6;
-}
-
 input {
   padding: 10px 5px;
   outline: none;
