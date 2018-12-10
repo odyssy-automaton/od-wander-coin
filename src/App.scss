@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,700');
 body {
   margin: 0;
   padding: 0;
@@ -25,4 +26,11 @@ p.large {
 
 .color--danger {
   color: #F88073;
+}
+
+// buttons
+.button {
+  svg {
+    fill: white;
+  }
 }
