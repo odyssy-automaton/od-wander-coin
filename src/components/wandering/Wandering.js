@@ -56,6 +56,8 @@ class Wandering extends Component {
     const coords = await this.wanderingService.getAllOwnerCords(
       this.props.tokenId,
     );
+    console.log(coords);
+
     const coordinates = [...this.state.coordinates, ...coords];
 
     const tokenMeta = await this.wanderingService.getTokenMetaData(

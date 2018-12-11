@@ -7,7 +7,7 @@ import { mapStyles } from './mapStyles';
 
 const WanderingMap = withGoogleMap((props) => {
   const markers = props.tokens.map((token, i) => (
-    <CoinMarker key={i} token={token} />
+    <CoinMarker key={i} token={token} tokenKey={i + 1} />
   ));
 
   const centerCoord =
@@ -39,7 +39,7 @@ const WanderingMap = withGoogleMap((props) => {
         center={centerCoord}
       >
         {markers}
-        <Polyline path={props.tokens} options={{strokeColor:"#5f5fff"}} />
+        <Polyline path={props.tokens} options={{ strokeColor: '#5f5fff' }} />
       </GoogleMap>
     </div>
   );
