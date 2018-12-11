@@ -74,6 +74,9 @@ export default class BcProcessorProvider extends Component {
     } else if (txList[exists].open !== open) {
       txList[exists].open = open;
       txList[exists].description = description;
+      if (tokenId) {
+        txList[exists].tokenId = tokenId;
+      }
       localStorage.setItem('txList', JSON.stringify(txList));
     }
     this.setState({ txList });
