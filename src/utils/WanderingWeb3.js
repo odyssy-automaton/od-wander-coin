@@ -145,7 +145,7 @@ export default class WanderingService {
     }
     // sort on timestamp
     return coords.sort(function(a, b) {
-      return new Date(b.timestamp) - new Date(a.timestamp);
+      return new Date(a.timestamp) - new Date(b.timestamp);
     });
   }
 
