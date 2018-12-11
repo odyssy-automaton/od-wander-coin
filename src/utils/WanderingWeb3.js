@@ -117,6 +117,10 @@ export default class WanderingService {
         let txURI = await contract.getTxURI(addr, tokenId).call();
         // verfiy that txURI is from our server
         if (!this.odJsonService.verifyBaseURL(txURI)) {
+          // maybe this will show if sent from wallet
+          if (i > 0) {
+            coords[i - 1].journal = coords[i - 1].journal + ' unreg tx';
+          }
           console.error({ error: 'not a valid uri' });
           continue;
         }
