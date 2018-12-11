@@ -11,8 +11,8 @@ class BcProcessor extends Component {
     return (
       <div className="BcProcessor__Container">
         <div className="Tx__List">
-          <h6>Transactions</h6>
-          {!this.props.bcProcessor.txList.length ? <p>no txs</p> : null}
+          {this.props.bcProcessor.txList.length ? <h6>Recent Transactions</h6> : <h6>No Transactions Yet</h6>}
+          {!this.props.bcProcessor.txList.length ? <p>Your transactions will appear here.</p> : null}
 
           {this.props.bcProcessor.txList.map((txItem) => {
             return (
@@ -63,7 +63,7 @@ class BcProcessor extends Component {
           })}
         </div>
         {this.props.bcProcessor.txList.length ? (
-          <button onClick={() => this.props.bcProcessor.clearHistory()}>
+          <button className="button transparent" onClick={() => this.props.bcProcessor.clearHistory()}>
             Clear History
           </button>
         ) : null}
