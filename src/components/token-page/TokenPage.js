@@ -77,7 +77,7 @@ class TokenPage extends Component {
             this.props.bcProcessor.setTx(
               hash,
               this.props.account,
-              'launching token',
+              'Launch ' + transfer.tokenName,
             );
           })
           .then(() => {
@@ -94,7 +94,7 @@ class TokenPage extends Component {
       this.props.bcProcessor.setTx(
         this.state.transactionHash,
         this.props.account,
-        'launched token',
+        'Launch ' + transfer.tokenName,
         false,
       );
 

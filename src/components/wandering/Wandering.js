@@ -153,7 +153,7 @@ class Wandering extends Component {
             this.props.bcProcessor.setTx(
               hash,
               this.props.account,
-              'sending token',
+              'Send ' + this.state.tokenMeta.name,
             );
           })
           .then((res) => {
@@ -185,7 +185,7 @@ class Wandering extends Component {
       this.props.bcProcessor.setTx(
         this.state.transactionHash,
         this.props.account,
-        'sent token',
+        'Send ' + this.state.tokenMeta.name,
         false,
       );
 
@@ -210,7 +210,7 @@ class Wandering extends Component {
     this.props.bcProcessor.setTx(
       tx.transactionHash,
       this.props.account,
-      'sent gas',
+      'Sent Gas',
       false,
     );
 
