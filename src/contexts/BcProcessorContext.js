@@ -55,21 +55,28 @@ export default class BcProcessorProvider extends Component {
     }
   };
 
-  setTx = (tx, account, description = '', open = true) => {
+  setTx = (tx, account, description = '', open = true, tokenId = null) => {
     const txList = JSON.parse(localStorage.getItem('txList')) || [];
     const txItem = {};
     const exists = txList.findIndex((item) => item.tx === tx);
+    console.log('id', tokenId);
 
     if (exists === -1) {
       txItem.tx = tx;
       txItem.account = account;
       txItem.open = open;
       txItem.description = description;
+      if (tokenId) {
+        txItem.tokenId = tokenId;
+      }
       txList.push(txItem);
       localStorage.setItem('txList', JSON.stringify(txList));
     } else if (txList[exists].open !== open) {
       txList[exists].open = open;
       txList[exists].description = description;
+      if (tokenId) {
+        txList[exists].tokenId = tokenId;
+      }
       localStorage.setItem('txList', JSON.stringify(txList));
     }
     this.setState({ txList });

@@ -17,7 +17,9 @@ class TokenPage extends Component {
     show: false, // modal,
     loading: false,
     transactionHash: null,
+    transactionReceipt: false,
     error: null,
+    newToken: null,
   };
   _isMounted = false;
 
@@ -96,13 +98,18 @@ class TokenPage extends Component {
         this.props.account,
         'Launch ' + transfer.tokenName,
         false,
+        newToken,
       );
+      this.setState({
+        newToken,
+      });
 
       //probably open a modal here instead of auto redirect
       //this.props.history.push(`/tokens/${newToken}`);
     }
     this.setState({
       loading: false,
+      transactionReceipt: true,
     });
   };
 
@@ -113,6 +120,9 @@ class TokenPage extends Component {
 
   hideModal = () => {
     this.setState({ show: false, error: null, transactionHash: null });
+    if (this.state.transactionReceipt) {
+      this.props.history.push(`/tokens/${this.state.newToken}`);
+    }
   };
 
   render() {
@@ -121,7 +131,9 @@ class TokenPage extends Component {
     return (
       <TokensProvider value={this.state}>
         <Modal show={this.state.show} handleClose={this.hideModal}>
-          {this.state.show ? (
+          {this.state.show &&
+          !this.state.transactionReceipt &&
+          !this.state.transactionHash ? (
             <div>
               <TokenLaunch
                 loading={this.state.loading}
@@ -132,7 +144,29 @@ class TokenPage extends Component {
                 <p className="tiny">{this.state.error.msg}</p>
               ) : null}
             </div>
-          ) : null}
+          ) : this.state.transactionHash && !this.state.transactionReceipt ? (
+            <React.Fragment>
+              <p>
+                It could take a few minutes to complete. You can check the
+                history of your transactions in the log or click the link below
+                to view the transaction. While waiting checkout out the token
+                page for to see the status of other tokens.
+              </p>
+              <a
+                href={'https://etherscan.io/tx/' + this.state.transactionHash}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on Etherscan
+              </a>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <p>transaction complete.</p>
+              <p>History of your transactions in the log.</p>
+              <p>Click close to got to your new token.</p>
+            </React.Fragment>
+          )}
         </Modal>
         <div className="Tokens__Container">
           <div className="Tokens__Header">

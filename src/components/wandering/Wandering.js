@@ -24,7 +24,7 @@ class Wandering extends Component {
     coordinates: [],
     error: null,
     loading: false,
-    showSuccessModal: false,
+    transactionReceipt: false,
     txMeta: null,
     tokenMeta: null,
     totalDistance: null,
@@ -154,6 +154,7 @@ class Wandering extends Component {
               hash,
               this.props.account,
               'Send ' + this.state.tokenMeta.name,
+              this.props.tokenId,
             );
           })
           .then((res) => {
@@ -187,6 +188,7 @@ class Wandering extends Component {
         this.props.account,
         'Send ' + this.state.tokenMeta.name,
         false,
+        this.props.tokenId,
       );
 
       this.setState({
@@ -194,7 +196,7 @@ class Wandering extends Component {
         coordinates,
         owner: toAddress,
         loading: false,
-        showSuccessModal: true,
+        transactionReceipt: true,
       });
     }
   };
@@ -218,7 +220,7 @@ class Wandering extends Component {
   };
 
   hideModal = () => {
-    this.setState({ showSuccessModal: false });
+    this.setState({ transactionHash: null });
   };
 
   render() {
@@ -236,12 +238,30 @@ class Wandering extends Component {
     ) : (
       <WanderInfoProvider value={this.state}>
         <div className="Wandering">
-          <Modal
-            show={this.state.showSuccessModal}
-            handleClose={this.hideModal}
-          >
-            <h3>Successfully sent token</h3>
-            <p>{this.state.transactionHash}</p>
+          <Modal show={this.state.transactionHash} handleClose={this.hideModal}>
+            <h3>Transaction has Started.</h3>
+            {this.state.transactionReceipt ? (
+              <React.Fragment>
+                <p>transaction complete.</p>
+                <p>History of your transactions in the log.</p>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <p>
+                  It could take a few minutes to complete. You can check the
+                  history of your transactions in the log or click the link
+                  below to view the transaction. While waiting checkout out the
+                  token page for to see the status of other tokens.
+                </p>
+                <a
+                  href={'https://etherscan.io/tx/' + this.state.transactionHash}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View on Etherscan
+                </a>
+              </React.Fragment>
+            )}
           </Modal>
           <div className="Wandering__bar">
             <div className="contents">

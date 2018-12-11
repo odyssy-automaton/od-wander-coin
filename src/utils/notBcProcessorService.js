@@ -5,18 +5,22 @@ export default class BcProcessorService {
     account: null,
     open: null,
     description: null,
+    tokenId: null,
   };
 
-  setTx(tx, account, description = '', open = true) {
+  setTx(tx, account, description = '', open = true, tokenId = null) {
     const txList = JSON.parse(localStorage.getItem('txList')) || [];
     const txItem = this.txItem;
     const exists = txList.findIndex((item) => item.tx === tx);
+    console.log('id', tokenId);
+    console.log('*******************************', tokenId);
 
     if (exists === -1) {
       txItem.tx = tx;
       txItem.account = account;
       txItem.open = open;
       txItem.description = description;
+      txItem.tokenId = tokenId;
       txList.push(txItem);
       localStorage.setItem('txList', JSON.stringify(txList));
     } else if (txList[exists].open !== open) {

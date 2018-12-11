@@ -41,16 +41,20 @@ class Header extends Component {
                   </span>
                 ) : null}
               </button>
-              { this.state.showDropdown && (
+              {this.state.showDropdown && (
                 <div className="dropdown">
                   <div className="dropdown--processor">
                     <BcProcessor
                       bcProcessor={context}
                       account={context.account}
                       web3={context.web3}
+                      show={this.state.showDropdown}
                     />
                   </div>
-                  <div className="dropdown--backdrop" onClick={this.hideProcessor}/>
+                  <div
+                    className="dropdown--backdrop"
+                    onClick={this.hideProcessor}
+                  />
                 </div>
               )}
             </div>
