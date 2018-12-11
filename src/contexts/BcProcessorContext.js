@@ -36,6 +36,8 @@ export default class BcProcessorProvider extends Component {
         console.log('interval running', pendingList.length);
 
         for (let i = 0; i < pendingList.length - 1; i++) {
+          console.log(pendingList[i].tx);
+
           this.checkTransaction(pendingList[i].tx);
         }
         pendingList = this.getTxPendingList(this.props.account);
@@ -59,7 +61,7 @@ export default class BcProcessorProvider extends Component {
     const txList = JSON.parse(localStorage.getItem('txList')) || [];
     const txItem = {};
     const exists = txList.findIndex((item) => item.tx === tx);
-    console.log('id', tokenId);
+    console.log('id', tokenId, 'exists', exists);
 
     if (exists === -1) {
       txItem.tx = tx;
@@ -73,7 +75,6 @@ export default class BcProcessorProvider extends Component {
       localStorage.setItem('txList', JSON.stringify(txList));
     } else if (txList[exists].open !== open) {
       txList[exists].open = open;
-      txList[exists].description = description;
       if (tokenId) {
         txList[exists].tokenId = tokenId;
       }

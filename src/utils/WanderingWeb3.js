@@ -99,6 +99,8 @@ export default class WanderingService {
     const contract = this.wanderingContract.methods;
     const numOwners = await contract.numOwners().call();
     // loop through the total number of owners on all tokens
+    // problem here - because we are looping through all owners and some owners have
+    // owned multile coins. we have to sort the coords on return
     for (let i = 0; i < numOwners; i++) {
       // get the owners address from look up table
       let addr = await contract.ownersLUT(i).call();
@@ -107,7 +109,7 @@ export default class WanderingService {
       if (addrHasOwned) {
         // check if this owner has been added already
         // if so continue because that means its a different token id
-        if (i > 1 && owners.includes(addr)) {
+        if (owners.includes(addr)) {
           continue;
         }
         owners.push(addr);
@@ -137,7 +139,10 @@ export default class WanderingService {
         });
       }
     }
-    return coords;
+    // sort on timestamp
+    return coords.sort(function(a, b) {
+      return new Date(b.timestamp) - new Date(a.timestamp);
+    });
   }
 
   async balanceOfTank() {

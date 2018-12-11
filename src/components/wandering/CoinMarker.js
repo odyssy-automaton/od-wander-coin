@@ -12,7 +12,7 @@ class CoinMarker extends Component {
   };
 
   render() {
-    const { token } = this.props;
+    const { token, tokenKey } = this.props;
     const { showInfo } = this.state;
     const timestamp = token.timestamp
       ? new Date(token.timestamp).toLocaleString()
@@ -24,6 +24,7 @@ class CoinMarker extends Component {
           lat: token.lat,
           lng: token.lng,
         }}
+        label={'' + tokenKey}
         icon={wanderMarker}
         onClick={this.onMarkerClick}
       >
