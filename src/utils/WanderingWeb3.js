@@ -110,6 +110,8 @@ export default class WanderingService {
         // check if this owner has been added already
         // if so continue because that means its a different token id
         if (owners.includes(addr)) {
+          console.error({ error: 'owner already owned' });
+
           continue;
         }
         owners.push(addr);
@@ -117,6 +119,10 @@ export default class WanderingService {
         let txURI = await contract.getTxURI(addr, tokenId).call();
         // verfiy that txURI is from our server
         if (!this.odJsonService.verifyBaseURL(txURI)) {
+          // maybe this will show if sent from wallet
+          if (i > 0) {
+            coords[i - 1].journal = coords[i - 1].journal + ' unreg tx';
+          }
           console.error({ error: 'not a valid uri' });
           continue;
         }
@@ -141,7 +147,7 @@ export default class WanderingService {
     }
     // sort on timestamp
     return coords.sort(function(a, b) {
-      return new Date(b.timestamp) - new Date(a.timestamp);
+      return new Date(a.timestamp) - new Date(b.timestamp);
     });
   }
 
