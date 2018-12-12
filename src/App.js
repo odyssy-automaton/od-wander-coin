@@ -10,6 +10,8 @@ import './App.scss';
 import BcProcessorProvider from './contexts/BcProcessorContext';
 import Web3 from 'web3';
 
+import screens from './defaultScreens';
+
 class App extends Component {
   // move to env config
   networks = [4];
@@ -30,7 +32,7 @@ class App extends Component {
             }&libraries=places&geocode`}
           />
         </Helmet>
-        <Web3Provider supportedNetworks={this.networks}>
+        <Web3Provider screens={screens} supportedNetworks={this.networks}>
           <BrowserRouter>
             <Web3Consumer>
               {(context) => (
