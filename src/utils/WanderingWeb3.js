@@ -110,8 +110,6 @@ export default class WanderingService {
         // check if this owner has been added already
         // if so continue because that means its a different token id
         if (owners.includes(addr)) {
-          console.error({ error: 'owner already owned' });
-
           continue;
         }
         owners.push(addr);
