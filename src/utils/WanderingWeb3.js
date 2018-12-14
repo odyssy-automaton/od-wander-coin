@@ -11,7 +11,7 @@ export default class WanderingService {
     this.odJsonService = new OdJsonService();
 
     if (process.env.NODE_ENV === 'development') {
-      this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
+      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     } else {
       this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     }

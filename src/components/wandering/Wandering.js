@@ -56,7 +56,6 @@ class Wandering extends Component {
     const coords = await this.wanderingService.getAllOwnerCords(
       this.props.tokenId,
     );
-    console.log(coords);
 
     const coordinates = [...this.state.coordinates, ...coords];
 
@@ -166,7 +165,6 @@ class Wandering extends Component {
             console.log(err);
           });
       });
-    console.log('tx', tx);
 
     if (!tx) {
       this.setState({
@@ -209,8 +207,7 @@ class Wandering extends Component {
       this.props.account,
       amountInWei,
     );
-    console.log('tx', tx);
-    console.log(this.props);
+
     this.props.bcProcessor.setTx(
       tx.transactionHash,
       this.props.account,
@@ -279,6 +276,7 @@ class Wandering extends Component {
               </Link>
             </div>
           </div>
+
           <div className="Wandering__container">
             <div className="sidenav">
               <div className="Wandering__transfer">
@@ -319,12 +317,13 @@ class Wandering extends Component {
                           </p>
                         </div>
                       ) : null}
-
-                      <WanderingNew
-                        transactionHash={this.state.transactionHash}
-                        loading={this.state.loading}
-                        onSubmit={this.handleSubmitAddressForm}
-                      />
+                      {this.props.account && (
+                        <WanderingNew
+                          transactionHash={this.state.transactionHash}
+                          loading={this.state.loading}
+                          onSubmit={this.handleSubmitAddressForm}
+                        />
+                      )}
 
                       {this.state.error ? (
                         <p className="tiny">{this.state.error.msg}</p>
@@ -333,12 +332,14 @@ class Wandering extends Component {
                   )}
                 </div>
               </div>
-              <div className="Wandering__gas">
-                <GasTank
-                  onSubmit={this.handleSubmitGasForm}
-                  onLoad={this.getBalance}
-                />
-              </div>
+              {this.props.account && (
+                <div className="Wandering__gas">
+                  <GasTank
+                    onSubmit={this.handleSubmitGasForm}
+                    onLoad={this.getBalance}
+                  />
+                </div>
+              )}
             </div>
             <div className="Wandering__map">
               <WanderingMapContainer coordinates={coordinates} />

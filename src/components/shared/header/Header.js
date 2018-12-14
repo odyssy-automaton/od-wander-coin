@@ -33,15 +33,17 @@ class Header extends Component {
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
               <Link to="/tokens">Tokens</Link>
-              <button className="button" onClick={this.showProcessor}>
-                <IconSwapHoriz />{' '}
-                {context.getTxPendingList().length ? (
-                  <span role="img" aria-label="indicator">
-                    💡
-                  </span>
-                ) : null}
-              </button>
-              {this.state.showDropdown && (
+              {context.account ? (
+                <button className="button" onClick={this.showProcessor}>
+                  <IconSwapHoriz />{' '}
+                  {context.getTxPendingList().length ? (
+                    <span role="img" aria-label="indicator">
+                      💡
+                    </span>
+                  ) : null}
+                </button>
+              ) : null}
+              {this.state.showDropdown ? (
                 <div className="dropdown">
                   <div className="dropdown--processor">
                     <BcProcessor
@@ -56,7 +58,7 @@ class Header extends Component {
                     onClick={this.hideProcessor}
                   />
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
         )}

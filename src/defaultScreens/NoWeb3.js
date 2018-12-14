@@ -1,32 +1,40 @@
-import React, { memo } from 'react';
-import ErrorTemplate from './template/ErrorTemplate';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Web3 from 'web3';
+import { Helmet } from 'react-helmet';
 
-export default memo(function NoWeb3() {
-  return (
-    <ErrorTemplate
-      title="No Web3 Provider"
-      message={
-        <p>
-          Welcome to Wandercoin. Your browser does not have Web3 capabilities.
-          Please consider installing{' '}
-          <a
-            href="https://metamask.io/"
-            target="_blank"
-            rel="noopener noreferrer"
+import Routes from '../Routes';
+import Header from '../components/shared/header';
+import BcProcessorProvider from '../contexts/BcProcessorContext';
+
+class NoWeb3 extends Component {
+  render() {
+    return (
+      <div>
+        <Helmet>
+          <script
+            type="text/javascript"
+            src={`https://maps.googleapis.com/maps/api/js?key=${
+              process.env.REACT_APP_GOOGLE_API_KEY
+            }&libraries=places&geocode`}
+          />
+        </Helmet>
+        <BrowserRouter>
+          <BcProcessorProvider
+            web3={new Web3(process.env.REACT_APP_REMOTE_WEB3_PROVIDER)}
+            account={''}
           >
-            MetaMask
-          </a>{' '}
-          (or{' '}
-          <a
-            href="https://trustwalletapp.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Trust Wallet
-          </a>{' '}
-          on mobile).
-        </p>
-      }
-    />
-  );
-});
+            <Fragment>
+              <Header />
+              <div>
+                <Routes />
+              </div>
+            </Fragment>
+          </BcProcessorProvider>
+        </BrowserRouter>
+      </div>
+    );
+  }
+}
+
+export default NoWeb3;
