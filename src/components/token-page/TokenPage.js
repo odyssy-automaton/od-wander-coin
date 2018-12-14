@@ -92,7 +92,6 @@ class TokenPage extends Component {
       });
 
     if (newToken) {
-      console.log('go to', newToken, this.state.transactionHash);
       this.props.bcProcessor.setTx(
         this.state.transactionHash,
         this.props.account,

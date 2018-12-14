@@ -56,7 +56,6 @@ class Wandering extends Component {
     const coords = await this.wanderingService.getAllOwnerCords(
       this.props.tokenId,
     );
-    console.log(coords);
 
     const coordinates = [...this.state.coordinates, ...coords];
 
@@ -166,7 +165,6 @@ class Wandering extends Component {
             console.log(err);
           });
       });
-    console.log('tx', tx);
 
     if (!tx) {
       this.setState({
@@ -209,8 +207,7 @@ class Wandering extends Component {
       this.props.account,
       amountInWei,
     );
-    console.log('tx', tx);
-    console.log(this.props);
+
     this.props.bcProcessor.setTx(
       tx.transactionHash,
       this.props.account,

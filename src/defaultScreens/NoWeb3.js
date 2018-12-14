@@ -9,11 +9,6 @@ import BcProcessorProvider from '../contexts/BcProcessorContext';
 
 class NoWeb3 extends Component {
   render() {
-    console.log(
-      process.env.REACT_APP_REMOTE_WEB3_PROVIDER,
-      process.env.REACT_APP_GOOGLE_API_KEY,
-    );
-
     return (
       <div>
         <Helmet>
