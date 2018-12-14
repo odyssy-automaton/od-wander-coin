@@ -279,6 +279,7 @@ class Wandering extends Component {
               </Link>
             </div>
           </div>
+
           <div className="Wandering__container">
             <div className="sidenav">
               <div className="Wandering__transfer">
@@ -319,12 +320,13 @@ class Wandering extends Component {
                           </p>
                         </div>
                       ) : null}
-
-                      <WanderingNew
-                        transactionHash={this.state.transactionHash}
-                        loading={this.state.loading}
-                        onSubmit={this.handleSubmitAddressForm}
-                      />
+                      {this.props.account && (
+                        <WanderingNew
+                          transactionHash={this.state.transactionHash}
+                          loading={this.state.loading}
+                          onSubmit={this.handleSubmitAddressForm}
+                        />
+                      )}
 
                       {this.state.error ? (
                         <p className="tiny">{this.state.error.msg}</p>
@@ -333,12 +335,14 @@ class Wandering extends Component {
                   )}
                 </div>
               </div>
-              <div className="Wandering__gas">
-                <GasTank
-                  onSubmit={this.handleSubmitGasForm}
-                  onLoad={this.getBalance}
-                />
-              </div>
+              {this.props.account && (
+                <div className="Wandering__gas">
+                  <GasTank
+                    onSubmit={this.handleSubmitGasForm}
+                    onLoad={this.getBalance}
+                  />
+                </div>
+              )}
             </div>
             <div className="Wandering__map">
               <WanderingMapContainer coordinates={coordinates} />
