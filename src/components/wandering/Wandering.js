@@ -143,7 +143,7 @@ class Wandering extends Component {
     }
 
     console.log(this.props.account, toAddress, this.props.tokenId, transfer);
-
+    let transactionHash = null; //local
     const tx = await this.wanderingService
       .sendTo(this.props.account, toAddress, this.props.tokenId, transfer)
       .then((res) => {
@@ -151,6 +151,7 @@ class Wandering extends Component {
           .send({ from: this.props.account })
           .once('transactionHash', (hash) => {
             this.setState({ transactionHash: hash });
+            transactionHash = hash;
             this.props.bcProcessor.setTx(
               hash,
               this.props.account,
@@ -185,7 +186,7 @@ class Wandering extends Component {
         },
       ];
       this.props.bcProcessor.setTx(
-        this.state.transactionHash,
+        transactionHash, // this is not getting set
         this.props.account,
         'Send ' + this.state.tokenMeta.name,
         false,
