@@ -155,6 +155,7 @@ class Wandering extends Component {
               hash,
               this.props.account,
               'Send ' + this.state.tokenMeta.name,
+              true,
               this.props.tokenId,
             );
           })
