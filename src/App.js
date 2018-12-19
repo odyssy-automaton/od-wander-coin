@@ -24,14 +24,7 @@ class App extends Component {
     }
     return (
       <div>
-        <Helmet>
-          <script
-            type="text/javascript"
-            src={`https://maps.googleapis.com/maps/api/js?key=${
-              process.env.REACT_APP_GOOGLE_API_KEY
-            }&libraries=places&geocode`}
-          />
-        </Helmet>
+        <Helmet />
         <Web3Provider screens={screens} supportedNetworks={this.networks}>
           <BrowserRouter>
             <Web3Consumer>
