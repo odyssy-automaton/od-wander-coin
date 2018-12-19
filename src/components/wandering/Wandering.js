@@ -293,6 +293,31 @@ class Wandering extends Component {
                             Main Ethereum Network and connected to the wallet
                             that the coin was sent to.
                           </p>
+                          {!this.props.account && (
+                            <div>
+                              <h2>No Web3 Support</h2>
+                              <p>
+                                Your browser does not have Web3 capabilities.
+                                Please consider installing{' '}
+                                <a
+                                  href="https://metamask.io/"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  MetaMask
+                                </a>{' '}
+                                (or{' '}
+                                <a
+                                  href="https://trustwalletapp.com/"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  Trust Wallet
+                                </a>{' '}
+                                on mobile).
+                              </p>
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <h2>Loading...</h2>
