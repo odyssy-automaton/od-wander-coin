@@ -7,12 +7,16 @@ import './TokenPage.scss';
 
 class TokenList extends Component {
   state = {
-    totalTokens: '',
     tokenNumber: '',
+    pageNum: 1,
+    pageSize: 5,
+    totalTokens: '',
+    totalPages: '',
   };
 
   componentDidMount = async () => {
-    this.getTotalTokens();
+    await this.getTotalTokens();
+    this.getTotalPages();
   };
 
   getTotalTokens = async () => {
@@ -22,8 +26,51 @@ class TokenList extends Component {
     this.setState({ totalTokens });
   };
 
+  range = (pageNum, lastPage, size, total) => {
+    console.log('range 1', pageNum, lastPage, size, total);
+    if (!pageNum || !lastPage) {
+      return [];
+    }
+
+    const startAt = pageNum * size - size;
+    if (pageNum === lastPage) {
+      size = total % size;
+    }
+    console.log('range 2', pageNum, lastPage, size, total);
+
+    return [...Array(+size).keys()].map((i) => i + startAt);
+  };
+
+  getTotalPages = () => {
+    this.setState({
+      totalPages: Math.ceil(this.state.totalTokens / this.state.pageSize),
+    });
+    //return parseInt(this.state.totalToken / this.state.pageSize);
+  };
+
+  goToPage = (pageNum) => {
+    if (pageNum < 0 || pageNum > this.state.totalPages) {
+      return;
+    }
+    this.setState({ pageNum: pageNum });
+  };
+
   tokenRows = () => {
-    return [...Array(+this.state.totalTokens).keys()].map((i) => {
+    console.log(
+      this.range(
+        this.state.pageNum,
+        this.state.totalPages,
+        this.state.pageSize,
+        this.state.totalTokens,
+      ),
+    );
+    console.log([...Array(+this.state.totalTokens).keys()]);
+    return this.range(
+      this.state.pageNum,
+      this.state.totalPages,
+      this.state.pageSize,
+      this.state.totalTokens,
+    ).map((i) => {
       return (
         <TokensConsumer key={i}>
           {(context) => (
@@ -60,6 +107,16 @@ class TokenList extends Component {
             {tokenRows}
           </div>
         </div>
+        <button onClick={() => this.goToPage(this.state.pageNum - 1)}>
+          last
+        </button>
+        <span>
+          {' '}
+          page: {this.state.pageNum} of {this.state.totalPages}{' '}
+        </span>
+        <button onClick={() => this.goToPage(this.state.pageNum + 1)}>
+          next
+        </button>
       </div>
     );
   }
