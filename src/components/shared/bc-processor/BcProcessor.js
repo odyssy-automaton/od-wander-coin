@@ -12,7 +12,7 @@ class BcProcessor extends Component {
       <div className="BcProcessor__Container">
         <div className="Tx__List">
           {this.props.bcProcessor.txList.length ? <h6>Recent Transactions</h6> : <h6>No Transactions Yet</h6>}
-          {!this.props.bcProcessor.txList.length ? <p>Your transactions will appear here.</p> : null}
+          {!this.props.bcProcessor.txList.length ? <p>Check the status of blockchain transactions here.</p> : null}
 
           {this.props.bcProcessor.txList.map((txItem) => {
             return (
