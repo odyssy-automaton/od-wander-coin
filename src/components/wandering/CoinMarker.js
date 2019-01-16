@@ -30,10 +30,12 @@ class CoinMarker extends Component {
       >
         {showInfo && (
           <InfoWindow>
-            <div>
+            <div className="GM__Popup">
               <p>{token.journal}</p>
-              <h6>{token.streetAddress}</h6>
-              <h6>{timestamp}</h6>
+              <div className="GM__Popup--Row">
+                <h6>{token.streetAddress}</h6>
+                <h6>{timestamp}</h6>
+              </div>
             </div>
           </InfoWindow>
         )}

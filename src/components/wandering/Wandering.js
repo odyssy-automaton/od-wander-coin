@@ -274,15 +274,15 @@ class Wandering extends Component {
           <div className="Wandering__container">
             <div className="sidenav">
               {tokenMeta && (
-              <div className="Wandering__info" style={{backgroundColor: tokenMeta.extra.color}}>
+              <div className="Wandering__info">
+                <div className="Wandering__info--bar" style={{backgroundColor: tokenMeta.extra.color}} />
                 <h2><TokenIcon
-                  color="#fff"
+                  color={tokenMeta.extra.color}
                   id={tokenMeta.tokenId}
                   name={tokenMeta.name}
                   className="Tokens__Icon--Small"
                 />{tokenMeta.name}</h2>
                 <p>{tokenMeta.description}</p>
-                <button>View Data</button>
               </div>
               )}
               <div className="Wandering__transfer">

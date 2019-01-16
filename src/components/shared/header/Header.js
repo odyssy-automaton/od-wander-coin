@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BcProcessor from '../bc-processor/BcProcessor';
+import GasTank from '../../wandering/gas-tank/GasTank';
 import IconSwapHoriz from '../icon-swap-horiz/IconSwapHoriz';
 
 import './Header.scss';
@@ -9,6 +10,7 @@ import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
 class Header extends Component {
   state = {
     showDropdown: false,
+    showGasDropdown: false,
   };
 
   // Dropdown
@@ -18,6 +20,15 @@ class Header extends Component {
 
   hideProcessor = () => {
     this.setState({ showDropdown: false });
+  };
+
+  // Dropdown
+  showGas = () => {
+    this.setState({ showGasDropdown: true });
+  };
+
+  hideGas = () => {
+    this.setState({ showGasDropdown: false });
   };
 
   render() {
@@ -33,6 +44,9 @@ class Header extends Component {
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
               <Link to="/tokens">Tokens</Link>
+              <button className="button" onClick={this.showGas}>
+                Gas
+              </button>
               {context.account ? (
                 <button className="button" onClick={this.showProcessor}>
                   <IconSwapHoriz />{' '}
@@ -56,6 +70,20 @@ class Header extends Component {
                   <div
                     className="dropdown--backdrop"
                     onClick={this.hideProcessor}
+                  />
+                </div>
+              ) : null}
+              {this.state.showGasDropdown ? (
+                <div className="dropdown">
+                  <div className="dropdown--processor">
+                    <GasTank
+                      onSubmit={this.handleSubmitGasForm}
+                      onLoad={this.getBalance}
+                    />
+                  </div>
+                  <div
+                    className="dropdown--backdrop"
+                    onClick={this.hideGas}
                   />
                 </div>
               ) : null}
