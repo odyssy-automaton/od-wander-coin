@@ -28,12 +28,36 @@
 
 .Wandering__container {
   display: flex;
-  min-height: calc(100vh - 160px);
+  min-height: calc(100vh - 80px);
+  flex-wrap: wrap;
   .sidenav {
-    width: 500px
+    width: 500px;
+    @media (max-width: $tablet) {
+      flex-basis: 100%;
+    }
+  }
+  .Wandering__info {
+    padding: 15px 25px;
+    h2 { flex-basis: 100%; color: white; }
+    svg { width: 60px; height: 60px; vertical-align: middle; margin-right: 10px;}
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    color: #fff;
+  }
+  .Wandering__data {
+    .Columns__Column--33 {
+      text-align: center;
+      flex-basis: 33% !important;
+    }
   }
   .Wandering__map {
     flex-basis: calc(100% - 500px);
+    @media (max-width: $tablet) {
+      height: 100vh;
+      flex-basis: 100%;
+    }
   }
 }
 

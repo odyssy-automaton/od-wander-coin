@@ -14,6 +14,7 @@ import { totalDistance } from '../../utils/distanceHelpers';
 
 import './Wandering.scss';
 import icon from '../../assets/wander-coin.png';
+import TokenIcon from '../shared/token-icon';
 
 class Wandering extends Component {
   state = {
@@ -71,6 +72,10 @@ class Wandering extends Component {
       });
     }
   };
+
+
+
+
 
   getBalance = async () => {
     const balance = await this.wanderingService.balanceOfTank();
@@ -231,6 +236,7 @@ class Wandering extends Component {
       coordinates,
       tokenMeta,
       totalDistance,
+      mph,
     } = this.state;
     const isOwner = owner === this.props.account;
 
@@ -264,30 +270,28 @@ class Wandering extends Component {
               </React.Fragment>
             )}
           </Modal>
-          <div className="Wandering__bar">
-            <div className="contents">
-              <p>What is this?</p>
-              <p>
-                Wander Coin is an experimental DApp and token model where there
-                is a supply of one non-fungible token to test various game
-                theories. The goal is to get the coin all the way around the
-                world without touching the same wallet.
-              </p>
-              <Link className="button od-primary" to={`/about`}>
-                Read More
-              </Link>
-            </div>
-          </div>
 
           <div className="Wandering__container">
             <div className="sidenav">
+              {tokenMeta && (
+              <div className="Wandering__info" style={{backgroundColor: tokenMeta.extra.color}}>
+                <h2><TokenIcon
+                  color="#fff"
+                  id={tokenMeta.tokenId}
+                  name={tokenMeta.name}
+                  className="Tokens__Icon--Small"
+                />{tokenMeta.name}</h2>
+                <p>{tokenMeta.description}</p>
+                <button>View Data</button>
+              </div>
+              )}
               <div className="Wandering__transfer">
                 <div className="Wandering__form">
                   {!isOwner ? (
                     <div>
                       {tokenMeta ? (
                         <div>
-                          <h2>The {tokenMeta.name} be wandering ...</h2>
+                          <h3>{tokenMeta.name} is wandering ...</h3>
                           <p className="tiny">
                             If you think you have it, make sure you’re on the
                             Main Ethereum Network and connected to the wallet
@@ -327,21 +331,9 @@ class Wandering extends Component {
                     <div>
                       {tokenMeta ? (
                         <div>
-                          <h2>
-                            <img
-                              alt="wander-coin icon"
-                              src={tokenMeta.image || icon}
-                              width="60px"
-                              height="60px"
-                            />{' '}
+                          <h3>
                             {tokenMeta.name} is in your wallet!
-                          </h2>
-                          <p className="tiny">
-                            Purpose: {tokenMeta.description}
-                          </p>
-                          <p className="tiny">
-                            Distance traveled: {totalDistance} miles
-                          </p>
+                          </h3>
                         </div>
                       ) : null}
                       {this.props.account && (
@@ -359,6 +351,30 @@ class Wandering extends Component {
                   )}
                 </div>
               </div>
+              {tokenMeta && (
+                <div className="Wandering__data">
+                  <div className="Columns">
+                    <div className="Columns__Column--33">
+                      <h2>{coordinates.length}</h2>
+                      <p className="tiny">
+                        Stops
+                      </p>
+                    </div>
+                    <div className="Columns__Column--33">
+                      <h2>{totalDistance}</h2>
+                      <p className="tiny">
+                        Miles Traveled
+                      </p>
+                    </div>
+                    <div className="Columns__Column--33">
+                      <h2>{mph}</h2>
+                      <p className="tiny">
+                        MPH
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
               {this.props.account && (
                 <div className="Wandering__gas">
                   <GasTank

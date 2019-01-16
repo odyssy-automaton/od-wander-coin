@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,700');
+@import 'variables';
 
 body {
   margin: 0;
@@ -6,6 +7,11 @@ body {
   font-family: 'Rubik', sans-serif;
   background-color: white;
   color: #333;
+  font-weight: 400;
+}
+
+h1, h2, h3 {
+  font-weight: 100;
 }
 
 // Typography
@@ -68,5 +74,45 @@ button, .button {
   .transparent {
     background-color: transparent;
     color: #5f5fff;
+  }
+}
+
+
+// Columns
+.Columns {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  &__Column {
+    flex-direction: column;
+    &--25 {
+      flex-basis: 25%;
+      flex-direction: column;
+      @media (max-width:$tablet) {
+        flex-basis: 100%;
+      }
+    }
+    &--33 {
+      flex-basis: 33%;
+      flex-direction: column;
+      @media (max-width:$tablet) {
+        flex-basis: 100%;
+        padding-bottom: 25px;
+      }
+    }
+    &--50 {
+      flex-basis: 50%;
+      flex-direction: column;
+      @media (max-width:$tablet) {
+        flex-basis: 100%;
+        padding-bottom: 25px;
+      }
+    }
+    &--100 {
+      flex-basis: 100%;
+      flex-direction: column;
+    }
   }
 }
