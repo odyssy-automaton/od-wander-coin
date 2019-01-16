@@ -6,11 +6,23 @@ import IconSwapHoriz from '../icon-swap-horiz/IconSwapHoriz';
 
 import './Header.scss';
 import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
+import WanderingService from '../../../utils/WanderingWeb3';
 
 class Header extends Component {
   state = {
     showDropdown: false,
     showGasDropdown: false,
+  };
+
+  componentDidMount() {
+    this._isMounted = true;
+
+    this.wanderingService = new WanderingService(this.props.web3);
+    this.loadContract();
+  }
+
+  loadContract = async () => {
+    return await this.wanderingService.initContracts();
   };
 
   // Dropdown
@@ -29,6 +41,29 @@ class Header extends Component {
 
   hideGas = () => {
     this.setState({ showGasDropdown: false });
+  };
+
+  // gas tank
+  handleSubmitGasForm = async (amount) => {
+    const amountInWei = await this.wanderingService.toWei(amount.amount);
+    const tx = await this.wanderingService.sendTransaction(
+      this.props.account,
+      amountInWei,
+    );
+
+    // this.props.bcProcessor.setTx(
+    //   tx.transactionHash,
+    //   this.props.account,
+    //   'Sent Gas',
+    //   false,
+    // );
+
+    return tx;
+  };
+
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    return this.wanderingService.toEth(balance);
   };
 
   render() {
@@ -73,7 +108,7 @@ class Header extends Component {
                   />
                 </div>
               ) : null}
-              {this.state.showGasDropdown ? (
+              {this.state.showGasDropdown && context.account ? (
                 <div className="dropdown">
                   <div className="dropdown--processor">
                     <GasTank
@@ -81,10 +116,7 @@ class Header extends Component {
                       onLoad={this.getBalance}
                     />
                   </div>
-                  <div
-                    className="dropdown--backdrop"
-                    onClick={this.hideGas}
-                  />
+                  <div className="dropdown--backdrop" onClick={this.hideGas} />
                 </div>
               ) : null}
             </div>

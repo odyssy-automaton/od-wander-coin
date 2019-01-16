@@ -5,7 +5,6 @@ import WanderingService from '../../utils/WanderingWeb3';
 
 import WanderingNew from './WanderingNew';
 import WanderingMapContainer from './WanderingMapContainer';
-import GasTank from './gas-tank/GasTank';
 
 import { WanderInfoProvider } from '../../contexts/WanderInfoContext';
 import Modal from '../shared/modal/Modal';
@@ -72,10 +71,6 @@ class Wandering extends Component {
       });
     }
   };
-
-
-
-
 
   getBalance = async () => {
     const balance = await this.wanderingService.balanceOfTank();
@@ -208,23 +203,6 @@ class Wandering extends Component {
     }
   };
 
-  handleSubmitGasForm = async (amount) => {
-    const amountInWei = await this.wanderingService.toWei(amount.amount);
-    const tx = await this.wanderingService.sendTransaction(
-      this.props.account,
-      amountInWei,
-    );
-
-    this.props.bcProcessor.setTx(
-      tx.transactionHash,
-      this.props.account,
-      'Sent Gas',
-      false,
-    );
-
-    return tx;
-  };
-
   hideModal = () => {
     this.setState({ transactionHash: null });
   };
@@ -274,16 +252,22 @@ class Wandering extends Component {
           <div className="Wandering__container">
             <div className="sidenav">
               {tokenMeta && (
-              <div className="Wandering__info">
-                <div className="Wandering__info--bar" style={{backgroundColor: tokenMeta.extra.color}} />
-                <h2><TokenIcon
-                  color={tokenMeta.extra.color}
-                  id={tokenMeta.tokenId}
-                  name={tokenMeta.name}
-                  className="Tokens__Icon--Small"
-                />{tokenMeta.name}</h2>
-                <p>{tokenMeta.description}</p>
-              </div>
+                <div className="Wandering__info">
+                  <div
+                    className="Wandering__info--bar"
+                    style={{ backgroundColor: tokenMeta.extra.color }}
+                  />
+                  <h2>
+                    <TokenIcon
+                      color={tokenMeta.extra.color}
+                      id={tokenMeta.tokenId}
+                      name={tokenMeta.name}
+                      className="Tokens__Icon--Small"
+                    />
+                    {tokenMeta.name}
+                  </h2>
+                  <p>{tokenMeta.description}</p>
+                </div>
               )}
               <div className="Wandering__transfer">
                 <div className="Wandering__form">
@@ -331,9 +315,7 @@ class Wandering extends Component {
                     <div>
                       {tokenMeta ? (
                         <div>
-                          <h3>
-                            {tokenMeta.name} is in your wallet!
-                          </h3>
+                          <h3>{tokenMeta.name} is in your wallet!</h3>
                         </div>
                       ) : null}
                       {this.props.account && (
@@ -356,31 +338,17 @@ class Wandering extends Component {
                   <div className="Columns">
                     <div className="Columns__Column--33">
                       <h2>{coordinates.length}</h2>
-                      <p className="tiny">
-                        Stops
-                      </p>
+                      <p className="tiny">Stops</p>
                     </div>
                     <div className="Columns__Column--33">
                       <h2>{totalDistance}</h2>
-                      <p className="tiny">
-                        Miles Traveled
-                      </p>
+                      <p className="tiny">Miles Traveled</p>
                     </div>
                     <div className="Columns__Column--33">
                       <h2>{mph}</h2>
-                      <p className="tiny">
-                        MPH
-                      </p>
+                      <p className="tiny">MPH</p>
                     </div>
                   </div>
-                </div>
-              )}
-              {this.props.account && (
-                <div className="Wandering__gas">
-                  <GasTank
-                    onSubmit={this.handleSubmitGasForm}
-                    onLoad={this.getBalance}
-                  />
                 </div>
               )}
             </div>
