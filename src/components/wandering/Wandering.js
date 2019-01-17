@@ -269,6 +269,24 @@ class Wandering extends Component {
                   <p>{tokenMeta.description}</p>
                 </div>
               )}
+              {tokenMeta && (
+                <div className="Wandering__data">
+                  <div className="Columns">
+                    <div className="Columns__Column--33">
+                      <h2>{coordinates.length}</h2>
+                      <p className="tiny">Stops</p>
+                    </div>
+                    <div className="Columns__Column--33">
+                      <h2>{totalDistance}</h2>
+                      <p className="tiny">Miles Traveled</p>
+                    </div>
+                    <div className="Columns__Column--33">
+                      <h2>{mph}</h2>
+                      <p className="tiny">MPH</p>
+                    </div>
+                  </div>
+                </div>
+              )}
               <div className="Wandering__transfer">
                 <div className="Wandering__form">
                   {!isOwner ? (
@@ -333,24 +351,6 @@ class Wandering extends Component {
                   )}
                 </div>
               </div>
-              {tokenMeta && (
-                <div className="Wandering__data">
-                  <div className="Columns">
-                    <div className="Columns__Column--33">
-                      <h2>{coordinates.length}</h2>
-                      <p className="tiny">Stops</p>
-                    </div>
-                    <div className="Columns__Column--33">
-                      <h2>{totalDistance}</h2>
-                      <p className="tiny">Miles Traveled</p>
-                    </div>
-                    <div className="Columns__Column--33">
-                      <h2>{mph}</h2>
-                      <p className="tiny">MPH</p>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
             <div className="Wandering__map">
               <WanderingMapContainer coordinates={coordinates} />
