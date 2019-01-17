@@ -150,7 +150,7 @@ class TokenPage extends Component {
                   It could take a few minutes to complete. You can check the
                   history of your transactions in the log or click the link
                   below to view the transaction. While waiting checkout out the
-                  token page for to see the status of other tokens.
+                  token page to see the status of other tokens.
                 </p>
                 <a
                   href={'https://etherscan.io/tx/' + this.state.transactionHash}
@@ -171,7 +171,7 @@ class TokenPage extends Component {
         ) : null}
         <div className="Tokens__Container">
           <div className="Tokens__Header">
-            <h3>Explore Current Tokens</h3>
+            <h2>Explore Current Tokens</h2>
             {this.props.account && (
               <button className="button" onClick={this.showModal}>
                 + Launch a New Token
