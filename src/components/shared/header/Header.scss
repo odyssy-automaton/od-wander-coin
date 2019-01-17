@@ -18,11 +18,17 @@ $primary-color: rgba(38,28,70,1);
   margin-bottom: 0px;
   font-size: 2em;
   font-weight: 300;
+  @media (max-width: 889px) {
+    font-size: 1.5em;
+  }
 }
 
 .Logo {
   flex-basis: 33%;
   margin-right: auto;
+  @media (max-width: 889px) {
+    flex-basis: 75%;
+  }
 }
 
 .Navigation--Desktop {

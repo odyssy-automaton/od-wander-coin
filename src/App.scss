@@ -99,7 +99,6 @@ button, .button {
       flex-direction: column;
       @media (max-width:$tablet) {
         flex-basis: 100%;
-        padding-bottom: 25px;
       }
     }
     &--50 {
@@ -107,7 +106,6 @@ button, .button {
       flex-direction: column;
       @media (max-width:$tablet) {
         flex-basis: 100%;
-        padding-bottom: 25px;
       }
     }
     &--100 {
