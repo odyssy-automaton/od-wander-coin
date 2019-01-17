@@ -5,6 +5,7 @@ import GasTank from '../../wandering/gas-tank/GasTank';
 import IconSwapHoriz from '../icon-swap-horiz/IconSwapHoriz';
 
 import './Header.scss';
+import './Hamburger.scss';
 import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
 import WanderingService from '../../../utils/WanderingWeb3';
 
@@ -12,6 +13,13 @@ class Header extends Component {
   state = {
     showDropdown: false,
     showGasDropdown: false,
+    navOpen: false,
+  };
+
+  toggleNav = () => {
+    this.setState({
+      navOpen: !this.state.navOpen,
+    });
   };
 
   componentDidMount() {
@@ -67,6 +75,15 @@ class Header extends Component {
   };
 
   render() {
+
+    const mobileNavClass = this.state.navOpen
+      ? 'Navbar__Mobile Navbar__Mobile--Open'
+      : 'Navbar__Mobile';
+
+    const hamburgerClass = this.state.navOpen
+      ? 'navbar__hamburger hamburger hamburger--spin is-active'
+      : 'navbar__hamburger hamburger hamburger--spin';
+
     return (
       <BcProcessorConsumer>
         {(context) => (
@@ -120,6 +137,30 @@ class Header extends Component {
                 </div>
               ) : null}
             </div>
+            {/* Start Hamburger */}
+            <button
+              className={hamburgerClass}
+              type="button"
+              onClick={this.toggleNav}
+            >
+              <span className="hamburger-box">
+                <span className="hamburger-inner" />
+              </span>
+            </button>
+            <div className={mobileNavClass}>
+              <div className="Navbar__Mobile--Contents">
+                <Link className="Navbar__Mobile--Contents--Item" to="/" onClick={this.toggleNav}>
+                  Home
+                </Link>
+                <Link className="Navbar__Mobile--Contents--Item" to="/tokens" onClick={this.toggleNav}>
+                  Tokens
+                </Link>
+                <Link className="Navbar__Mobile--Contents--Item" to="/about" onClick={this.toggleNav}>
+                  About
+                </Link>
+              </div>
+            </div>
+            {/* End Hamburger */}
           </div>
         )}
       </BcProcessorConsumer>
