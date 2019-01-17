@@ -3,6 +3,7 @@
   height: 100%;
   padding-bottom: 15px;
   h6 { padding-left: 15px; }
+  p.empty-list { padding-left: 15px; }
   button {
     margin-left: 15px; padding: 0; background: transparent; color: #5f5fff;
     &:hover { background: transparent; color: #5f5fff;}
@@ -13,6 +14,7 @@
   width: 100%;
   height: auto;
   text-align: left;
+  &--nothing { padding-left: 15px; }
 }
 
 .Tx {

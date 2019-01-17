@@ -19,7 +19,7 @@ class BcProcessor extends Component {
             <h6>No Transactions Yet</h6>
           )}
           {!this.props.bcProcessor.txList.length ? (
-            <p>Your transactions will appear here.</p>
+            <p className="empty-list">Your transactions will appear here.</p>
           ) : null}
 
           {this.props.bcProcessor.txList

@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BcProcessor from '../bc-processor/BcProcessor';
+import GasTank from '../../wandering/gas-tank/GasTank';
 import IconSwapHoriz from '../icon-swap-horiz/IconSwapHoriz';
 
 import './Header.scss';
 import { BcProcessorConsumer } from '../../../contexts/BcProcessorContext';
+import WanderingService from '../../../utils/WanderingWeb3';
 
 class Header extends Component {
   state = {
     showDropdown: false,
+    showGasDropdown: false,
+  };
+
+  componentDidMount() {
+    this._isMounted = true;
+
+    this.wanderingService = new WanderingService(this.props.web3);
+    this.loadContract();
+  }
+
+  loadContract = async () => {
+    return await this.wanderingService.initContracts();
   };
 
   // Dropdown
@@ -18,6 +32,38 @@ class Header extends Component {
 
   hideProcessor = () => {
     this.setState({ showDropdown: false });
+  };
+
+  // Dropdown
+  showGas = () => {
+    this.setState({ showGasDropdown: true });
+  };
+
+  hideGas = () => {
+    this.setState({ showGasDropdown: false });
+  };
+
+  // gas tank
+  handleSubmitGasForm = async (amount) => {
+    const amountInWei = await this.wanderingService.toWei(amount.amount);
+    const tx = await this.wanderingService.sendTransaction(
+      this.props.account,
+      amountInWei,
+    );
+
+    // this.props.bcProcessor.setTx(
+    //   tx.transactionHash,
+    //   this.props.account,
+    //   'Sent Gas',
+    //   false,
+    // );
+
+    return tx;
+  };
+
+  getBalance = async () => {
+    const balance = await this.wanderingService.balanceOfTank();
+    return this.wanderingService.toEth(balance);
   };
 
   render() {
@@ -33,6 +79,9 @@ class Header extends Component {
             <div className="Navigation--Desktop">
               <Link to="/about">About</Link>
               <Link to="/tokens">Tokens</Link>
+              <button className="button" onClick={this.showGas}>
+                Gas
+              </button>
               {context.account ? (
                 <button className="button" onClick={this.showProcessor}>
                   <IconSwapHoriz />{' '}
@@ -57,6 +106,17 @@ class Header extends Component {
                     className="dropdown--backdrop"
                     onClick={this.hideProcessor}
                   />
+                </div>
+              ) : null}
+              {this.state.showGasDropdown && context.account ? (
+                <div className="dropdown">
+                  <div className="dropdown--processor">
+                    <GasTank
+                      onSubmit={this.handleSubmitGasForm}
+                      onLoad={this.getBalance}
+                    />
+                  </div>
+                  <div className="dropdown--backdrop" onClick={this.hideGas} />
                 </div>
               ) : null}
             </div>

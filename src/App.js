@@ -15,8 +15,16 @@ import screens from './defaultScreens';
 class App extends Component {
   // move to env config
   networks = [4];
+  theweb3 = null;
 
   componentDidMount = async () => {};
+
+  newWeb3 = (provider) => {
+    if (this.theweb3 === null) {
+      this.theweb3 = new Web3(provider);
+    }
+    return this.theweb3;
+  };
 
   render() {
     if (process.env.NODE_ENV === 'development') {
@@ -30,11 +38,14 @@ class App extends Component {
             <Web3Consumer>
               {(context) => (
                 <BcProcessorProvider
-                  web3={new Web3(context.web3js.givenProvider)}
+                  web3={this.newWeb3(context.web3js.givenProvider)}
                   account={context.account}
                 >
                   <Fragment>
-                    <Header />
+                    <Header
+                      web3={this.newWeb3(context.web3js.givenProvider)}
+                      account={context.account}
+                    />
                     <div>
                       <Routes />
                     </div>
