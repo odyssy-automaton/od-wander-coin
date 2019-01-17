@@ -92,7 +92,7 @@ class TokenList extends Component {
 
     return (
       <div>
-        <p>{this.state.totalTokens} Token(s)</p>
+        <h3>{this.state.totalTokens} Token(s)</h3>
 
         <div className="divTable">
           <div className="divTableBody">
@@ -107,16 +107,20 @@ class TokenList extends Component {
             {tokenRows}
           </div>
         </div>
-        <button onClick={() => this.goToPage(this.state.pageNum - 1)}>
-          last
-        </button>
-        <span>
-          {' '}
-          page: {this.state.pageNum} of {this.state.totalPages}{' '}
-        </span>
-        <button onClick={() => this.goToPage(this.state.pageNum + 1)}>
-          next
-        </button>
+        <div className="Paginator">
+        { this.state.pageNum != 1 && (
+          <button onClick={() => this.goToPage(this.state.pageNum - 1)}>
+            Last
+          </button>
+        )}
+          <span>
+            {' '}
+            Page <strong>{this.state.pageNum}</strong> of <strong>{this.state.totalPages}</strong>{' '}
+          </span>
+          <button onClick={() => this.goToPage(this.state.pageNum + 1)}>
+            Next
+          </button>
+        </div>
       </div>
     );
   }

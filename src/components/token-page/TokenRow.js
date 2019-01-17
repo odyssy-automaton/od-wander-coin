@@ -77,9 +77,9 @@ class TokenRow extends Component {
           </Link>
         </div>
         <div className="divTableCell">{tokenMeta.description}</div>
-        <div className="divTableCell">{txMeta.length}</div>
-        <div className="divTableCell">{totalDistance}</div>
-        <div className="divTableCell">{mph}</div>
+        <div className="divTableCell">{txMeta.length} <span>Stops</span></div>
+        <div className="divTableCell">{totalDistance} <span>Miles</span></div>
+        <div className="divTableCell">{mph} <span>MPH</span></div>
       </div>
     );
   }
