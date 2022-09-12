@@ -21,3 +21,6 @@ Running migration: 2_deploy_contracts.js
   ... 0x0db56119ef1641124b63e4be191b860c7d9d51db2d18aac0f429ce0066ca9072
   WanderingToken: 0xc046c5a96540189d8158a0af80370e7984280db3
 Saving artifacts...
+
+
+#
