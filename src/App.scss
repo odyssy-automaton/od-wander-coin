@@ -1,9 +1,123 @@
-.App {
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,400,500,700');
+@import 'variables';
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Rubik', sans-serif;
+  background-color: white;
+  color: #333;
+  font-weight: 400;
 }
 
+h1, h2, h3 {
+  font-weight: 100;
+}
 
 // Typography
 
 p.tiny {
   font-size: .75em;
+}
+
+p.large {
+  font-size: 1.15em;
+  color: #999;
+  font-weight: 100;
+}
+
+// utils
+.color--success {
+  color: #A6BF4C;
+}
+
+.color--danger {
+  color: #F88073;
+}
+
+// buttons
+button, .button {
+  appearance: none;
+  outline: none;
+  background-color: #5f5fff;
+  color: white;
+  padding: 10px 15px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  cursor: pointer;
+  border: none;
+  letter-spacing: .05em;
+  font-weight: 500;
+  transition: all .15s linear;
+  &:hover {
+    background-color: rgba(38,28,70,1);
+    color: white;
+  }
+  &:disabled {
+    background-color: #595959;
+    color: #a6a6a6;
+  }
+  svg {
+    fill: white;
+  }
+  &.invert {
+    background-color: white;
+    color: #5f5fff;
+  }
+  &.od-primary {
+    background-color: transparent;
+    color: rgba(38,28,70,1);
+    border: 2px solid rgba(38,28,70,1);
+  }
+  .transparent {
+    background-color: transparent;
+    color: #5f5fff;
+  }
+}
+
+
+// Columns
+.Columns {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  &__Column {
+    flex-direction: column;
+    &--25 {
+      flex-basis: 25%;
+      flex-direction: column;
+      @media (max-width:$tablet) {
+        flex-basis: 100%;
+      }
+    }
+    &--33 {
+      flex-basis: 33%;
+      flex-direction: column;
+      @media (max-width:$tablet) {
+        flex-basis: 100%;
+      }
+    }
+    &--50 {
+      flex-basis: 50%;
+      flex-direction: column;
+      @media (max-width:$tablet) {
+        flex-basis: 100%;
+      }
+    }
+    &--100 {
+      flex-basis: 100%;
+      flex-direction: column;
+    }
+  }
+}
+
+// Google Map Overrides
+.gm-style .gm-style-iw {
+    font-weight: 400;
+    font-size: 16px;
+    max-width: 320px;
 }

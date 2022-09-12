@@ -1,55 +1,60 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter } from 'react-router-dom';
+import Web3Provider, { Web3Consumer } from 'web3-react';
+import { Helmet } from 'react-helmet';
 
-import getWeb3 from './utils/getWeb3';
 import Routes from './Routes';
-import { AccountProvider } from './contexts/AccountContext';
 import Header from './components/shared/header';
 
 import './App.scss';
+import BcProcessorProvider from './contexts/BcProcessorContext';
+import Web3 from 'web3';
+
+import screens from './defaultScreens';
 
 class App extends Component {
-  state = {
-    accounts: null,
-    // tokenId: null,
-  };
+  // move to env config
+  networks = [4];
+  theweb3 = null;
 
-  componentDidMount = async () => {
-    // const tokenId = parseInt(window.location.pathname.split('/')[1], 10) || 1;
+  componentDidMount = async () => {};
 
-    try {
-      const web3 = await getWeb3();
-      const accounts = await web3.eth.getAccounts();
-      this.setState({ accounts });
-    } catch (error) {
-      alert(
-        `Failed to load web3, accounts, or contract. Check console for details.`,
-      );
-      console.log(error);
+  newWeb3 = (provider) => {
+    if (this.theweb3 === null) {
+      this.theweb3 = new Web3(provider);
     }
+    return this.theweb3;
   };
 
   render() {
-    const { accounts } = this.state;
-
+    if (process.env.NODE_ENV === 'development') {
+      this.networks = [1, 3, 4, 42, 4447];
+    }
     return (
       <div>
-        <AccountProvider value={this.state}>
+        <Helmet />
+        <Web3Provider screens={screens} supportedNetworks={this.networks}>
           <BrowserRouter>
-            <Fragment>
-              <Header />
-              {accounts ? (
-                <div>
-                  <Routes />
-                </div>
-              ) : (
-                <div>
-                  <h2>Whoops! Hook up a wallet.</h2>
-                </div>
+            <Web3Consumer>
+              {(context) => (
+                <BcProcessorProvider
+                  web3={this.newWeb3(context.web3js.givenProvider)}
+                  account={context.account}
+                >
+                  <Fragment>
+                    <Header
+                      web3={this.newWeb3(context.web3js.givenProvider)}
+                      account={context.account}
+                    />
+                    <div>
+                      <Routes />
+                    </div>
+                  </Fragment>
+                </BcProcessorProvider>
               )}
-            </Fragment>
+            </Web3Consumer>
           </BrowserRouter>
-        </AccountProvider>
+        </Web3Provider>
       </div>
     );
   }

@@ -938,15 +938,16 @@ contract WanderingToken is ERC721Full, Ownable {
     mapping(uint => mapping(address => OwnerHistory)) ownersHistoryByToken;
     uint256 tokenCount = 0;
     uint256 faucetAmount = 2 finney;
+    uint256 tankMax = 300 finney;
 
     address[] public ownersLUT;
 
     constructor(
-        string _name, 
+        string _name,
         string _symbol,
         string _txURI,
         string _tokenURI
-    ) 
+    )
     ERC721Full(_name, _symbol) public payable {
         launchToken(_txURI, _tokenURI);
     }
@@ -977,16 +978,18 @@ contract WanderingToken is ERC721Full, Ownable {
             _from == ownerOf(tokenId), "Not the token holder");
         require(
             !addrHasOwned(_to, tokenId), "already owned");
-        require(
-            address(this).balance >= faucetAmount,
-            "Not enough ether in contract."
-            );
+
         ownersHistoryByToken[tokenId][_to].isOwner = true;
         ownersHistoryByToken[tokenId][_to].tokenId = tokenId;
         ownersHistoryByToken[tokenId][_to].txURI = txURI;
         ownersLUT.push(_to);
         super.safeTransferFrom(_from, _to, tokenId, data);
-        _to.transfer(faucetAmount);
+        if (address(this).balance >= faucetAmount) {
+            _to.transfer(faucetAmount);
+        } else if (address(this).balance >= 0 && address(this).balance < faucetAmount){
+            _to.transfer(address(this).balance);
+        }
+
     }
 
     function numOwners() public view returns (uint) {
@@ -1001,8 +1004,8 @@ contract WanderingToken is ERC721Full, Ownable {
         return address(this).balance;
     }
 
-    function getTxURI(address _owner, uint tokenId) 
-    public view 
+    function getTxURI(address _owner, uint tokenId)
+    public view
     returns(string) {
         return ownersHistoryByToken[tokenId][_owner].txURI;
     }
@@ -1011,6 +1014,16 @@ contract WanderingToken is ERC721Full, Ownable {
         msg.sender.transfer(address(this).balance);
     }
 
-    function () public payable {}
+    function setFaucetAmount(uint amount) public onlyOwner {
+        faucetAmount = amount;
+    }
+
+    function setTankMax(uint amount) public onlyOwner {
+        tankMax = amount;
+    }
+
+    function () public payable {
+        require(address(this).balance <= tankMax, "That would overflow the tank");
+    }
 
 }

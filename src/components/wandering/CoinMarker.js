@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Marker, InfoWindow } from 'react-google-maps';
+import wanderMarker from '../../../src/assets/wanderMarker.svg';
 
 class CoinMarker extends Component {
   state = {
@@ -11,10 +12,11 @@ class CoinMarker extends Component {
   };
 
   render() {
-    const { token } = this.props;
+    const { token, tokenKey } = this.props;
     const { showInfo } = this.state;
-
-    console.log(token);
+    const timestamp = token.timestamp
+      ? new Date(token.timestamp).toLocaleString()
+      : '';
 
     return (
       <Marker
@@ -22,14 +24,18 @@ class CoinMarker extends Component {
           lat: token.lat,
           lng: token.lng,
         }}
+        label={'' + tokenKey}
+        icon={wanderMarker}
         onClick={this.onMarkerClick}
       >
         {showInfo && (
           <InfoWindow>
-            <div>
-              <h5>{token.journal}</h5>
-              <p>Lat: {token.lat}</p>
-              <p>Lng: {token.lng}</p>
+            <div className="GM__Popup">
+              <p>{token.journal}</p>
+              <div className="GM__Popup--Row">
+                <h6>{token.streetAddress}</h6>
+                <h6>{timestamp}</h6>
+              </div>
             </div>
           </InfoWindow>
         )}

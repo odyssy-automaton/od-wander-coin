@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-
-import { AccountConsumer } from '../../contexts/AccountContext';
 import WanderingToken from '../../components/wandering';
+import { BcProcessorConsumer } from '../../contexts/BcProcessorContext';
 
 class Home extends Component {
   render() {
     const { tokenId } = this.props.match.params;
 
     return (
-      <AccountConsumer>
-        {(context) => (
-          <WanderingToken account={context.accounts[0]} tokenId={tokenId} />
+      <BcProcessorConsumer>
+        {(bcContext) => (
+          <WanderingToken
+            web3={bcContext.web3}
+            account={bcContext.account}
+            tokenId={tokenId}
+            bcProcessor={bcContext}
+          />
         )}
-      </AccountConsumer>
+      </BcProcessorConsumer>
     );
   }
 }

@@ -1,0 +1,130 @@
+@import '../../variables';
+
+.Tokens__Container {
+	max-width: 1200px;
+	margin: 50px auto;
+	display: flex;
+	flex-wrap: wrap;
+	padding: 0px 25px;
+	.Tokens__Header {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		button {
+			margin-left: 30px;
+			@media (max-width: $tablet) {
+				margin-left: 0px;
+				flex-basis: 100%;
+			}
+		}
+	}
+	.Tokens__Explore {
+		flex-basis: 100%;
+		margin-top: 25px;
+	}
+}
+
+.divTable {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.divTableRow {
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid #eeeeee;
+	padding: 15px 0px;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	flex-wrap: wrap;
+	.divTableCell:nth-of-type(1) {
+		width: 5%;
+		@media (max-width: $tablet) {
+			flex-basis: 10%;
+		}
+	}
+	.divTableCell:nth-of-type(2) {
+		width: 20%;
+		svg { width: 28px; height: 28px; vertical-align: middle; margin-right: 5px;}
+		@media (max-width: $tablet) {
+			flex-basis: 90%;
+		}
+	}
+	.divTableCell:nth-of-type(3) {
+		width: 50%;
+		@media (max-width: $tablet) {
+			margin-top: 15px;
+			flex-basis: 100%;
+			font-size: 1em;
+		}
+	}
+	.divTableCell:nth-of-type(4) {
+		width: 10%;
+		span {
+			display: none;
+			font-size: .75em;
+			color: #aaa;
+		}
+		@media (max-width: $tablet) {
+			margin-top: 15px;
+			flex-basis: 33%;
+			text-align: center;
+			span { display: block; }
+		}
+	}
+	.divTableCell:nth-of-type(5) {
+		width: 10%;
+		span {
+			display: none;
+			font-size: .75em;
+			color: #aaa;
+		}
+		@media (max-width: $tablet) {
+			margin-top: 15px;
+			flex-basis: 33%;
+			text-align: center;
+			span { display: block; }
+		}
+	}
+	.divTableCell:nth-of-type(6) {
+		width: 5%;
+		span {
+			display: none;
+			font-size: .75em;
+			color: #aaa;
+		}
+		@media (max-width: $tablet) {
+			margin-top: 15px;
+			text-align: center;
+			flex-basis: 33%;
+			span { display: block; }
+		}
+	}
+	.divTableCell.Column--Heading {
+		color: #999999;
+		@media (max-width: $tablet) {
+			display: none;
+		}
+	}
+}
+
+@media (max-width: $tablet) {
+	.divTableRow:first-of-type {
+		border-bottom: 1px solid #efefef;
+		.divTableCell:nth-of-type(4),
+		.divTableCell:nth-of-type(5),
+		.divTableCell:nth-of-type(6) {
+			display: none;
+		}
+	}
+}
+
+.Paginator {
+	display: flex;
+	align-items: center;
+	padding: 15px 0px;
+	button:nth-of-type(1), span { margin-right: 15px; }
+}

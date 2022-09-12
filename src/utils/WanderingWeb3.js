@@ -1,27 +1,20 @@
 import WanderingAbi from '../../src/dist/contracts/WanderingToken.json';
-import { getWeb3ServiceInstance } from './Web3Service';
+import Web3Service from './Web3Service';
 import OdJsonService from './OdJsonService';
 
 export default class WanderingService {
   web3Service;
   wanderingContract;
 
-  constructor() {
-    this.web3Service = getWeb3ServiceInstance();
+  constructor(web3) {
+    this.web3Service = new Web3Service(web3);
     this.odJsonService = new OdJsonService();
 
     if (process.env.NODE_ENV === 'development') {
-      this.tokenAddress = process.env.REACT_APP_LOC_CONTRACT_ADDRESS;
+      this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     } else {
       this.tokenAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
     }
-    console.log(
-      'env',
-      process.env.NODE_ENV,
-      this.tokenAddress,
-      process.env.REACT_APP_CONTRACT_ADDRESS,
-      process.env.REACT_APP_LOC_CONTRACT_ADDRESS,
-    );
   }
 
   async initContracts() {
@@ -31,46 +24,44 @@ export default class WanderingService {
     ));
   }
 
-  async sendTo(from, to, latitude, longitude, tokenId) {
+  async sendTo(from, to, tokenId, transfer) {
     // build txJSON, save and get txURI
-    const txJSON = {
-      latitude: latitude,
-      longitude: longitude,
-      journal: 'A new Entry.',
-    };
+    const txJSON = transfer;
 
     const txURI = await this.odJsonService.getUri(txJSON);
-    const txURIBytpe32 = this.web3Service.fromAscii(txURI);
+    const dummydata = this.web3Service.asciiToHex('0');
 
-    console.log('tx uri', txURI);
-    console.log('tx uri bytes32');
-    console.log(from, to, tokenId, txURI, txURIBytpe32);
-
-    return await this.wanderingContract.methods
-      .safeTransferFrom(from, to, tokenId, '0x0', txURI)
-      .send({ from: from });
+    return this.wanderingContract.methods.safeTransferFrom(
+      from,
+      to,
+      tokenId,
+      dummydata,
+      txURI,
+    );
   }
 
-  async launchToken(from, latitude, longitude) {
-    // build txJSON, save and get txURI
-    const txJSON = {
-      latitude: latitude,
-      longitude: longitude,
-      journal: 'A new start.',
-    };
+  async launchToken(transfer) {
     const tokenJSON = {
-      name: 'WanderCoin',
-      description: 'A token that wanders around the world.',
-      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface.jpg',
+      name: transfer.tokenName,
+      description: transfer.journal,
+      image: 'https://s3.amazonaws.com/odyssy-assets/wanderface2.png',
+      extra: {
+        color: transfer.tokenColor,
+      },
     };
-    const txURI = await this.odJsonService.getUri(txJSON);
+
+    const txJSON = {
+      latitude: transfer.latitude,
+      longitude: transfer.longitude,
+      streetAddress: transfer.streetAddress,
+      journal: transfer.journal,
+      timestamp: new Date().getTime(),
+    };
+
     const tokenURI = await this.odJsonService.getUri(tokenJSON);
+    const txURI = await this.odJsonService.getUri(txJSON);
 
-    await this.wanderingContract.methods
-      .launchToken(txURI, tokenURI)
-      .send({ from: from });
-
-    return await this.wanderingContract.methods.totalSupply().call();
+    return this.wanderingContract.methods.launchToken(txURI, tokenURI);
   }
 
   async getTotalSupply() {
@@ -85,7 +76,21 @@ export default class WanderingService {
   }
 
   async getOwner(tokenId = 1) {
-    return await this.wanderingContract.methods.ownerOf(tokenId).call();
+    try {
+      return await this.wanderingContract.methods.ownerOf(tokenId).call();
+    } catch {
+      return false;
+    }
+  }
+
+  async addrHasOwned(addr, tokenId = 1) {
+    try {
+      return await this.wanderingContract.methods
+        .addrHasOwned(addr, tokenId)
+        .call();
+    } catch {
+      return 'bad addr';
+    }
   }
 
   async getAllOwnerCords(tokenId = 1) {
@@ -93,19 +98,34 @@ export default class WanderingService {
     const owners = [];
     const contract = this.wanderingContract.methods;
     const numOwners = await contract.numOwners().call();
+    // loop through the total number of owners on all tokens
+    // problem here - because we are looping through all owners and some owners have
+    // owned multile coins. we have to sort the coords on return
     for (let i = 0; i < numOwners; i++) {
+      // get the owners address from look up table
       let addr = await contract.ownersLUT(i).call();
       let addrHasOwned = await contract.addrHasOwned(addr, tokenId).call();
+      // check if owner has owned a token by id
       if (addrHasOwned) {
+        // check if this owner has been added already
+        // if so continue because that means its a different token id
         if (owners.includes(addr)) {
           continue;
         }
         owners.push(addr);
-
+        // get the URI for the tx meta
         let txURI = await contract.getTxURI(addr, tokenId).call();
-        console.log('huh', txURI);
-        //console.log('huh', this.web3Service.toAscii(txURI));
+        // verfiy that txURI is from our server
+        if (!this.odJsonService.verifyBaseURL(txURI)) {
+          // maybe this will show if sent from wallet
+          if (i > 0) {
+            coords[i - 1].journal = coords[i - 1].journal + ' unreg tx';
+          }
+          console.error({ error: 'not a valid uri' });
+          continue;
+        }
 
+        // get meta json for tx
         const txJSON = await fetch(txURI, {
           method: 'GET',
           headers: {
@@ -114,28 +134,64 @@ export default class WanderingService {
         }).then(function(response) {
           return response.json();
         });
-        console.log(txJSON.latitude, txJSON.longitude);
-
         coords.push({
           lat: txJSON.latitude,
           lng: txJSON.longitude,
+          streetAddress: txJSON.streetAddress,
           journal: txJSON.journal,
+          timestamp: txJSON.timestamp || '',
         });
       }
     }
-    return coords;
+    // sort on timestamp
+    return coords.sort(function(a, b) {
+      return new Date(a.timestamp) - new Date(b.timestamp);
+    });
   }
 
   async balanceOfTank() {
-    return await this.wanderingContract.methods.balanceOfTank().call();
+    return this.wanderingContract.methods.balanceOfTank().call();
   }
 
   async sendTransaction(from, value) {
-    this.web3Service.web3.eth.sendTransaction({
-      from: from,
-      to: this.tokenAddress,
-      value: value,
-    });
+    return this.web3Service.web3.eth
+      .sendTransaction({
+        from: from,
+        to: this.tokenAddress,
+        value: value,
+      })
+      .once('transactionHash', (hash) => {
+        console.log(hash);
+      })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  getTokenURI(tokenId) {
+    return this.wanderingContract.methods.tokenURI(tokenId).call();
+  }
+
+  async totalSupply() {
+    return await this.wanderingContract.methods.totalSupply().call();
+  }
+
+  async getTokenMetaData(tokenId) {
+    const tokenURI = await this.getTokenURI(tokenId);
+
+    return fetch(tokenURI, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function(response) {
+        return response.json();
+      })
+      .catch((err) => console.log(err));
   }
 
   toEth(value) {
@@ -144,13 +200,5 @@ export default class WanderingService {
 
   toWei(value) {
     return this.web3Service.toWei(value);
-  }
-
-  coordinateToInt(coordinate) {
-    return Math.round(coordinate * 10000000, 7);
-  }
-
-  intToCoordinate(int) {
-    return parseInt(int, 10) / 10000000;
   }
 }

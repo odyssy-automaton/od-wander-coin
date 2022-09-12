@@ -1,5 +1,8 @@
 {
     "name": "WanderCoin",
     "description": "A token that wanders around the world.", 
-    "image": "https://s3.amazonaws.com/odyssy-assets/wanderface.jpg"
+    "image": "https://s3.amazonaws.com/odyssy-assets/wanderface.png",
+    "extra": {
+        "color": "#5f5fff"
+    }
 }
